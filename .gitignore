@@ -1,0 +1,6 @@
+data/raw/
+tmp/
+dist/debug.html
+dist/index_v2.html
+*.log
+node_modules/

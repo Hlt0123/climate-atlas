@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>PaleoClim GeoTIFF → 2° 快照格点(浏览器端转换器)</title>
+<style>
+  body { font-family: Consolas, monospace; margin: 1em; background: #111; color: #ddd; }
+  pre { white-space: pre-wrap; }
+  b { color: #7fc97f; }
+</style>
+</head>
+<body>
+<p>加载 geotiff.js → 解析 10 角分 bio1(年均温)与 bio12(年降水)栅格 → 聚合为 2° 格点 → 各时期减现代(CHELSA):温度为 °C 距平、降水为 % 距平 → int8 量化 → base64 → POST 保存 paleoclim_snapshots.json。</p>
+<p>注:曾试验 PNG(2D 预测滤波 + DEFLATE)存储,实测对量化距平场仅省 0–11%,不如 gzip+b64,故保留 JSON 方案(见 scripts/png_probe.js 实验)。</p>
+<pre id="log">运行中……</pre>
+<script src="https://cdn.jsdelivr.net/npm/geotiff@2.1.0/dist-browser/geotiff.js"></script>
+<script>
+const log = m => { document.getElementById("log").textContent += "\n" + m; };
+
+(async () => {
+try {
+  if (typeof GeoTIFF === "undefined") { log("<b>geotiff.js 未加载 —— 停止</b>"); return; }
+  const NLAT = 90, NLON = 180;             // 2° 格点(原 4°,分辨率翻倍)
+  const KEYS = ["mh", "lig", "hs1", "ba", "yds", "eh", "lh", "mpwp", "cur"];
+
+  async function loadAvg(file, varName) {
+    const buf = await (await fetch("/data/raw/paleoclim/" + file)).arrayBuffer();
+    const tiff = await (GeoTIFF.parse ? GeoTIFF.parse(buf) : GeoTIFF.fromArrayBuffer(buf));
+    const img = await tiff.getImage();
+    const w = img.getWidth(), h = img.getHeight();
+    const [x0, y0] = img.getOrigin();
+    const [dx, dy0] = img.getResolution();
+    const dy = Math.abs(dy0);
+    const data = (await img.readRasters({ samples: [0] }))[0];
+    let rmin = Infinity, rmax = -Infinity;
+    for (let i = 0; i < data.length; i++) { const v = +data[i]; if (v > -9000 && v < 9000 && v === v) { if (v < rmin) rmin = v; if (v > rmax) rmax = v; } }
+    const kelvin = varName === "bio1" && rmax > 1000;
+    const conv = v => varName === "bio1" ? (v / 10) - (kelvin ? 273.15 : 0) : v;
+    const sums = new Float64Array(NLAT * NLON), cnts = new Float32Array(NLAT * NLON);
+    for (let r = 0; r < h; r++) {
+      const lat = y0 - (r + 0.5) * dy;
+      const gy = Math.floor((lat + 90) / 2);
+      if (gy < 0 || gy >= NLAT) continue;
+      for (let c = 0; c < w; c++) {
+        const v = +data[r * w + c];
+        if (!(v > -9000 && v < 9000 && v === v)) continue;
+        const t = conv(v);
+        const ok = varName === "bio1" ? (t > -70 && t < 60) : (t >= 0 && t < 60000);
+        if (!ok) continue;
+        const lon = x0 + (c + 0.5) * Math.abs(dx);
+        const gx = Math.floor((lon + 180) / 2);
+        if (gx < 0 || gx >= NLON) continue;
+        const idx = gy * NLON + gx;
+        sums[idx] += t; cnts[idx] += 1;
+      }
+    }
+    const out = new Float32Array(NLAT * NLON);
+    let covered = 0, tmin = Infinity, tmax = -Infinity;
+    for (let i = 0; i < out.length; i++) {
+      if (cnts[i] > 0) { out[i] = sums[i] / cnts[i]; covered++; if (out[i] < tmin) tmin = out[i]; if (out[i] > tmax) tmax = out[i]; }
+      else out[i] = NaN;
+    }
+    log(file + ": " + w + "x" + h + " raw[" + rmin + "," + rmax + "] " + (kelvin ? "(K×10)" : "") + " → 覆盖 " + covered + "/" + (NLAT * NLON) + ", 值域[" + tmin.toFixed(1) + "," + tmax.toFixed(1) + "]");
+    return out;
+  }
+
+  const avg = { bio1: {}, bio12: {} };
+  for (const k of KEYS) {
+    avg.bio1[k] = await loadAvg(k + "_bio1.tif", "bio1");
+    avg.bio12[k] = await loadAvg(k + "_bio12.tif", "bio12");
+  }
+
+  const lats = [], lons = [];
+  for (let gy = 0; gy < NLAT; gy++) lats.push(-90 + gy * 2 + 1);
+  for (let gx = 0; gx < NLON; gx++) lons.push(-180 + gx * 2 + 1);
+  const b64 = u8 => { let s = "", CH = 8192; for (let i = 0; i < u8.length; i += CH) s += String.fromCharCode.apply(null, u8.subarray(i, Math.min(u8.length, i + CH))); return btoa(s); };
+  const quant = (anom, scale) => {
+    const f = new Int8Array(NLAT * NLON);
+    for (let i = 0; i < f.length; i++) {
+      const v = anom[i];
+      f[i] = (v === v) ? Math.max(-126, Math.min(126, Math.round(v / scale))) : -127;
+    }
+    return b64(new Uint8Array(f.buffer, f.byteOffset, f.length));
+  };
+  const anomaly = (key, varName) => {
+    const a = new Float32Array(NLAT * NLON);
+    for (let i = 0; i < a.length; i++) {
+      const p = avg[varName][key][i], c = avg[varName].cur[i];
+      if (p === p && c === c) a[i] = varName === "bio1" ? p - c : (c > 0.5 ? (p - c) / c * 100 : NaN);
+      else a[i] = NaN;
+    }
+    let mn = Infinity, mx = -Infinity;
+    for (let i = 0; i < a.length; i++) if (a[i] === a[i]) { if (a[i] < mn) mn = a[i]; if (a[i] > mx) mx = a[i]; }
+    log(key + " " + varName + " 距平: [" + mn.toFixed(2) + ", " + mx.toFixed(2) + "]");
+    return a;
+  };
+
+  const periods = {};
+  for (const k of ["mh", "lig", "hs1", "ba", "yds", "eh", "lh", "mpwp"]) {
+    const tScale = (k === "hs1" || k === "ba" || k === "yds") ? 0.25 : 0.1;
+    periods[k] = {
+      temp: { scale: tScale, values: quant(anomaly(k, "bio1"), tScale) },
+      precip: { scale: 1, values: quant(anomaly(k, "bio12"), 1) }
+    };
+  }
+  const payload = JSON.stringify({
+    meta: { lats, lons, source: "PaleoClim v1 10min (Brown et al. 2018, CC-BY-NC-SA) minus CHELSA V1.2B current (Karger et al. 2017); temp in degC, precip in percent; 2deg grid" },
+    periods
+  });
+  const resp = await fetch("/save?name=paleoclim_snapshots.json", { method: "POST", body: payload });
+  log("POST /save → " + resp.status + " " + (await resp.text()));
+  log("<b>完成。payload " + payload.length + " bytes</b>");
+} catch (e) {
+  log("<b>ERROR: " + (e && e.stack ? e.stack : e) + "</b>");
+}
+})();
+</script>
+</body>
+</html>

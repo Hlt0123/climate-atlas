@@ -1,0 +1,1553 @@
+<style>
+  :root {
+    color-scheme: light dark;
+    --background: light-dark(#ffffff, #0d1117);
+    --foreground: light-dark(#1f2328, #e6edf3);
+    --muted: light-dark(#eef0f3, #1c2230);
+    --muted-foreground: light-dark(#656d76, #9aa4b2);
+    --border: light-dark(#d0d7de, #2a3444);
+    --popover: light-dark(#ffffff, #161d2b);
+    --popover-foreground: light-dark(#1f2328, #e6edf3);
+    --ring: light-dark(#8c959f, #8b949e);
+    --accent: light-dark(#eef2f8, #1c2a3a);
+    --viz-series-1: light-dark(#3b6fb5, #6ca6e0);
+    --viz-series-2: light-dark(#b5762c, #e0a060);
+    --primary: light-dark(#3b6fb5, #4a7fc1);
+  }
+  #climate-atlas {
+    position: relative;
+    color: var(--foreground);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background-color: light-dark(#f7f8fa, #0d1220);
+    background-image: light-dark(none, radial-gradient(900px 420px at 78% -8%, rgba(76,124,196,.16), transparent 65%));
+    border-radius: 14px;
+    padding: 22px 26px 28px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  #climate-atlas h1 { margin: 0 0 .3em; }
+  #climate-atlas .btn {
+    display: inline-block; padding: 5px 14px; border-radius: 16px;
+    border: 1px solid var(--border); background: var(--muted);
+    color: var(--foreground); font-size: 13px; cursor: pointer;
+    transition: filter .15s, background .15s;
+  }
+  #climate-atlas .btn:hover { filter: brightness(1.18); }
+  #climate-atlas .btn-primary { background: var(--primary); border-color: transparent; color: #fff; }
+  #climate-atlas .btn[aria-pressed="true"] { background: var(--foreground); color: var(--background); border-color: transparent; }
+  #climate-atlas .nav-pills { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0 0 .8em; }
+  #climate-atlas .nav-link {
+    padding: 6px 18px; border-radius: 16px; border: 1px solid transparent;
+    background: none; color: var(--muted-foreground); font-size: 13px; cursor: pointer;
+  }
+  #climate-atlas .nav-link.active { background: var(--muted); color: var(--foreground); border-color: var(--border); }
+  #climate-atlas .form-range { -webkit-appearance: none; appearance: none; flex: 1; min-width: 120px; height: 6px; border-radius: 3px; background: var(--border); outline: none; cursor: pointer; }
+  #climate-atlas .form-range::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--primary); cursor: pointer; }
+  #climate-atlas .form-range:disabled { opacity: .4; cursor: default; }
+  #climate-atlas .form-select { padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--muted); color: var(--foreground); font-size: 13px; }
+  #climate-atlas .form-label { font-size: 13px; color: var(--muted-foreground); }
+  #climate-atlas .viz-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  #climate-atlas .text-muted { color: var(--muted-foreground); }
+  #climate-atlas .text-small { font-size: 12px; }
+  #climate-atlas .tabular-nums { font-variant-numeric: tabular-nums; }
+  #climate-atlas hr { border: 0; border-top: 1px solid var(--border); }
+  #climate-atlas .ca-facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 1.2em; }
+  #climate-atlas .ca-facts span { font-size: 12px; color: var(--muted-foreground); border: 1px solid var(--border); border-radius: 12px; padding: 2px 12px; }
+  #climate-atlas .ca-grouplab { font-size: 12px; color: var(--muted-foreground); letter-spacing: .06em; }
+  #climate-atlas #ca-readout { margin: .5em 2px .2em; }
+  #climate-atlas #ca-year { flex: 1; min-width: 120px; }
+  #climate-atlas .ca-sep { color: var(--muted-foreground); margin: 0 2px; }
+  #climate-atlas svg, #climate-atlas canvas { display: block; }
+  #climate-atlas #ca-map-wrap { position: relative; }
+  #climate-atlas #ca-map-wrap canvas { position: absolute; inset: 0; width: 100%; border-radius: 8px; touch-action: pan-y; }
+  #climate-atlas #ca-map-wrap, #climate-atlas #ca-hm-wrap { position: relative; }
+  #climate-atlas #ca-cellhl, #climate-atlas #ca-hm-hl {
+    position: absolute; display: none; pointer-events: none;
+    border: 2px solid var(--ring, #888); border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.25);
+  }
+  #climate-atlas #ca-colorbar { display: flex; align-items: center; gap: 8px; margin: 6px 2px 2px; font-size: 12px; }
+  #climate-atlas #ca-cb-grad { flex: 1; height: 12px; border-radius: 5px; }
+  #climate-atlas .ca-tooltip {
+    position: absolute; display: none; pointer-events: none; z-index: 5;
+    background: var(--popover); color: var(--popover-foreground);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 4px 8px; font-size: 12px; white-space: nowrap;
+  }
+  #climate-atlas .ca-chip {
+    display: inline-block; padding: 1px 10px; border-radius: 11px;
+    color: #fff; font-weight: 500; margin-right: 6px;
+    text-shadow: 0 0 2px rgba(0,0,0,.35);
+  }
+  #climate-atlas .ca-series {
+    background: none; border: 0; padding: 2px 4px; color: var(--foreground);
+    display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+  }
+  #climate-atlas .ca-series[aria-pressed="false"] { opacity: .45; }
+  #climate-atlas .ca-dim { opacity: .5; }
+  #climate-atlas .ca-swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  #climate-atlas text.axis-title { fill: var(--muted-foreground); font-size: 12px; }
+  #climate-atlas .ca-grouplab { font-size: 12px; color: var(--muted-foreground); letter-spacing: .06em; }
+  #climate-atlas #ca-readout { margin: .5em 2px .2em; }
+  #climate-atlas #ca-year { flex: 1; min-width: 120px; }
+  #climate-atlas .ca-sep { color: var(--muted-foreground); margin: 0 2px; }
+</style>
+
+<div id="climate-atlas">
+  <h1>全球气候变迁图鉴</h1>
+  <p class="text-muted" style="margin:.2em 0 1em">从寒武纪的生命大爆发,到 2025 年的今天——两套时间尺度,一张地图看尽 5.4 亿年。</p>
+  <div class="ca-facts" aria-hidden="true">
+    <span>146 年仪器观测</span>
+    <span>80 万年冰芯</span>
+    <span>6500 万年深时</span>
+    <span>5.4 亿年古地理</span>
+    <span>8 期古气候快照</span>
+  </div>
+
+  <div class="nav nav-pills" role="tablist" aria-label="时间尺度" style="margin:0 0 .6em">
+    <button class="nav-link active" id="ca-tab-human" role="tab" aria-controls="ca-panel-human" aria-selected="true" type="button">人类史 1880–2025</button>
+    <button class="nav-link" id="ca-tab-geo" role="tab" aria-controls="ca-panel-geo" aria-selected="false" type="button">地质史 530 万年</button>
+  </div>
+
+
+  <div id="ca-map-wrap"><canvas id="ca-map-base"></canvas><canvas id="ca-map-cells"></canvas><canvas id="ca-map" role="img" aria-label="世界地图:温度距平着色,鼠标悬停查看格点数值"></canvas><div id="ca-cellhl"></div></div>
+  <div id="ca-colorbar" aria-hidden="true"><span id="ca-cb-min" class="tabular-nums"></span><span id="ca-cb-grad"></span><span id="ca-cb-max" class="tabular-nums"></span></div>
+  <p id="ca-readout" class="tabular-nums" aria-live="polite"></p>
+
+
+  <div id="ca-panel-human" role="tabpanel" aria-labelledby="ca-tab-human">
+    <div class="viz-row" role="group" aria-label="时段">
+      <span class="ca-grouplab">时段</span>
+      <button type="button" class="btn ca-season" data-season="annual" aria-pressed="true">年均</button>
+      <button type="button" class="btn ca-season" data-season="jan" aria-pressed="false">1 月</button>
+      <button type="button" class="btn ca-season" data-season="apr" aria-pressed="false">4 月</button>
+      <button type="button" class="btn ca-season" data-season="jul" aria-pressed="false">7 月</button>
+      <button type="button" class="btn ca-season" data-season="oct" aria-pressed="false">10 月</button>
+    </div>
+    <div class="viz-row" role="group" aria-label="年份与播放">
+      <label class="form-label" for="ca-year" style="margin:0;white-space:nowrap">年份 <span id="ca-year-val" class="tabular-nums"></span></label>
+      <input type="range" class="form-range" id="ca-year" min="1880" max="2025" step="1" aria-label="选择年份">
+      <button type="button" class="btn btn-primary" id="ca-play">播放 1880→2025</button>
+      <button type="button" class="btn" id="ca-gif" title="录制 1880→2025 年逐帧动画,导出为 GIF 文件(纯浏览器端编码)">🎬 GIF</button>
+    </div>
+    <div class="ca-grouplab">全球距平时间线 · 事件标注(点击跳年份)</div>
+    <div id="ca-mini-wrap"><svg id="ca-mini" role="img" aria-label="1880 至 2025 年全球温度距平时间线,含事件标注,点击可跳转年份"></svg></div>
+
+    <div class="ca-grouplab" style="margin-top:1.1em">季节分解 · 纬度带月值距平(°C,点击跳年份)</div>
+    <div class="viz-row" style="margin:.2em 0">
+      <span class="ca-grouplab">纬度带</span>
+      <select class="form-select form-select-sm" id="ca-zone-sel" style="width:auto" aria-label="选择纬度带"></select>
+    </div>
+    <div id="ca-hm-wrap"><canvas id="ca-hm" class="cursor-interaction" role="img" aria-label="纬度带月值距平热力图,横轴 1880 至 2025 年,纵轴 12 个月,点击跳转年份"></canvas><div id="ca-hm-hl"></div></div>
+  </div>
+
+  <div id="ca-panel-geo" role="tabpanel" aria-labelledby="ca-tab-geo" hidden>
+    <div class="viz-row" id="ca-pgeo-row" role="group" aria-label="地图图层" style="margin-top:.4em">
+      <span class="ca-grouplab">图层</span>
+      <button type="button" class="btn ca-metric" data-metric="temp" aria-pressed="true">温度距平</button>
+      <button type="button" class="btn ca-metric" data-metric="precip" aria-pressed="false">降水距平</button>
+      <span class="ca-sep">·</span>
+      <button type="button" class="btn" id="ca-sites" aria-pressed="false">📍 采样位置(冰芯)</button>
+    </div>
+    <div class="viz-row" id="ca-pgeo-row2" role="group" aria-label="古地理时代" style="margin-top:.4em">
+      <span class="ca-grouplab">古地理时代</span>
+      <select class="form-select form-select-sm" id="ca-pgeo-sel" aria-label="选择古地理时代"></select>
+    </div>
+    <div class="viz-row" role="group" aria-label="地质快照">
+      <span class="ca-grouplab">快照</span>
+      <button type="button" class="btn ca-snap" data-snap="pliocene" aria-pressed="false" data-tooltip="来源:陆地 PaleoClim mPWP(PRISM4 降尺度)· 海洋 plioDA 数据同化(Tierney et al. 2025)">中上新世 · 300 万年前</button>
+      <button type="button" class="btn ca-snap" data-snap="lig" aria-pressed="false" data-tooltip="来源:陆地 PaleoClim LIG(PMIP3 lig127k 降尺度)· 海洋 PMIP4 CESM2 lig127k 距平(piControl 基准)">末次间冰期 · 12.5 万年前</button>
+      <button type="button" class="btn ca-snap" data-snap="hs1" aria-pressed="true" data-tooltip="来源:PaleoClim HS-1(基于 TraCE-21ka 瞬变模拟降尺度)">HS-1 冷期 · 1.7 万年前</button>
+      <button type="button" class="btn ca-snap" data-snap="ba" aria-pressed="false" data-tooltip="来源:PaleoClim BA(基于 TraCE-21ka 瞬变模拟降尺度)">BA 暖期 · 1.4 万年前</button>
+      <button type="button" class="btn ca-snap" data-snap="yds" aria-pressed="false" data-tooltip="来源:PaleoClim YDS(基于 TraCE-21ka 瞬变模拟降尺度)">新仙女木 · 1.2 万年前</button>
+      <button type="button" class="btn ca-snap" data-snap="eh" aria-pressed="false" data-tooltip="来源:PaleoClim EH(瞬变模拟降尺度)">全新世早期 · 9 千年前</button>
+      <button type="button" class="btn ca-snap" data-snap="holocene" aria-pressed="false" data-tooltip="来源:PaleoClim MH(基于 PMIP3 midHolocene 模拟降尺度)">全新世中期 · 6 千年前</button>
+      <button type="button" class="btn ca-snap" data-snap="lh" aria-pressed="false" data-tooltip="来源:PaleoClim LH(约 1650 年,前工业气候)">前工业晚期 · 300 年前</button>
+    </div>
+    <div class="viz-row" role="group" aria-label="消冰序列" style="margin-top:.4em">
+      <span class="ca-grouplab">序列</span>
+      <button type="button" class="btn btn-primary" id="ca-deglac">▶ 播放消冰序列</button>
+      <button type="button" class="btn" id="ca-gif-deglac" title="录制消冰序列(含 2025 收尾帧),导出为 GIF 文件(纯浏览器端编码)">🎬 GIF</button>
+      <span class="text-small text-muted">HS-1 → BA → 新仙女木 → 全新世早期 → 中期 → 前工业晚期 → 2025 观测</span>
+    </div>
+
+    <div class="ca-grouplab" style="margin-top:1.1em">80 万年 · EPICA 冰芯:温度距平 ΔT(相对「距今」)与 CO₂</div>
+    <div id="ca-chart-wrap"><svg id="ca-chart" role="img" aria-label="80 万年冰芯温度距平与二氧化碳浓度曲线"></svg></div>
+    <div class="viz-row" style="margin:.2em 0">
+      <button type="button" class="ca-series cursor-interaction" data-series="temp" aria-pressed="true"><span class="ca-swatch" style="background:var(--viz-series-1)"></span>温度距平 ΔT</button>
+      <button type="button" class="ca-series cursor-interaction" data-series="co2" aria-pressed="true"><span class="ca-swatch" style="background:var(--viz-series-2)"></span>CO₂ 浓度</button>
+    </div>
+
+    <div class="viz-row" role="group" aria-label="深时范围" style="margin-top:.9em">
+      <span class="ca-grouplab">深时范围</span>
+      <button type="button" class="btn ca-epoch" data-epoch="lr04" aria-pressed="true">530 万年</button>
+      <button type="button" class="btn ca-epoch" data-epoch="zachos" aria-pressed="false">6500 万年</button>
+    </div>
+    <p class="text-small text-muted" id="ca-chart2-cap" style="margin:.3em 0 .2em">0–530 万年 · LR04 深海岩芯 δ18O(‰,57 个岩芯堆叠):越高 = 冰量越大 · 越冷,一个锯齿 ≈ 一次冰期旋回</p>
+    <div id="ca-chart2-wrap"><svg id="ca-chart2" role="img" aria-label="530 万年深海氧同位素曲线"></svg></div>
+  </div>
+
+  <hr style="margin:1.2em 0 .6em">
+  <div class="ca-grouplab">数据与方法</div>
+  <div class="text-small text-muted" style="margin:.2em 0 0; line-height:1.75">
+    <div>· 观测:NASA GISTEMP v4 月值(1880–2025,基准 1951–1980)</div>
+    <div>· 冰芯:EPICA Dome C 温度重建(Jouzel et al. 2007,ΔT 相对「距今」=1950)+ CO₂ 复合记录(Bereiter et al. 2015;止于约 2001 年 368 ppm,2024 年 Mauna Loa 约 424.6 ppm)</div>
+    <div>· 深海:LR04 堆叠(Lisiecki & Raymo 2005,57 站;站点表待补)</div>
+    <div>· 快照:PaleoClim v1(Brown et al. 2018,CC-BY-NC-SA)减现代 CHELSA V1.2B(Karger et al. 2017),2° 聚合;温度 °C 距平,降水相对 %(±126% 截断);海洋(hs1/ba/yds/eh/mh/lh)为 TraCE-21K-II(He & Clark 2022)海温距平、基准 ≈1990 CE;LIG 海洋为 PMIP4 CESM2 lig127k 模拟(651–700 年平均)− piControl(700–800 年平均),ESGF;Pliocene 海洋为 plioDA 数据同化重建(Tierney et al. 2025,CC-BY-4.0),悬停读数注明来源</div>
+    <div>· 古地理:PaleoDEMS(Scotese & Wright 2018,EarthByte),6° 聚合;冰期低海平面(约 −120 m)未反映;中上新世格陵兰基本无冰盖</div>
+    <div>· 基线:各深时记录基准不同,不可直接相减</div>
+  </div>
+  <div class="ca-tooltip" id="ca-tip" role="tooltip"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script>window.CA_DATA = __DATA__;</script>
+<script>window.CA_LAND_GZ = "__LAND_GZ__";</script>
+<script>window.CA_GRID_SPATIAL_GZ = "__GRIDSPATIAL_GZ__";</script>
+<script>window.CA_GRID_META_GZ = "__GRIDMETA_GZ__";</script>
+<script>window.LR04 = __LR04__;</script>
+<script>window.ZACHOS = __ZACHOS__;</script>
+<script>window.CA_SNAPGRID_GZ = "__SNAP_GZ__";</script>
+<script>window.CA_OCEAN_GZ = "__OCEANSPATIAL_GZ__";</script>
+<script>window.CA_OCEAN_META = __OCEANMETA__;</script>
+<script>window.CA_PALEOGEO = __PALEOGEO__;</script>
+<script>window.CA_SITES = __SITES__;</script>
+<script type="module">
+const DATA = window.CA_DATA;
+const human = DATA.human, ice = DATA.ice, co2raw = DATA.co2;
+
+const root = document.getElementById("climate-atlas");
+const mapWrap = document.getElementById("ca-map-wrap");
+const chartWrap = document.getElementById("ca-chart-wrap");
+const chart2Wrap = document.getElementById("ca-chart2-wrap");
+const readout = document.getElementById("ca-readout");
+const tip = document.getElementById("ca-tip");
+
+const lastYear = human.years[human.years.length - 1];
+const years = human.years;
+const yIdx = new Map(years.map((y, i) => [y, i]));
+
+const zoneLabel = { a90n: "64–90°N", a64n: "44–64°N", a44n: "24–44°N", a24n: "0–24°N", a24s: "0–24°S", a44s: "24–44°S", a64s: "44–64°S", a90s: "64–90°S" };
+const zoneDesc = { a90n: "北极地区", a64n: "北半球高纬", a44n: "北半球中纬", a24n: "北半球低纬", a24s: "南半球低纬", a44s: "南半球中纬", a64s: "南半球高纬", a90s: "南极地区" };
+
+const SNAP = {
+  pliocene: { name: "中上新世", age: "约 300 万年前", global: "≈ +3°C", values: { a90n: 8, a64n: 5, a44n: 2, a24n: 1.5, a24s: 1.5, a44s: 2, a64s: 3, a90s: 6 } },
+  lig: { name: "末次间冰期", age: "约 12.5 万年前", global: "≈ +1.5°C", values: { a90n: 3, a64n: 2.5, a44n: 1.5, a24n: 1, a24s: 1, a44s: 1.5, a64s: 2, a90s: 2.5 } },
+  hs1: { name: "HS-1 冷期", age: "约 1.7 万年前", global: "≈ −3.5°C", values: { a90n: -8, a64n: -5, a44n: -3, a24n: -2, a24s: -2, a44s: -2.5, a64s: -3.5, a90s: -6 } },
+  ba: { name: "BA 暖期", age: "约 1.4 万年前", global: "≈ −1.5°C", values: { a90n: -4, a64n: -2.5, a44n: -1.5, a24n: -0.5, a24s: -0.5, a44s: -1, a64s: -1.5, a90s: -3 } },
+  yds: { name: "新仙女木冷期", age: "约 1.2 万年前", global: "≈ −3°C", values: { a90n: -7, a64n: -4, a44n: -2, a24n: -1, a24s: -1, a44s: -1.5, a64s: -2.5, a90s: -5 } },
+  eh: { name: "全新世早期", age: "约 9 千年前", global: "≈ +0.5°C", values: { a90n: 1.5, a64n: 1, a44n: 0.3, a24n: 0, a24s: 0, a44s: 0, a64s: 0, a90s: 0.3 } },
+  holocene: { name: "全新世中期", age: "约 6,000 年前", global: "≈ +0.4°C", values: { a90n: 2.0, a64n: 1.2, a44n: 0.4, a24n: 0.0, a24s: -0.1, a44s: -0.2, a64s: 0.0, a90s: 0.5 } },
+  lh: { name: "前工业晚期", age: "约 300 年前", global: "≈ −0.2°C", values: { a90n: -0.5, a64n: -0.3, a44n: -0.1, a24n: 0, a24s: 0, a44s: 0, a64s: -0.1, a90s: -0.3 } }
+};
+
+const warmI = d3.interpolateRgbBasis(["#f6f1ea", "#fddbc7", "#f4a582", "#d6604d", "#b2182b", "#67001f"]);
+const coolI = d3.interpolateRgbBasis(["#eef4fa", "#d1e5f0", "#92c5de", "#4393c3", "#2166ac", "#053061"]);
+const precipI = d3.interpolateRgbBasis(["#543005", "#8c510a", "#bf812d", "#dfc27d", "#f6e8c3", "#f5f5f5", "#c7eae5", "#80cdc1", "#35978f", "#01665e", "#003c30"]);
+const precipColor = v => precipI(Math.max(0, Math.min(1, (v + 126) / 252)));
+const SITES = window.CA_SITES ? window.CA_SITES.sites : [];
+const allVals = human.bands.flatMap(b => b.values);
+const hMin = Math.min(-1.5, d3.min(allVals)), hMax = Math.max(3, d3.max(allVals));
+function colorFor(v, dmin, dmax) {
+  if (v == null || isNaN(v)) return "var(--muted)";
+  const t = Math.max(0, Math.min(1, v >= 0 ? v / dmax : (-v) / (-dmin)));
+  return v >= 0 ? warmI(t) : coolI(t);
+}
+const fmt = v => (v > 0 ? "+" : "") + Number(v).toFixed(2);
+
+let mode = "human", year = lastYear, geoSnap = "hs1", land = null, humanSeason = "annual", snapMetric = "temp", pgeo = "off", showSites = false;
+const PGEO_COLORS = ["#14395e", "#4d8cc4", "#c8b283", "#8c6d46"];
+const PGEO_RGB = PGEO_COLORS.map(h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]);
+const pgCache = new Map();
+function pgArt(era) { /* 每时代一次:合成 1° 着色小图 + 投影空间描边画布(尺寸/主题变化自动失效) */
+  const key = Math.round(mapGeom.W) + (matchMedia("(prefers-color-scheme: dark)").matches ? "D" : "L") + "|" + era;
+  let rec = pgCache.get(key);
+  if (rec) return rec;
+  const { W, H, proj } = mapGeom;
+  const cls = PG.epochs[era].classes;
+  const cv = document.createElement("canvas"); cv.width = 360; cv.height = 180;
+  const cx = cv.getContext("2d"), img = cx.createImageData(360, 180);
+  for (let gy = 0; gy < 180; gy++) {
+    const src = gy * 360, o = (179 - gy) * 360 * 4;
+    for (let gx = 0; gx < 360; gx++) { const c = PGEO_RGB[cls[src + gx]], p = o + gx * 4; img.data[p] = c[0]; img.data[p + 1] = c[1]; img.data[p + 2] = c[2]; img.data[p + 3] = 255; }
+  }
+  cx.putImageData(img, 0, 0);
+  const ov = document.createElement("canvas"); ov.width = W; ov.height = H;
+  const ox = ov.getContext("2d");
+  const Xs = [], Ys = [];
+  for (let gx = 0; gx <= 360; gx++) Xs.push(proj([-180 + gx, 0])[0]);
+  for (let gy = 0; gy <= 180; gy++) Ys.push(proj([0, -90 + gy])[1]);
+  ox.strokeStyle = cssVar("--foreground", "#222"); ox.lineWidth = 1; ox.beginPath();
+  for (let gy = 0; gy < 180; gy++) for (let gx = 0; gx < 360; gx++) {
+    const i = gy * 360 + gx; if (+cls[i] < 2) continue;
+    const C = (dx, dy) => (gx + dx < 0 || gx + dx > 359 || gy + dy < 0 || gy + dy > 179) ? 3 : +cls[i + dy * 360 + dx];
+    if (C(-1, 0) + C(1, 0) + C(0, -1) + C(0, 1) === 12) continue; /* 内陆格,四邻皆陆地 */
+    const x0 = Xs[gx], x1 = Xs[gx + 1], yb = Ys[gy + 1], yt = Ys[gy];
+    if (C(-1, 0) < 2) { ox.moveTo(x0, yb); ox.lineTo(x0, yt); }
+    if (C(1, 0) < 2) { ox.moveTo(x1, yb); ox.lineTo(x1, yt); }
+    if (C(0, -1) < 2) { ox.moveTo(x0, yt); ox.lineTo(x1, yt); }
+    if (C(0, 1) < 2) { ox.moveTo(x0, yb); ox.lineTo(x1, yb); }
+  }
+  ox.stroke();
+  rec = { cv, ov };
+  if (pgCache.size > 12) pgCache.delete(pgCache.keys().next().value);
+  pgCache.set(key, rec);
+  return rec;
+}
+let gridKey = "", gridX = null, gridY = null;
+function gridLines(nl, nt, deg) { /* 列 x / 行 y 投影缓存:equirect 下 x 只随经度、y 只随纬度,O(格点)→O(行+列) */
+  const key = Math.round(mapGeom.W) + "|" + nl + "|" + nt;
+  if (gridKey === key) return [gridX, gridY];
+  gridX = []; gridY = [];
+  for (let gx = 0; gx <= nl; gx++) gridX.push(mapGeom.proj([-180 + gx * deg, 0])[0]);
+  for (let gy = 0; gy <= nt; gy++) gridY.push(mapGeom.proj([0, -90 + gy * deg])[1]);
+  gridKey = key;
+  return [gridX, gridY];
+}
+const PGEO_LABEL = ["深海", "陆架", "低地", "高地"];
+const PG_LBL = {
+  e540: "寒武纪大爆发 · 5.4 亿年前",
+  e450: "奥陶纪末大灭绝 · 4.5 亿年前",
+  e380: "泥盆纪 · 3.8 亿年前",
+  e300: "盘古大陆冰室 · 3 亿年前",
+  e250: "二叠纪末大灭绝 · 2.5 亿年前",
+  e200: "三叠纪 · 2 亿年前",
+  e100: "白垩纪温室 · 1 亿年前",
+  e66: "恐龙灭绝 · 6600 万年前",
+  e55: "PETM 极热事件 · 5500 万年前",
+  e50: "始新世温室高峰 · 5000 万年前",
+  e35: "始新世-渐新世转折 · 3500 万年前"
+};
+const pgeoRow = document.getElementById("ca-pgeo-row2");
+const pgeoSel = document.getElementById("ca-pgeo-sel");
+[["off", "关"]].concat(Object.entries(PG_LBL)).forEach(([v, t]) => {
+  const o = document.createElement("option");
+  o.value = v; o.textContent = t;
+  pgeoSel.appendChild(o);
+});
+const snapRow = document.querySelector('[aria-label="地质快照"]');
+const seqRow = document.querySelector('[aria-label="消冰序列"]');
+const layerBtns = [...document.querySelectorAll("#ca-pgeo-row .btn")];
+function syncPgeoVisibility() {
+  pgeoRow.style.display = (mode === "geo" && deepEpoch === "zachos") ? "" : "none";
+  /* 古地理时代激活时:图层行禁用(海陆分类与距平无关),快照/序列行呈挂起态,点击即退出古地理 */
+  const eraOn = mode === "geo" && deepEpoch === "zachos" && pgeo !== "off";
+  layerBtns.forEach(b => { b.disabled = eraOn; });
+  snapRow.classList.toggle("ca-dim", eraOn);
+  seqRow.classList.toggle("ca-dim", eraOn);
+}
+let playing = false, playTimer = null;
+
+function cssVar(name, fallback) {
+  const v = getComputedStyle(root).getPropertyValue(name).trim();
+  const m = v.match(/^light-dark\(\s*([^,]+?)\s*,\s*(.+?)\s*\)$/);
+  if (m) return matchMedia("(prefers-color-scheme: dark)").matches ? m[2] : m[1]; /* canvas 不认 light-dark(),必须解析成具体颜色 */
+  return v || fallback;
+}
+
+/* ---------- 地图(canvas:人类史 = 4° 格点,地质史 = 纬度带) ---------- */
+const canvas = document.getElementById("ca-map");
+const cctx = canvas.getContext("2d");
+const canvasBase = document.getElementById("ca-map-base");
+const canvasCells = document.getElementById("ca-map-cells");
+const bctx = canvasBase.getContext("2d");
+const cellsCtx = canvasCells.getContext("2d");
+const cbMin = document.getElementById("ca-cb-min"), cbMax = document.getElementById("ca-cb-max"), cbGrad = document.getElementById("ca-cb-grad");
+function decodeFrame(b64) {
+  const bin = atob(b64);
+  const u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return u;
+}
+async function inflateBytes(b64) {
+  const bin = atob(b64);
+  const u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  const buf = await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
+  return new Uint8Array(buf);
+}
+const inflateJSON = async b64 => JSON.parse(new TextDecoder().decode(await inflateBytes(b64)));
+function unpackPgeo(bytes) {
+  const out = new Uint8Array(bytes.length * 4);
+  for (let i = 0; i < bytes.length; i++) {
+    const v = bytes[i];
+    out[i * 4] = (v >> 6) & 3;
+    out[i * 4 + 1] = (v >> 4) & 3;
+    out[i * 4 + 2] = (v >> 2) & 3;
+    out[i * 4 + 3] = v & 3;
+  }
+  return out;
+}
+/* 大块数据 gzip 注入,浏览器原生解压(顶层 await,模块其余部分在解压完成后执行) */
+let CA_GRID_META = null, CA_GRID_SPATIAL = null, CA_SNAPGRID = null, CA_PALEOGEO = null, CA_LAND = null, CA_OCEAN_BYTES = null;
+try {
+  [CA_GRID_META, CA_GRID_SPATIAL, CA_SNAPGRID, CA_LAND, CA_OCEAN_BYTES] = await Promise.all([
+    window.CA_GRID_META_GZ ? inflateJSON(window.CA_GRID_META_GZ) : Promise.resolve(null),
+    window.CA_GRID_SPATIAL_GZ ? inflateBytes(window.CA_GRID_SPATIAL_GZ) : Promise.resolve(null),
+    window.CA_SNAPGRID_GZ ? inflateJSON(window.CA_SNAPGRID_GZ) : Promise.resolve(null),
+    window.CA_LAND_GZ ? inflateJSON(window.CA_LAND_GZ) : Promise.resolve(null),
+    window.CA_OCEAN_GZ ? inflateBytes(window.CA_OCEAN_GZ) : Promise.resolve(null)
+  ]);
+  if (window.CA_PALEOGEO) {
+    const entries = Object.entries(window.CA_PALEOGEO.epochs);
+    const classes = await Promise.all(entries.map(([, e]) => inflateBytes(e.gz).then(unpackPgeo)));
+    CA_PALEOGEO = { meta: window.CA_PALEOGEO.meta, epochs: Object.fromEntries(entries.map(([k], i) => [k, { classes: classes[i] }])) };
+  }
+} catch (err) { console.warn("数据解压失败,页面退化为基础视图", err); }
+const G = CA_GRID_META && CA_GRID_SPATIAL ? (() => {
+  const nt = CA_GRID_META.meta.lats.length, nl = CA_GRID_META.meta.lons.length, nc = nt * nl;
+  const nF = CA_GRID_META.meta.nframes || CA_GRID_META.meta.years.length;
+  return {
+    nlat: nt, nlon: nl, y0: CA_GRID_META.meta.years[0], ncell: nc, spatial: CA_GRID_SPATIAL,
+    frames: Array.from({ length: nF }, (_, i) => CA_GRID_SPATIAL.subarray(i * nc, (i + 1) * nc))
+  };
+})() : null;
+const hMinG = -1.5, hMaxG = 4.5;
+let mapGeom = null, lastMapW = -1;
+
+const lutCache = new Map();
+function lutFor(kind, dmin, dmax, scale) {
+  const key = kind + "|" + dmin + "|" + dmax + "|" + scale;
+  let L = lutCache.get(key);
+  if (!L) {
+    L = new Array(256);
+    const muted = cssVar("--muted", "#999");
+    for (let b = 0; b < 256; b++) {
+      const s = b > 127 ? b - 256 : b;
+      L[b] = (s === -127) ? muted : (kind === "precip" ? precipColor(s * scale) : colorFor(s * scale, dmin, dmax));
+    }
+    lutCache.set(key, L);
+  }
+  return L;
+}
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { lutCache.clear(); pgCache.clear(); updateColorbar(); scheduleCells(); paintTop(); });
+
+function drawMap() {
+  const W = Math.max(320, Math.round(mapWrap.clientWidth));
+  if (W === lastMapW || W < 40) return;
+  lastMapW = W;
+  const dpr = window.devicePixelRatio || 1;
+  const H = Math.round(W / 2);
+  for (const cv of [canvasBase, canvasCells, canvas]) {
+    cv.width = Math.round(W * dpr);
+    cv.height = Math.round(H * dpr);
+    cv.style.height = H + "px";
+  }
+  mapWrap.style.height = H + "px";
+  mapGeom = { W, H, proj: d3.geoEquirectangular().scale(W / (2 * Math.PI)).translate([W / 2, H / 2]) };
+  paintBase();
+  paintTop();
+  paintCells();
+}
+
+function paintBase() {
+  if (!mapGeom) return;
+  const { W, H, proj } = mapGeom;
+  const dpr = window.devicePixelRatio || 1;
+  bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  bctx.clearRect(0, 0, W, H);
+  bctx.strokeStyle = cssVar("--border", "#ccc");
+  bctx.lineWidth = 0.6;
+  bctx.globalAlpha = 0.7;
+  bctx.beginPath();
+  d3.geoPath(proj, bctx)(d3.geoGraticule().step([30, 30])());
+  bctx.stroke();
+  bctx.globalAlpha = 1;
+  bctx.lineWidth = 1;
+  bctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+}
+
+function paintTop() {
+  if (!mapGeom) return;
+  const { W, H, proj } = mapGeom;
+  const dpr = window.devicePixelRatio || 1;
+  cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  cctx.clearRect(0, 0, W, H);
+  const pgOn = mode === "geo" && deepEpoch === "zachos" && pgeo !== "off" && PG;
+  if (landFeatures.length && !pgOn) {
+    const gp = d3.geoPath(proj, cctx);
+    cctx.beginPath();
+    for (const f of landFeatures) gp(f);
+    /* 距平色块整体偏浅,海岸线用固定深灰(两种主题都有对比);古地理层的白色轮廓单独保留 */
+    cctx.strokeStyle = "rgba(42, 45, 50, 0.9)";
+    cctx.lineWidth = 0.9;
+    cctx.globalAlpha = 0.5;
+    cctx.stroke();
+  } else if (pgOn) {
+    /* 古海岸线:每时代缓存为画布,直接贴图 */
+    cctx.globalAlpha = 0.7;
+    cctx.drawImage(pgArt(pgeo).ov, 0, 0);
+  }
+  cctx.globalAlpha = 1;
+  if (showSites && mode === "geo") {
+    for (const s of SITES) {
+      const p = proj([s.lo, s.la]);
+      if (p[0] < -4 || p[0] > W + 4 || p[1] < -4 || p[1] > H + 4) continue;
+      cctx.beginPath();
+      cctx.arc(p[0], p[1], 3.2, 0, Math.PI * 2);
+      cctx.fillStyle = "#ffd54f";
+      cctx.strokeStyle = cssVar("--foreground", "#222");
+      cctx.lineWidth = 1;
+      cctx.fill();
+      cctx.stroke();
+    }
+  }
+}
+
+let lastCbKey = "";
+function paintCells() {
+  if (!mapGeom) return;
+  const { W, H, proj } = mapGeom;
+  const dpr = window.devicePixelRatio || 1;
+  cellsCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  cellsCtx.clearRect(0, 0, W, H);
+  const geo = mode === "geo" ? SNAP[geoSnap] : null;
+  const pgOn = mode === "geo" && deepEpoch === "zachos" && pgeo !== "off" && PG;
+  if (pgOn) {
+    cellsCtx.imageSmoothingEnabled = false;
+    const x0 = proj([-180, 0])[0], yt = proj([0, 90])[1];
+    cellsCtx.drawImage(pgArt(pgeo).cv, x0, yt, proj([180, 0])[0] - x0, proj([0, -90])[1] - yt);
+  } else {
+    let fr = null, L = null;
+    if (mode !== "geo") {
+      if (humanSeason !== "annual" && SEASONS) {
+        const sz = SEASONS[humanSeason];
+        fr = sz.values; L = lutFor("temp", -3, 6, sz.scale);
+      } else if (G) {
+        fr = G.frames[Math.max(0, Math.min(G.frames.length - 1, year - G.y0))];
+        L = lutFor("temp", hMinG, hMaxG, 0.1);
+      }
+    } else {
+      const sg0 = SG ? SG.periods[geoSnap] : null;
+      const sg = sg0 ? sg0[snapMetric] : null;
+      if (sg) { fr = sg.values; L = lutFor(snapMetric, -10, 8, sg.scale); }
+    }
+    if (fr && L) {
+      const nt = mode === "geo" ? SG.nlat : G.nlat, nl = mode === "geo" ? SG.nlon : G.nlon, deg = 360 / nl;
+      const [Xs, Ys] = gridLines(nl, nt, deg);
+      for (let gy = 0; gy < nt; gy++) {
+        const y0 = Ys[gy + 1], hh = Ys[gy] - y0 + 0.6, row0 = gy * nl;
+        for (let gx = 0; gx < nl; gx++) {
+          cellsCtx.fillStyle = L[fr[row0 + gx]];
+          cellsCtx.fillRect(Xs[gx], y0, Xs[gx + 1] - Xs[gx] + 0.6, hh);
+        }
+      }
+    } else {
+      const dom = mode === "geo" ? [-10, 8] : [hMin, hMax];
+      for (const b of human.bands) {
+        const y0 = proj([0, b.lat[0]])[1], y1 = proj([0, b.lat[1]])[1];
+        const v = geo ? geo.values[b.id] : b.values[yIdx.get(year)];
+        cellsCtx.fillStyle = colorFor(v, dom[0], dom[1]);
+        cellsCtx.fillRect(0, y0, W, y1 - y0 + 0.6);
+      }
+    }
+  }
+  const cbKey = pgOn ? "pg|" + pgeo : (mode === "geo" ? (snapMetric === "precip" ? "p" : "t") : (humanSeason !== "annual" ? "s" : "a"));
+  if (cbKey !== lastCbKey) { lastCbKey = cbKey; updateColorbar(); }
+}
+
+let cellsQueued = false;
+function scheduleCells() {
+  if (cellsQueued) return;
+  cellsQueued = true;
+  requestAnimationFrame(() => { cellsQueued = false; paintCells(); });
+}
+
+function updateColorbar() {
+  if (mode === "geo" && deepEpoch === "zachos" && pgeo !== "off" && PG) {
+    cbGrad.style.background = "linear-gradient(90deg," + PGEO_COLORS[0] + " 0 25%," + PGEO_COLORS[1] + " 25% 50%," + PGEO_COLORS[2] + " 50% 75%," + PGEO_COLORS[3] + " 75% 100%)";
+    cbMin.textContent = "深海";
+    cbMax.textContent = "高地";
+    return;
+  }
+  let dmin, dmax, grad, unit;
+  if (mode === "geo" && snapMetric === "precip") { dmin = -126; dmax = 126; grad = v => precipColor(v); unit = "%"; }
+  else if (mode === "geo") { dmin = -10; dmax = 8; grad = v => colorFor(v, dmin, dmax); unit = "°C"; }
+  else if (humanSeason !== "annual") { dmin = -3; dmax = 6; grad = v => colorFor(v, dmin, dmax); unit = "°C"; }
+  else { dmin = hMinG; dmax = hMaxG; grad = v => colorFor(v, dmin, dmax); unit = "°C"; }
+  const stops = [];
+  for (let i = 0; i <= 10; i++) stops.push(grad(dmin + (dmax - dmin) * i / 10));
+  cbGrad.style.background = "linear-gradient(90deg," + stops.join(",") + ")";
+  cbMin.textContent = dmin + unit;
+  cbMax.textContent = (dmax > 0 ? "+" : "") + dmax + unit;
+}
+
+function updateMap() {
+  const geo = mode === "geo" ? SNAP[geoSnap] : null;
+  const sgOn = mode === "geo" && SG && SG.periods[geoSnap];
+  if (mode !== "geo" && humanSeason === "annual") {
+    const gv = human.glob[yIdx.get(year)];
+    readout.innerHTML = '<b class="ca-chip" style="background:' + colorFor(gv, -1.5, 4.5) + '">' + fmt(gv) + "°C</b><span class=\"text-muted\">" + year + " 年 · 全球距平 · 基准 1951–1980</span>";
+  } else if (mode !== "geo") {
+    readout.textContent = MONTH_LABEL[humanSeason] + " · 2000–2025 平均距平(°C)· GISTEMP 月值";
+  } else if (deepEpoch === "zachos" && pgeo !== "off" && PG) {
+    readout.textContent = PG_LBL[pgeo] + " 古地理重建(Scotese & Wright 2018)· 6° 格点 · 陆地位置随板块运动变化";
+  } else {
+    readout.textContent = geo.name + "(" + geo.age + ")· " + (snapMetric === "precip" ? "降水距平(%·相对现代)· PaleoClim 格点重建(陆地上色)" : "全球距平 " + geo.global + " · PaleoClim 格点重建(陆地上色)");
+  }
+  if (mode === "human") {
+    document.getElementById("ca-year-val").textContent = year + " 年";
+    if (miniMk && miniXY) {
+      miniMk.attr("cx", miniXY.x(year)).attr("cy", miniXY.y(human.glob[yIdx.get(year)])).attr("opacity", 1);
+    }
+  } else if (miniMk) {
+    miniMk.attr("opacity", 0);
+  }
+}
+
+function cellHL(gx, gy, deg) {
+  const hl = document.getElementById("ca-cellhl");
+  if (!mapGeom) return;
+  const proj = mapGeom.proj;
+  const pA = proj([-180 + gx * deg, -90 + (gy + 1) * deg]);
+  const pB = proj([-180 + (gx + 1) * deg, -90 + gy * deg]);
+  hl.style.display = "block";
+  hl.style.left = pA[0] + "px";
+  hl.style.top = pA[1] + "px";
+  hl.style.width = (pB[0] - pA[0]) + "px";
+  hl.style.height = (pB[1] - pA[1]) + "px";
+}
+canvas.addEventListener("pointermove", ev => {
+  if (!mapGeom) return;
+  const cellhl = document.getElementById("ca-cellhl");
+  cellhl.style.display = "none";
+  const r = canvas.getBoundingClientRect();
+  const ll = mapGeom.proj.invert([ev.clientX - r.left, ev.clientY - r.top]);
+  let txt = null;
+  if (mode === "geo" && deepEpoch === "zachos" && pgeo !== "off" && PG) {
+    const gx = Math.floor(ll[0] + 180), gy = Math.floor(ll[1] + 90);
+    if (gx >= 0 && gx < 360 && gy >= 0 && gy < 180) {
+      cellHL(gx, gy, 1);
+      const latC = -90 + gy + 0.5, lonC = -180 + gx + 0.5;
+      const place = Math.abs(Math.round(latC)) + "°" + (latC >= 0 ? "N" : "S") + " " + Math.abs(Math.round(lonC)) + "°" + (lonC >= 0 ? "E" : "W");
+      txt = place + " · 古地理:" + PGEO_LABEL[+PG.epochs[pgeo].classes[gy * 360 + gx]] + "(Scotese & Wright 2018 重建)";
+    }
+  } else if (mode !== "geo" && G) {
+    const degH = 360 / G.nlon;
+    const gx = Math.floor((ll[0] + 180) / degH), gy = Math.floor((ll[1] + 90) / degH);
+    if (gx >= 0 && gx < G.nlon && gy >= 0 && gy < G.nlat) {
+      cellHL(gx, gy, degH);
+      const place = (() => { const latC = -90 + gy * degH + degH / 2, lonC = -180 + gx * degH + degH / 2; return Math.abs(Math.round(latC)) + "°" + (latC >= 0 ? "N" : "S") + " " + Math.abs(lonC) + "°" + (lonC >= 0 ? "E" : "W"); })();
+      if (humanSeason !== "annual" && SEASONS) {
+        const b = SEASONS[humanSeason].values[gy * G.nlon + gx];
+        const s = b > 127 ? b - 256 : b;
+        txt = s === -127 ? place + " · 无数据" : place + " · " + MONTH_LABEL[humanSeason] + " 2000–2025 平均 " + fmt(s * SEASONS[humanSeason].scale) + "°C";
+      } else {
+        const b = G.frames[Math.max(0, Math.min(G.frames.length - 1, year - G.y0))][gy * G.nlon + gx];
+        const s = b > 127 ? b - 256 : b;
+        txt = s === -127 ? place + " · 无数据" : place + " · " + year + " 年 " + fmt(s / 10) + "°C";
+      }
+    }
+  } else {
+    const sgp0 = mode === "geo" && SG ? SG.periods[geoSnap] : null;
+    const sgp = sgp0 ? sgp0[snapMetric] : null;
+    if (sgp) {
+      const degS = 360 / SG.nlon;
+      const gx = Math.floor((ll[0] + 180) / degS), gy = Math.floor((ll[1] + 90) / degS);
+    if (gx >= 0 && gx < SG.nlon && gy >= 0 && gy < SG.nlat) {
+      cellHL(gx, gy, degS);
+      const b = sgp.values[gy * SG.nlon + gx];
+        const s = b > 127 ? b - 256 : b;
+        const latC = -90 + gy * degS + degS / 2, lonC = -180 + gx * degS + degS / 2;
+        const place = Math.abs(latC) + "°" + (latC >= 0 ? "N" : "S") + " " + Math.abs(lonC) + "°" + (lonC >= 0 ? "E" : "W");
+        txt = s === -127 ? place + " · 无数据(或海面)"
+          : (snapMetric === "precip"
+            ? place + " · 降水距平 " + (s >= 0 ? "+" : "") + Math.round(s * sgp.scale) + "%"
+            : (sgp.landTemp && sgp.landTemp[gy * SG.nlon + gx] === 129
+              ? place + " · 海温距平 " + fmt(s * sgp.scale) + "°C · " + (sgp.oceanSrc || "TraCE-21K-II")
+              : place + " · PaleoClim 重建 " + fmt(s * sgp.scale) + "°C"));
+      }
+    } else {
+      const b = human.bands.find(z => ll[1] <= z.lat[0] && ll[1] >= z.lat[1]);
+      if (b) {
+        const geo2 = mode === "geo" ? SNAP[geoSnap] : null;
+        const v = geo2 ? geo2.values[b.id] : b.values[yIdx.get(year)];
+        txt = geo2
+          ? `${zoneDesc[b.id]} ${zoneLabel[b.id]} · 示意 ${fmt(v)}°C`
+          : `${zoneDesc[b.id]} ${zoneLabel[b.id]} · ${year} 年 ${fmt(v)}°C`;
+      }
+    }
+  }
+  if (showSites && mode === "geo") {
+    let best = null, bd = 144;
+    for (const s of SITES) {
+      const p = mapGeom.proj([s.lo, s.la]);
+      const dx = p[0] - (ev.clientX - r.left), dyy = p[1] - (ev.clientY - r.top);
+      const d = dx * dx + dyy * dyy;
+      if (d < bd) { bd = d; best = s; }
+    }
+    if (best) {
+      tip.textContent = best.n + " · " + Math.abs(best.la).toFixed(1) + "°" + (best.la >= 0 ? "N" : "S") + " " + Math.abs(best.lo).toFixed(1) + "°" + (best.lo >= 0 ? "E" : "W");
+      tip.style.display = "block";
+      tip.style.left = Math.min(ev.clientX - root.getBoundingClientRect().left + 12, root.getBoundingClientRect().width - 240) + "px";
+      tip.style.top = Math.max(4, ev.clientY - root.getBoundingClientRect().top - 30) + "px";
+      return;
+    }
+  }
+  if (txt) {
+    tip.textContent = txt;
+    const rb = root.getBoundingClientRect();
+    tip.style.display = "block";
+    tip.style.left = Math.min(ev.clientX - rb.left + 12, rb.width - 190) + "px";
+    tip.style.top = Math.max(4, ev.clientY - rb.top - 34) + "px";
+  } else tip.style.display = "none";
+});
+canvas.addEventListener("pointerleave", () => { tip.style.display = "none"; document.getElementById("ca-cellhl").style.display = "none"; });
+
+/* ---------- 深时图表 ---------- */
+let visible = { temp: true, co2: true };
+const icePts = ice.age_kyr.map((a, i) => ({ age: a, v: ice.dt_c[i] }));
+const co2Pts = co2raw.age_kyr.map((a, i) => ({ age: a, v: co2raw.ppm[i] })).filter(d => d.age > 0.001);
+const bisT = d3.bisector(d => d.age).center;
+const ANN = [
+  { age: 21, label: "末次盛冰期", row: 0 },
+  { age: 11.7, label: "全新世", row: 1 },
+  { age: 128, label: "末次间冰期", row: 0 },
+  { age: 425, label: "间冰期 MIS 11", row: 0 }
+];
+
+function drawChart() {
+  const rawW = chartWrap.clientWidth;
+  if (rawW < 60) return; /* 面板隐藏时跳过,切换页签后再绘制 */
+  const W = rawW;
+  const H = 300;
+  const m = { t: 44, r: 58, b: 46, l: 56 };
+  const svg = d3.select("#ca-chart");
+  svg.attr("viewBox", `0 0 ${W} ${H}`).attr("width", W).attr("height", H);
+  svg.selectAll("*").remove();
+
+  const x = d3.scaleLinear().domain([800, 0]).range([m.l, W - m.r]);
+  const yT = d3.scaleLinear().domain(d3.extent(icePts, d => d.v)).nice().range([H - m.b, m.t]);
+  const yC = d3.scaleLinear().domain(d3.extent(co2Pts, d => d.v)).nice().range([H - m.b, m.t]);
+
+  const defs = svg.append("defs");
+  defs.append("clipPath").attr("id", "ca-clip").append("rect")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b);
+
+  svg.append("rect").attr("data-chart-frame", "")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b)
+    .attr("fill", "none").attr("stroke", cssVar("--border", "#ccc"));
+
+  for (const a of ANN) {
+    svg.append("line").attr("x1", x(a.age)).attr("x2", x(a.age))
+      .attr("y1", m.t - 2).attr("y2", H - m.b)
+      .attr("stroke", cssVar("--muted-foreground", "#888")).attr("opacity", 0.35);
+    svg.append("text").attr("x", a.age >= 100 ? x(a.age) + 4 : x(a.age) - 4)
+      .attr("y", m.t - 6 - a.row * 14)
+      .attr("text-anchor", a.age >= 100 ? "start" : "end")
+      .attr("font-size", "12px").attr("fill", cssVar("--muted-foreground", "#888"))
+      .text(a.label);
+  }
+  svg.append("text").attr("x", W - m.r).attr("y", m.t - 34).attr("text-anchor", "end")
+    .attr("font-size", "12px").attr("fill", cssVar("--muted-foreground", "#888"))
+    .text("人类史 145 年 ≈ 最右端一个像素 →");
+
+  const axis = g => g.attr("font-size", "12px").call(g => g.selectAll("text").attr("fill", cssVar("--foreground", "#222")));
+  svg.append("g").attr("transform", `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickValues([800, 700, 600, 500, 400, 300, 200, 100, 50, 0]).tickFormat(v => v === 0 ? "0(今)" : v))
+    .call(axis);
+  svg.append("g").attr("transform", `translate(${m.l},0)`)
+    .call(d3.axisLeft(yT).ticks(6)).call(axis);
+  svg.append("g").attr("transform", `translate(${W - m.r},0)`)
+    .call(d3.axisRight(yC).ticks(5)).call(axis);
+
+  svg.append("text").attr("class", "axis-title").attr("data-axis", "x")
+    .attr("x", m.l + (W - m.l - m.r) / 2).attr("y", H - 6).attr("text-anchor", "middle")
+    .text("距今时间(千年)");
+  svg.append("text").attr("class", "axis-title").attr("data-axis", "y")
+    .attr("transform", `rotate(-90 14 ${(m.t + H - m.b) / 2})`)
+    .attr("x", 14).attr("y", (m.t + H - m.b) / 2).attr("text-anchor", "middle")
+    .text("ΔT(°C)");
+  svg.append("text").attr("class", "axis-title").attr("data-axis", "y")
+    .attr("transform", `rotate(90 ${W - 10} ${(m.t + H - m.b) / 2})`)
+    .attr("x", W - 10).attr("y", (m.t + H - m.b) / 2).attr("text-anchor", "middle")
+    .text("CO₂(ppm)");
+
+  const gSer = svg.append("g").attr("clip-path", "url(#ca-clip)");
+  if (visible.temp) gSer.append("path")
+    .attr("d", d3.line()(icePts.map(d => [x(d.age), yT(d.v)])))
+    .attr("fill", "none").attr("stroke", cssVar("--viz-series-1", "#4477aa")).attr("stroke-width", 1.4);
+  if (visible.co2) gSer.append("path")
+    .attr("d", d3.line()(co2Pts.map(d => [x(d.age), yC(d.v)])))
+    .attr("fill", "none").attr("stroke", cssVar("--viz-series-2", "#aa7744")).attr("stroke-width", 1.4);
+
+  const guide = svg.append("line").attr("class", "ca-guide")
+    .attr("y1", m.t).attr("y2", H - m.b).attr("stroke", cssVar("--muted-foreground", "#888"))
+    .attr("opacity", 0).attr("data-chart-hover-guide", "");
+  const mkT = svg.append("circle").attr("r", 3.5).attr("fill", cssVar("--viz-series-1", "#4477aa")).attr("opacity", 0);
+  const mkC = svg.append("circle").attr("r", 3.5).attr("fill", cssVar("--viz-series-2", "#aa7744")).attr("opacity", 0);
+
+  const overlay = svg.append("rect").attr("data-chart-hit", "").attr("data-chart-hover-overlay", "cross-series")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b)
+    .attr("fill", "transparent").attr("class", "cursor-interaction");
+  overlay.on("pointermove", ev => {
+    const [mx] = d3.pointer(ev);
+    const age = Math.max(0.001, Math.min(800, x.invert(mx)));
+    guide.attr("x1", mx).attr("x2", mx).attr("opacity", 0.5);
+    const rows = [];
+    if (visible.temp) {
+      const p = icePts[Math.max(0, Math.min(icePts.length - 1, Math.round(bisT(icePts, age))))] || icePts[0];
+      mkT.attr("cx", x(p.age)).attr("cy", yT(p.v)).attr("opacity", 1);
+      rows.push(`ΔT ${fmt(p.v)}°C`);
+    } else { mkT.attr("opacity", 0); }
+    if (visible.co2) {
+      const p = co2Pts[Math.max(0, Math.min(co2Pts.length - 1, Math.round(bisT(co2Pts, age))))] || co2Pts[0];
+      mkC.attr("cx", x(p.age)).attr("cy", yC(p.v)).attr("opacity", 1);
+      rows.push(`CO₂ ${Math.round(p.v)} ppm`);
+    } else { mkC.attr("opacity", 0); }
+    const ageTxt = age < 1 ? `约 ${Math.round(age * 1000)} 年前` : (age < 10 ? `约 ${(age * 1000).toFixed(0)} 年前` : `约 ${age.toFixed(1)} 千年前`);
+    tip.textContent = ageTxt + " · " + rows.join(" · ");
+    const rb = root.getBoundingClientRect();
+    tip.style.display = "block";
+    tip.style.left = Math.min(ev.clientX - rb.left + 12, rb.width - 180) + "px";
+    tip.style.top = (ev.clientY - rb.top - 30) + "px";
+  });
+  overlay.on("pointerleave", () => {
+    guide.attr("opacity", 0); mkT.attr("opacity", 0); mkC.attr("opacity", 0);
+    tip.style.display = "none";
+  });
+}
+
+/* ---------- 深时图表(可切换:530 万年 LR04 / 6500 万年 Zachos) ---------- */
+const lrPts = window.LR04 ? window.LR04.age_kyr.map((a, i) => ({ age: a, v: window.LR04.d18o[i] })) : [];
+const zaPts = window.ZACHOS ? window.ZACHOS.age_kyr.map((a, i) => ({ age: a, v: window.ZACHOS.d18o[i] })) : [];
+const EPOCHS = {
+  lr04: {
+    pts: lrPts, max: 5320, ticks: [5000, 4000, 3000, 2000, 1000, 500, 0], unit: "kyr",
+    ann: [{ age: 2800, label: "北半球冰期加速" }, { age: 1200, label: "中更新世转型" }],
+    epicaShade: true,
+    cap: "0–530 万年 · LR04 深海岩芯 δ18O(‰,57 个岩芯堆叠):越高 = 冰量越大 · 越冷,一个锯齿 ≈ 一次冰期旋回"
+  },
+  zachos: {
+    pts: zaPts, max: 65000, ticks: [60000, 50000, 40000, 30000, 20000, 10000, 0], unit: "myr",
+    ann: [{ age: 55500, label: "PETM 极热事件" }, { age: 34000, label: "南极冰盖形成" }, { age: 3000, label: "北半球冰盖" }],
+    epicaShade: false,
+    cap: "0–6500 万年 · Zachos 全球底栖 δ18O 汇编(5 点滑动平均):恐龙灭绝后的温室地球,如何一步步进入冰室"
+  }
+};
+let deepEpoch = "lr04";
+
+function drawChart2() {
+  const rawW = chart2Wrap.clientWidth;
+  const cfg = EPOCHS[deepEpoch];
+  const pts = cfg.pts;
+  if (rawW < 60 || !pts.length) return;
+  const W = rawW, H = 260;
+  const m = { t: 40, r: 20, b: 46, l: 56 };
+  const svg = d3.select("#ca-chart2");
+  svg.attr("viewBox", `0 0 ${W} ${H}`).attr("width", W).attr("height", H);
+  svg.selectAll("*").remove();
+  const x = d3.scaleLinear().domain([cfg.max, 0]).range([m.l, W - m.r]);
+  const y = d3.scaleLinear().domain(d3.extent(pts, d => d.v)).nice().range([H - m.b, m.t]);
+  const defs2 = svg.append("defs");
+  defs2.append("clipPath").attr("id", "ca-clip2").append("rect")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b);
+
+  if (cfg.epicaShade) {
+    svg.append("rect").attr("x", x(800)).attr("y", m.t).attr("width", Math.max(0, x(0) - x(800)))
+      .attr("height", H - m.t - m.b).attr("fill", cssVar("--accent", "#36c")).attr("opacity", 0.12);
+    svg.append("text").attr("x", Math.min((x(800) + x(0)) / 2, W - m.r - 60)).attr("y", m.t + 14)
+      .attr("text-anchor", "middle")
+      .attr("font-size", "12px").attr("fill", cssVar("--muted-foreground", "#888")).text("EPICA 窗口(上图)");
+  }
+
+  svg.append("rect").attr("data-chart-frame", "")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b)
+    .attr("fill", "none").attr("stroke", cssVar("--border", "#ccc"));
+
+  for (const a of cfg.ann) {
+    svg.append("line").attr("x1", x(a.age)).attr("x2", x(a.age))
+      .attr("y1", m.t - 2).attr("y2", H - m.b)
+      .attr("stroke", cssVar("--muted-foreground", "#888")).attr("opacity", 0.35);
+    svg.append("text").attr("x", x(a.age) + 4).attr("y", m.t - 6)
+      .attr("font-size", "12px").attr("fill", cssVar("--muted-foreground", "#888")).text(a.label);
+  }
+
+  const axis = g => g.attr("font-size", "12px").call(g => g.selectAll("text").attr("fill", cssVar("--foreground", "#222")));
+  svg.append("g").attr("transform", `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickValues(cfg.ticks).tickFormat(v => v === 0 ? "0(今)" : (cfg.unit === "myr" ? String(v / 1000) : String(v))))
+    .call(axis);
+  svg.append("g").attr("transform", `translate(${m.l},0)`)
+    .call(d3.axisLeft(y).ticks(6)).call(axis);
+  svg.append("text").attr("class", "axis-title").attr("data-axis", "x")
+    .attr("x", m.l + (W - m.l - m.r) / 2).attr("y", H - 6).attr("text-anchor", "middle")
+    .text(cfg.unit === "myr" ? "距今时间(百万年)" : "距今时间(千年)");
+  svg.append("text").attr("class", "axis-title").attr("data-axis", "y")
+    .attr("transform", `rotate(-90 14 ${(m.t + H - m.b) / 2})`)
+    .attr("x", 14).attr("y", (m.t + H - m.b) / 2).attr("text-anchor", "middle")
+    .text("δ18O(‰)");
+
+  svg.append("g").attr("clip-path", "url(#ca-clip2)")
+    .append("path").attr("d", d3.line()(pts.map(d => [x(d.age), y(d.v)])))
+    .attr("fill", "none").attr("stroke", cssVar("--viz-series-3", "#5a8f5a")).attr("stroke-width", 1.3);
+
+  const guide = svg.append("line").attr("data-chart-hover-guide", "")
+    .attr("y1", m.t).attr("y2", H - m.b).attr("stroke", cssVar("--muted-foreground", "#888")).attr("opacity", 0);
+  const mk = svg.append("circle").attr("r", 3.5).attr("fill", cssVar("--viz-series-3", "#5a8f5a")).attr("opacity", 0);
+  const bisDeep = d3.bisector(d => d.age).center;
+  const overlay = svg.append("rect").attr("data-chart-hit", "").attr("data-chart-hover-overlay", "cross-series")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b)
+    .attr("fill", "transparent").attr("class", "cursor-interaction");
+  overlay.on("pointermove", ev => {
+    const [mx] = d3.pointer(ev);
+    const age = Math.max(0, Math.min(cfg.max, x.invert(mx)));
+    guide.attr("x1", mx).attr("x2", mx).attr("opacity", 0.5);
+    const p = pts[Math.max(0, Math.min(pts.length - 1, Math.round(bisDeep(pts, age))))] || pts[0];
+    mk.attr("cx", x(p.age)).attr("cy", y(p.v)).attr("opacity", 1);
+    const ageTxt = cfg.unit === "myr" ? `约 ${(age / 1000).toFixed(2)} 百万年前`
+      : (age < 1 ? `约 ${Math.round(age * 1000)} 年前` : (age < 10 ? `约 ${(age * 1000).toFixed(0)} 年前` : `约 ${age.toFixed(1)} 千年前`));
+    tip.textContent = ageTxt + " · δ18O " + p.v.toFixed(2) + "‰";
+    const rb = root.getBoundingClientRect();
+    tip.style.display = "block";
+    tip.style.left = Math.min(ev.clientX - rb.left + 12, rb.width - 210) + "px";
+    tip.style.top = (ev.clientY - rb.top - 30) + "px";
+  });
+  overlay.on("pointerleave", () => { guide.attr("opacity", 0); mk.attr("opacity", 0); tip.style.display = "none"; });
+}
+
+function setEpoch(e, opts) {
+  if (!EPOCHS[e]) return;
+  deepEpoch = e;
+  if (e === "zachos" && pgeo === "off" && PG && !(opts && opts.noAutoPgeo)) setPgeo("e66"); /* 进入6500万年模式自动显示古地理 */
+  if (e === "lr04" && pgeo !== "off") setPgeo("off");
+  syncPgeoVisibility();
+  document.querySelectorAll(".ca-epoch").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.epoch === e ? "true" : "false"));
+  document.getElementById("ca-chart2-cap").textContent = EPOCHS[e].cap;
+  if (mode === "geo") drawChart2();
+}
+document.querySelectorAll(".ca-epoch").forEach(btn =>
+  btn.addEventListener("click", () => { stopDeglac(); if (deepEpoch !== btn.dataset.epoch) { setEpoch(btn.dataset.epoch); saveState(); } }));
+
+/* ---------- 人类史迷你时间线(事件标注 + 点击跳年份) ---------- */
+const miniWrap = document.getElementById("ca-mini-wrap");
+const EVENTS = [
+  { y: 1958, label: "Keeling 开始观测 CO₂" },
+  { y: 2015, label: "巴黎协定 · 1.5°C" },
+  { y: 2024, label: "有记录最热年" }
+];
+let miniMk = null, miniXY = null;
+function drawMini() {
+  const rawW = miniWrap.clientWidth;
+  if (rawW < 60) return;
+  const W = rawW, H = 136;
+  const m = { t: 34, r: 14, b: 28, l: 46 };
+  const svg = d3.select("#ca-mini");
+  svg.attr("viewBox", `0 0 ${W} ${H}`).attr("width", W).attr("height", H);
+  svg.selectAll("*").remove();
+  const x = d3.scaleLinear().domain([1880, lastYear]).range([m.l, W - m.r]);
+  const y = d3.scaleLinear().domain(d3.extent(human.glob)).nice().range([H - m.b, m.t]);
+  miniXY = { x, y };
+  const defs3 = svg.append("defs");
+  defs3.append("clipPath").attr("id", "ca-clip3").append("rect")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b);
+
+  svg.append("rect").attr("x", x(1951)).attr("y", m.t).attr("width", Math.max(0, x(1980) - x(1951)))
+    .attr("height", H - m.t - m.b).attr("fill", cssVar("--muted", "#ddd")).attr("opacity", 0.45);
+  svg.append("text").attr("x", x(1951) + 3).attr("y", H - m.b - 6)
+    .attr("font-size", "12px").attr("fill", cssVar("--muted-foreground", "#888")).text("基准期");
+
+  svg.append("rect").attr("data-chart-frame", "")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b)
+    .attr("fill", "none").attr("stroke", cssVar("--border", "#ccc"));
+
+  for (const e of EVENTS) {
+    svg.append("line").attr("x1", x(e.y)).attr("x2", x(e.y))
+      .attr("y1", m.t - 2).attr("y2", H - m.b)
+      .attr("stroke", cssVar("--muted-foreground", "#888")).attr("opacity", 0.35);
+    svg.append("text").attr("x", e.y >= 2000 ? x(e.y) - 4 : x(e.y) + 4)
+      .attr("y", m.t - 6 - (e.y === 2015 ? 13 : 0))
+      .attr("text-anchor", e.y >= 2000 ? "end" : "start")
+      .attr("font-size", "12px").attr("fill", cssVar("--muted-foreground", "#888")).text(e.label);
+  }
+
+  const axis = g => g.attr("font-size", "12px").call(g => g.selectAll("text").attr("fill", cssVar("--foreground", "#222")));
+  svg.append("g").attr("transform", `translate(0,${H - m.b})`)
+    .call(d3.axisBottom(x).tickValues([1880, 1920, 1960, 2000, 2024]).tickFormat(v => v === 2024 ? "2024" : v))
+    .call(axis);
+  svg.append("g").attr("transform", `translate(${m.l},0)`)
+    .call(d3.axisLeft(y).ticks(5)).call(axis);
+  svg.append("text").attr("class", "axis-title").attr("data-axis", "y")
+    .attr("transform", `rotate(-90 12 ${(m.t + H - m.b) / 2})`)
+    .attr("x", 12).attr("y", (m.t + H - m.b) / 2).attr("text-anchor", "middle")
+    .text("全球距平(°C)");
+
+  svg.append("g").attr("clip-path", "url(#ca-clip3)")
+    .append("path").attr("d", d3.line()(human.glob.map((v, i) => [x(human.years[i]), y(v)])))
+    .attr("fill", "none").attr("stroke", cssVar("--viz-series-1", "#4477aa")).attr("stroke-width", 1.5);
+
+  miniMk = svg.append("circle").attr("r", 4).attr("fill", cssVar("--viz-series-1", "#4477aa"))
+    .attr("stroke", cssVar("--popover", "#fff")).attr("stroke-width", 1.5);
+  updateMap();
+
+  const overlay = svg.append("rect").attr("data-chart-hit", "")
+    .attr("x", m.l).attr("y", m.t).attr("width", W - m.l - m.r).attr("height", H - m.t - m.b)
+    .attr("fill", "transparent").attr("class", "cursor-interaction");
+  const guide = svg.append("line").attr("y1", m.t).attr("y2", H - m.b)
+    .attr("stroke", cssVar("--muted-foreground", "#888")).attr("opacity", 0);
+  const hmk = svg.append("circle").attr("r", 3).attr("fill", cssVar("--foreground", "#222")).attr("opacity", 0);
+  overlay.on("pointermove", ev => {
+    const [mx] = d3.pointer(ev);
+    const yy = Math.max(years[0], Math.min(lastYear, Math.round(x.invert(mx))));
+    guide.attr("x1", x(yy)).attr("x2", x(yy)).attr("opacity", 0.5);
+    const v = human.glob[yIdx.get(yy)];
+    hmk.attr("cx", x(yy)).attr("cy", y(v)).attr("opacity", 1);
+    tip.textContent = yy + " 年 · 全球距平 " + fmt(v) + "°C";
+    tip.style.display = "block";
+    tip.style.left = Math.min(ev.clientX - root.getBoundingClientRect().left + 12, root.getBoundingClientRect().width - 200) + "px";
+    tip.style.top = Math.max(4, ev.clientY - root.getBoundingClientRect().top - 30) + "px";
+  });
+  overlay.on("pointerleave", () => { guide.attr("opacity", 0); hmk.attr("opacity", 0); tip.style.display = "none"; });
+  overlay.on("click", ev => {
+    const [mx] = d3.pointer(ev);
+    if (humanSeason !== "annual") setSeason("annual"); /* 季节模式下点击年份 → 自动切回年均,保证点击有可见反馈 */
+    setYear(Math.max(years[0], Math.min(lastYear, Math.round(x.invert(mx)))));
+    guide.attr("opacity", 0); hmk.attr("opacity", 0);
+    saveState();
+  });
+}
+
+/* ---------- 季节 × 年份热力图(纬度带月值) ---------- */
+const hmWrap = document.getElementById("ca-hm-wrap");
+const ZONE_LBL = { a90n: "64–90°N", a64n: "44–64°N", a44n: "24–44°N", a24n: "0–24°N", a24s: "0–24°S", a44s: "24–44°S", a64s: "44–64°S", a90s: "64–90°S" };
+const ZONES = CA_GRID_META && CA_GRID_META.zones ? CA_GRID_META.zones.map(z => ({ id: z.id, values: decodeFrame(z.values) })) : [];
+let hmZone = ZONES.length ? ZONES[0].id : null;
+const zoneSel = document.getElementById("ca-zone-sel");
+ZONES.forEach(z => {
+  const o = document.createElement("option");
+  o.value = z.id; o.textContent = ZONE_LBL[z.id] || z.id;
+  zoneSel.appendChild(o);
+});
+zoneSel.addEventListener("change", () => { hmZone = zoneSel.value; drawHM(); });
+
+function drawHM() {
+  const rawW = hmWrap.clientWidth;
+  if (rawW < 60 || !ZONES.length) return;
+  const W = rawW, H = 150;
+  const m = { t: 8, r: 12, b: 26, l: 44 };
+  const cv2 = document.getElementById("ca-hm");
+  const dpr = window.devicePixelRatio || 1;
+  cv2.width = Math.round(W * dpr); cv2.height = Math.round(H * dpr);
+  cv2.style.width = W + "px"; cv2.style.height = H + "px";
+  const c2 = cv2.getContext("2d");
+  c2.setTransform(dpr, 0, 0, dpr, 0, 0);
+  c2.clearRect(0, 0, W, H);
+  const z = ZONES.find(x => x.id === hmZone) || ZONES[0];
+  const x0 = m.l, x1 = W - m.r;
+  const cw = (x1 - x0) / years.length, ch = (H - m.t - m.b) / 12;
+  for (let mo = 0; mo < 12; mo++) {
+    for (let yi = 0; yi < years.length; yi++) {
+      const b = z.values[mo * years.length + yi];
+      const s = b > 127 ? b - 256 : b;
+      c2.fillStyle = s === -127 ? cssVar("--muted", "#999") : colorFor(s / 10, -1.5, 4.5);
+      c2.fillRect(x0 + yi * cw, m.t + mo * ch, cw + 0.5, ch + 0.5);
+    }
+  }
+  c2.font = "12px sans-serif";
+  c2.fillStyle = cssVar("--muted-foreground", "#888");
+  [[0, "1 月"], [3, "4 月"], [6, "7 月"], [9, "10 月"]].forEach(([mo, t]) => c2.fillText(t, 6, m.t + mo * ch + ch / 2 + 4));
+  c2.fillStyle = cssVar("--foreground", "#222");
+  [1880, 1920, 1960, 2000, 2024].forEach(yy => {
+    const xx = x0 + (yy - 1880) / 145 * (x1 - x0);
+    c2.fillText(String(yy), Math.min(xx, x1 - 36), H - 6);
+  });
+  c2.strokeStyle = cssVar("--border", "#ccc");
+  c2.strokeRect(m.l, m.t, x1 - x0, H - m.t - m.b);
+}
+
+const hmCanvas = document.getElementById("ca-hm");
+hmCanvas.addEventListener("pointermove", ev => {
+  if (!ZONES.length || !hmWrap.clientWidth) return;
+  const r = hmCanvas.getBoundingClientRect();
+  const z = ZONES.find(x => x.id === hmZone) || ZONES[0];
+  const x0 = 44, x1 = r.width - 12;
+  const yi = Math.floor((ev.clientX - r.left - x0) / ((x1 - x0) / years.length));
+  const mo = Math.floor((ev.clientY - r.top - 8) / ((r.height - 34) / 12));
+  if (yi < 0 || yi >= years.length || mo < 0 || mo > 11) { tip.style.display = "none"; const h0 = document.getElementById("ca-hm-hl"); if (h0) h0.style.display = "none"; return; }
+  const hl = document.getElementById("ca-hm-hl");
+  const cw = (x1 - x0) / years.length, ch = (r.height - 34) / 12;
+  hl.style.display = "block";
+  hl.style.left = (x0 + yi * cw) + "px";
+  hl.style.top = (8 + mo * ch) + "px";
+  hl.style.width = cw + "px";
+  hl.style.height = ch + "px";
+  const b = z.values[mo * years.length + yi];
+  const s = b > 127 ? b - 256 : b;
+  tip.textContent = years[yi] + " 年 " + (mo + 1) + " 月 · " + (ZONE_LBL[z.id] || "") + " · " + (s === -127 ? "无数据" : fmt(s / 10) + "°C");
+  tip.style.display = "block";
+  tip.style.left = Math.min(ev.clientX - root.getBoundingClientRect().left + 12, root.getBoundingClientRect().width - 220) + "px";
+  tip.style.top = Math.max(4, ev.clientY - root.getBoundingClientRect().top - 30) + "px";
+});
+hmCanvas.addEventListener("pointerleave", () => { tip.style.display = "none"; const h = document.getElementById("ca-hm-hl"); if (h) h.style.display = "none"; });
+hmCanvas.addEventListener("click", ev => {
+  const r = hmCanvas.getBoundingClientRect();
+  const yi = Math.floor((ev.clientX - r.left - 44) / ((r.width - 56) / years.length));
+  if (yi >= 0 && yi < years.length) {
+    stopDeglac();
+    if (humanSeason !== "annual") setSeason("annual"); /* 热力图点击年份 → 自动切回年均 */
+    setYear(years[yi]);
+    saveState();
+  }
+});
+
+/* ---------- 控件 ---------- */
+const yearInput = document.getElementById("ca-year");
+yearInput.max = lastYear;
+yearInput.value = lastYear;
+yearInput.addEventListener("input", () => { stopPlay(); setYear(+yearInput.value); });
+yearInput.addEventListener("change", saveState);
+
+function setYear(y) { year = Math.max(years[0], Math.min(lastYear, y)); updateMap(); scheduleCells(); }
+
+const playBtn = document.getElementById("ca-play");
+function stopPlay() {
+  if (!playing) return;
+  playing = false; clearInterval(playTimer);
+  playBtn.textContent = "播放 1880→" + lastYear;
+}
+playBtn.addEventListener("click", () => {
+  if (playing) { stopPlay(); return; }
+  if (mode !== "human") return;
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { setYear(lastYear); return; }
+  playing = true;
+  playBtn.textContent = "暂停";
+  if (year >= lastYear) setYear(years[0]);
+  playTimer = setInterval(() => {
+    if (year >= lastYear) { stopPlay(); return; }
+    setYear(year + 1); /* 匀速:每年一格 */
+  }, 140);
+});
+
+document.querySelectorAll(".ca-snap").forEach(btn => {
+  btn.addEventListener("click", () => {
+    stopDeglac();
+    setPgeo("off");
+    setSnap(btn.dataset.snap); saveState();
+  });
+});
+function setSnap(s) {
+  geoSnap = s;
+  document.querySelectorAll(".ca-snap").forEach(b =>
+    b.setAttribute("aria-pressed", b.dataset.snap === s ? "true" : "false"));
+  if (mode === "geo") { updateMap(); scheduleCells(); }
+}
+
+document.querySelectorAll(".ca-season").forEach(btn => {
+  btn.addEventListener("click", () => { stopDeglac(); if (humanSeason !== btn.dataset.season) { setSeason(btn.dataset.season); saveState(); } });
+});
+function setSeason(s) {
+  if (s !== "annual" && !SEASONS) return;
+  humanSeason = s;
+  document.querySelectorAll(".ca-season").forEach(b => b.setAttribute("aria-pressed", b.dataset.season === s ? "true" : "false"));
+  const off = s !== "annual";
+  yearInput.disabled = off;
+  playBtn.disabled = off;
+  updateMap();
+  scheduleCells();
+}
+document.querySelectorAll(".ca-metric").forEach(btn => {
+  btn.addEventListener("click", () => { stopDeglac(); if (snapMetric !== btn.dataset.metric) { setMetric(btn.dataset.metric); saveState(); } });
+});
+function setMetric(m) {
+  snapMetric = m;
+  document.querySelectorAll(".ca-metric").forEach(b => b.setAttribute("aria-pressed", b.dataset.metric === m ? "true" : "false"));
+  if (mode === "geo") { updateMap(); scheduleCells(); }
+}
+
+pgeoSel.addEventListener("change", () => { if (pgeo !== pgeoSel.value) { setPgeo(pgeoSel.value); saveState(); } });
+const sitesBtn = document.getElementById("ca-sites");
+sitesBtn.addEventListener("click", () => {
+  showSites = !showSites;
+  sitesBtn.setAttribute("aria-pressed", showSites ? "true" : "false");
+  paintTop();
+  saveState();
+});
+function setPgeo(p) {
+  if (p !== "off" && !PG) return;
+  pgeo = p;
+  pgeoSel.value = p;
+  syncPgeoVisibility();
+  updateMap();
+  paintTop(); scheduleCells();
+}
+
+const DEGLAC = ["hs1", "ba", "yds", "eh", "holocene", "lh"];
+let animTimer = null;
+const deglacBtn = document.getElementById("ca-deglac");
+function stopDeglac() {
+  if (!animTimer) return;
+  clearInterval(animTimer);
+  animTimer = null;
+  deglacBtn.textContent = "▶ 播放消冰序列";
+}
+function playDeglac() {
+  if (animTimer) { stopDeglac(); saveState(); return; }
+  if (mode !== "geo") setMode("geo");
+  if (pgeo !== "off") setPgeo("off"); /* 播放消冰序列前退出古地理,否则全程只显示静态海陆图 */
+  let i = 0;
+  deglacBtn.textContent = "⏸ 停止";
+  const step = () => {
+    if (i < DEGLAC.length) { setSnap(DEGLAC[i]); i++; }
+    else { stopDeglac(); setMode("human"); setSeason("annual"); setYear(lastYear); saveState(); }
+  };
+  step();
+  animTimer = setInterval(step, 850);
+}
+deglacBtn.addEventListener("click", playDeglac);
+
+/* ---------- GIF 导出(纯前端编码:全局调色板 + GIF LZW,零依赖;导出画布内容,不含图例文字) ---------- */
+const GIF_BTN_HUMAN = document.getElementById("ca-gif");
+const GIF_BTN_DEGLAC = document.getElementById("ca-gif-deglac");
+let gifBusy = false;
+const yieldUi = () => new Promise(r => { const c = new MessageChannel(); c.port1.onmessage = r; c.port2.postMessage(0); }); /* MessageChannel 宏任务:后台标签页不被节流(setTimeout 会降到 ~1Hz,导出卡几分钟) */
+const GIF_MAX_W = 720; /* GIF 导出宽度上限:3° 格约 6px/格(960 实测 11.3 MB,720 约 6-7 MB) */
+/* LUT 颜色串 → RGB(swatch canvas 解析,兼容任何 CSS 颜色格式),按 LUT 数组身份缓存 */
+const lutRgbCache = new Map();
+function lutRgb(L) {
+  if (lutRgbCache.has(L)) return lutRgbCache.get(L);
+  const cv = document.createElement("canvas");
+  cv.width = 256; cv.height = 1;
+  const c = cv.getContext("2d", { willReadFrequently: true });
+  for (let b = 0; b < 256; b++) { c.fillStyle = L[b]; c.fillRect(b, 0, 1, 1); }
+  const d = c.getImageData(0, 0, 256, 1).data;
+  const out = new Array(256);
+  for (let b = 0; b < 256; b++) out[b] = [d[b * 4], d[b * 4 + 1], d[b * 4 + 2]];
+  lutRgbCache.set(L, out);
+  return out;
+}
+/* 导出捕获器:绕开 paintCells 的 +0.6 重叠(其抗锯齿接缝混色会撑爆 256 色调色板),
+   逐格用取整边界铺 LUT 纯色;古地理层本就是 360×180 纯色小图,关平滑放大即可 */
+let gifCap = null;
+function gifEnsure() {
+  if (!mapGeom) return;
+  const { W, H } = mapGeom;
+  if (gifCap && gifCap.W === W && gifCap.H === H) return;
+  const sc = Math.min(1, GIF_MAX_W / W);
+  const cv = document.createElement("canvas");
+  cv.width = Math.round(W * sc);
+  cv.height = Math.round(H * sc);
+  gifCap = { W, H, sc, EW: cv.width, EH: cv.height, cx: cv.getContext("2d", { willReadFrequently: true }), curCells: null };
+}
+function gifCellsPlan() { /* 与 paintCells 同一决策:当前帧格点层的数据与调色板 */
+  const pgOn = mode === "geo" && deepEpoch === "zachos" && pgeo !== "off" && PG;
+  if (pgOn) {
+    const { proj } = mapGeom;
+    const x0 = proj([-180, 0])[0], yt = proj([0, 90])[1];
+    return { pg: pgeo, rect: [x0, yt, proj([180, 0])[0] - x0, proj([0, -90])[1] - yt] };
+  }
+  let fr = null, L = null, nt = 0, nl = 0;
+  if (mode !== "geo") {
+    if (humanSeason !== "annual" && SEASONS) {
+      fr = SEASONS[humanSeason].values; L = lutFor("temp", -3, 6, SEASONS[humanSeason].scale); nt = G.nlat; nl = G.nlon;
+    } else if (G) {
+      fr = G.frames[Math.max(0, Math.min(G.frames.length - 1, year - G.y0))];
+      L = lutFor("temp", hMinG, hMaxG, 0.1); nt = G.nlat; nl = G.nlon;
+    }
+  } else {
+    const sg0 = SG ? SG.periods[geoSnap] : null;
+    const sg = sg0 ? sg0[snapMetric] : null;
+    if (sg) { fr = sg.values; L = lutFor(snapMetric, -10, 8, sg.scale); nt = SG.nlat; nl = SG.nlon; }
+  }
+  if (!fr || !L) return null;
+  return { fr, L, nt, nl, grid: gridLines(nl, nt, 360 / nl) };
+}
+function gifSetF(i, kind) { /* 定位到第 i 帧并记录格点重绘参数;每帧自带状态复位,两遍扫描顺序无关 */
+  if (kind === "deglac") {
+    if (i < DEGLAC.length) {
+      if (mode !== "geo") setMode("geo"); /* 关键:第 1 遍以人史收尾帧结束,第 2 遍必须回位 */
+      if (pgeo !== "off") setPgeo("off");
+      setSnap(DEGLAC[i]); paintCells();
+    } else { setMode("human"); setSeason("annual"); setYear(lastYear); paintCells(); }
+  } else { setYear(years[0] + i); paintCells(); }
+  gifCap.curCells = gifCellsPlan();
+}
+function gifGrab() { /* 合成当帧:背景 + 底图 + 纯色格点 + 顶层(海岸线/站点),缩放至导出尺寸 */
+  const { cx, EW, EH, sc, curCells } = gifCap;
+  cx.imageSmoothingEnabled = true;
+  cx.fillStyle = cssVar("--background", "#fff");
+  cx.fillRect(0, 0, EW, EH);
+  cx.drawImage(canvasBase, 0, 0, EW, EH);
+  if (curCells && curCells.fr) {
+    const RGB = lutRgb(curCells.L);
+    const Xs = curCells.grid[0], Ys = curCells.grid[1];
+    for (let gy = 0; gy < curCells.nt; gy++) {
+      const yT = Math.round(Ys[gy] * sc), yB = Math.round(Ys[gy + 1] * sc);
+      const row0 = gy * curCells.nl;
+      for (let gx = 0; gx < curCells.nl; gx++) {
+        const x0 = Math.round(Xs[gx] * sc), x1 = Math.round(Xs[gx + 1] * sc);
+        const rgb = RGB[curCells.fr[row0 + gx]];
+        cx.fillStyle = "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+        cx.fillRect(x0, yB, x1 - x0, yT - yB);
+      }
+    }
+  } else if (curCells && curCells.pg) {
+    const r = curCells.rect;
+    cx.imageSmoothingEnabled = false;
+    cx.drawImage(pgArt(curCells.pg).cv, r[0] * sc, r[1] * sc, r[2] * sc, r[3] * sc);
+    cx.imageSmoothingEnabled = true;
+  } else {
+    cx.drawImage(canvasCells, 0, 0, EW, EH);
+  }
+  cx.drawImage(canvas, 0, 0, EW, EH);
+  return cx.getImageData(0, 0, EW, EH).data;
+}
+function gifLzw(pix, minCode) {
+  /* GIF 可变码宽 LZW:解码器在其表长达到 1<<codeSize 时加宽码宽,恰好比编码器落后一步 */
+  const clear = 1 << minCode, eoi = clear + 1;
+  let codeSize = minCode + 1, next = eoi + 1;
+  const dict = new Map();
+  const buf = [];
+  let bitBuf = 0, bitCnt = 0;
+  const emit = c => { bitBuf |= c << bitCnt; bitCnt += codeSize; while (bitCnt >= 8) { buf.push(bitBuf & 255); bitBuf >>>= 8; bitCnt -= 8; } };
+  emit(clear);
+  let prefix = pix[0];
+  for (let i = 1; i < pix.length; i++) {
+    const k = pix[i], key = (prefix << 8) | k, hit = dict.get(key);
+    if (hit !== undefined) { prefix = hit; continue; }
+    emit(prefix);
+    if (next < 4096) {
+      dict.set(key, next++);
+      if (next > (1 << codeSize) && codeSize < 12) codeSize++;
+    } else { emit(clear); dict.clear(); codeSize = minCode + 1; next = eoi + 1; }
+    prefix = k;
+  }
+  emit(prefix);
+  emit(eoi);
+  if (bitCnt > 0) buf.push(bitBuf & 255);
+  return Uint8Array.from(buf);
+}
+function gifWriter(w, h, pal, delayCs) {
+  let cap = 1 << 20, len = 0, out = new Uint8Array(cap);
+  const need = k => { if (len + k <= cap) return; while (cap < len + k) cap *= 2; const o = new Uint8Array(cap); o.set(out.subarray(0, len)); out = o; };
+  const put = a => { need(a.length); out.set(a, len); len += a.length; };
+  const put1 = v => { need(1); out[len++] = v; };
+  put([71, 73, 70, 56, 57, 97, w & 255, (w >> 8) & 255, h & 255, (h >> 8) & 255, 0xF7, 0, 0]); /* GIF89a + 全局 256 色表 */
+  put(pal);
+  put([0x21, 0xFF, 11, 78, 69, 84, 83, 67, 65, 80, 69, 50, 46, 48, 3, 1, 0, 0, 0]); /* NETSCAPE2.0:无限循环 */
+  const minCode = 8;
+  return {
+    addFrame(idx) {
+      put([0x21, 0xF9, 4, 0x04, delayCs & 255, (delayCs >> 8) & 255, 0, 0]); /* disposal 1 = 保留画面,整帧覆盖 */
+      put([0x2C, 0, 0, 0, 0, w & 255, (w >> 8) & 255, h & 255, (h >> 8) & 255, 0]);
+      put1(minCode);
+      const lzw = gifLzw(idx, minCode);
+      for (let i = 0; i < lzw.length; i += 255) {
+        const c = Math.min(255, lzw.length - i);
+        put1(c);
+        for (let j = 0; j < c; j++) put1(lzw[i + j]);
+      }
+      put1(0);
+    },
+    finish() { put1(0x3B); return out.subarray(0, len); }
+  };
+}
+function gifPalette(hist, maxN) {
+  /* 全局调色板:高频色按频次直取;若颜色超限(海岸线缩放抗锯齿混色沿连续带分布),
+     余量贪心分配给「映射误差最大」的罕见色 → 跨帧不闪烁、误差有界。
+     注:实测差分帧(GIF 透明索引)对人类史动画零收益——GISTEMP 格点含海洋,年际 ~80% 像素换色阶,已撤 */
+  const keys = Array.from(hist.keys()).sort((a, b) => hist.get(b) - hist.get(a));
+  const d2 = (k, p) => { const dr = (k >> 16 & 255) - p[0], dg = (k >> 8 & 255) - p[1], db = (k & 255) - p[2]; return dr * dr * 2 + dg * dg * 4 + db * db * 3; };
+  const exact = keys.length <= maxN;
+  const kept = (exact ? keys : keys.slice(0, Math.min(maxN - 48, keys.length))).map(k => [k >> 16 & 255, k >> 8 & 255, k & 255]);
+  if (!exact) {
+    const rest = keys.slice(Math.min(maxN - 48, keys.length));
+    const best = new Map();
+    for (const k of rest) { let bd = Infinity; for (const p of kept) { const d = d2(k, p); if (d < bd) bd = d; } best.set(k, bd); }
+    while (kept.length < maxN && rest.length) {
+      let worst = -1, wd = -1;
+      for (const k of rest) { const b = best.get(k); if (b > wd) { wd = b; worst = k; } }
+      if (wd <= 0) break;
+      const np = [worst >> 16 & 255, worst >> 8 & 255, worst & 255];
+      kept.push(np);
+      best.set(worst, 0);
+      for (const k of rest) { const d = d2(k, np); if (d < best.get(k)) best.set(k, d); }
+    }
+  }
+  const idxOf = new Map();
+  kept.forEach((p, i) => idxOf.set((p[0] << 16) | (p[1] << 8) | p[2], i));
+  const pal = new Uint8Array(768); /* GCT 恒为 256 项(768 B),真实色 ≤ maxN;索引 255 留给透明 */
+  kept.forEach((p, i) => { pal[i * 3] = p[0]; pal[i * 3 + 1] = p[1]; pal[i * 3 + 2] = p[2]; });
+  const cache = new Map();
+  const near = key => {
+    const r = (key >> 16) & 255, g = (key >> 8) & 255, b = key & 255;
+    let bi = 0, bd = Infinity;
+    for (let i = 0; i < kept.length; i++) {
+      const p = kept[i], dr = r - p[0], dg = g - p[1], db = b - p[2];
+      const d = dr * dr * 2 + dg * dg * 4 + db * db * 3;
+      if (d < bd) { bd = d; bi = i; }
+    }
+    return bi;
+  };
+  return { pal, exact, keptCount: kept.length,
+    map(key) { let v = idxOf.get(key); if (v === undefined) { v = cache.get(key); if (v === undefined) { v = near(key); cache.set(key, v); } } return v; } };
+}
+async function buildGif(kind, opts) {
+  /* kind: "human" = 1880→2025 年帧;"deglac" = 消冰序列 6 快照 + 2025 收尾帧(与播放器节奏一致) */
+  opts = opts || {};
+  if (gifBusy || !mapGeom) return null;
+  gifBusy = true;
+  const saved = { mode, year, geoSnap, snapMetric, pgeo, season: humanSeason };
+  const prog = opts.progress || (() => {});
+  try {
+    stopPlay(); stopDeglac();
+    if (kind === "deglac") { if (mode !== "geo") setMode("geo"); if (pgeo !== "off") setPgeo("off"); }
+    else if (humanSeason !== "annual") setSeason("annual");
+    gifEnsure();
+    const { EW, EH } = gifCap;
+    const n = kind === "deglac" ? DEGLAC.length + 1 : lastYear - years[0] + 1;
+    /* 第 1 遍:逐帧采样建全局调色板(跨帧固定,避免逐帧调色板闪色) */
+    prog(0);
+    const hist = new Map();
+    for (let i = 0; i < n; i++) {
+      if (kind === "deglac" || i % 3 === 0) {
+        gifSetF(i, kind);
+        const d = gifGrab();
+        for (let p = 0; p < d.length; p += 4) {
+          const key = (d[p] << 16) | (d[p + 1] << 8) | d[p + 2];
+          hist.set(key, (hist.get(key) || 0) + 1);
+        }
+      }
+      if ((i & 7) === 7) await yieldUi();
+    }
+    const P = gifPalette(hist, 256);
+    const wri = gifWriter(EW, EH, P.pal, kind === "deglac" ? 85 : 14); /* 帧延时对齐播放节奏:140ms / 850ms */
+    const step = Math.max(1, Math.round(n / 20));
+    for (let i = 0; i < n; i++) {
+      gifSetF(i, kind);
+      const d = gifGrab();
+      const idx = new Uint8Array(EW * EH);
+      for (let p = 0, q = 0; p < d.length; p += 4, q++) idx[q] = P.map((d[p] << 16) | (d[p + 1] << 8) | d[p + 2]);
+      wri.addFrame(idx);
+      if (i % step === 0 || i === n - 1) prog(Math.round((i + 1) / n * 100));
+      await yieldUi();
+    }
+    const bytes = wri.finish();
+    if (!opts.noDownload) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([bytes], { type: "image/gif" }));
+      a.download = kind === "deglac" ? "climate-atlas-消冰序列.gif" : "climate-atlas-1880-2025.gif";
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }
+    return { bytes, frames: n, w: EW, h: EH, exact: P.exact, colors: P.keptCount };
+  } finally {
+    /* 恢复导出前的视图状态 */
+    if (saved.mode !== mode) setMode(saved.mode);
+    if (saved.pgeo !== pgeo) setPgeo(saved.pgeo);
+    if (saved.snapMetric !== snapMetric) setMetric(saved.snapMetric);
+    if (saved.geoSnap !== geoSnap) setSnap(saved.geoSnap);
+    if (saved.season !== humanSeason) setSeason(saved.season);
+    setYear(saved.year);
+    gifBusy = false;
+  }
+}
+async function exportGif(kind, btn) {
+  if (gifBusy) return;
+  const orig = btn.textContent;
+  const r = await buildGif(kind, { progress: t => { btn.textContent = "🎬 " + t + "%"; } });
+  btn.textContent = orig;
+  if (r) btn.title = "上次导出:" + r.frames + " 帧 · " + Math.round(r.bytes.length / 1024) + " KB" + (r.exact ? "" : "(罕见色已归并)");
+}
+GIF_BTN_HUMAN.addEventListener("click", () => exportGif("human", GIF_BTN_HUMAN));
+GIF_BTN_DEGLAC.addEventListener("click", () => exportGif("deglac", GIF_BTN_DEGLAC));
+
+document.querySelectorAll(".ca-series").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const k = btn.dataset.series;
+    visible[k] = !visible[k];
+    btn.setAttribute("aria-pressed", visible[k] ? "true" : "false");
+    drawChart();
+  });
+});
+
+const tabHuman = document.getElementById("ca-tab-human");
+const tabGeo = document.getElementById("ca-tab-geo");
+function setMode(m) {
+  mode = m;
+  tabHuman.setAttribute("aria-selected", m === "human" ? "true" : "false");
+  tabGeo.setAttribute("aria-selected", m === "geo" ? "true" : "false");
+  tabHuman.classList.toggle("active", m === "human");
+  tabGeo.classList.toggle("active", m === "geo");
+  document.getElementById("ca-panel-human").hidden = m !== "human";
+  document.getElementById("ca-panel-geo").hidden = m !== "geo";
+  if (m === "geo") { stopPlay(); drawChart(); drawChart2(); } /* 同步绘制:读取 clientWidth 强制布局;后台节流时 rAF/RO 不触发 */
+  syncPgeoVisibility();
+  updateMap();
+  paintTop();
+}
+tabHuman.addEventListener("click", () => { stopDeglac(); if (mode !== "human") { setMode("human"); saveState(); } });
+tabGeo.addEventListener("click", () => { stopDeglac(); if (mode !== "geo") { setMode("geo"); saveState(); } });
+
+function saveState() {
+  try {
+    const p = window.zcode && window.zcode.setWidgetState
+      ? window.zcode.setWidgetState({ modelContent: { tab: mode, year, snap: geoSnap, epoch: deepEpoch, season: humanSeason, metric: snapMetric, pgeo, showSites, zone: hmZone } })
+      : null;
+    if (p && p.catch) p.catch(() => {});
+  } catch (e) { /* 忽略 */ }
+}
+function applyState(st) {
+  if (!st || typeof st !== "object") return;
+  if (st.tab === "geo" && mode !== "geo") setMode("geo");
+  if (st.tab === "human" && mode !== "human") setMode("human");
+  if (years.includes(st.year)) setYear(st.year);
+  if (SNAP[st.snap]) setSnap(st.snap);
+  if (EPOCHS[st.epoch]) setEpoch(st.epoch, { noAutoPgeo: true });
+  if (["annual", "jan", "apr", "jul", "oct"].includes(st.season)) setSeason(st.season);
+  if (st.metric === "precip" || st.metric === "temp") setMetric(st.metric);
+  if (["off", "e540", "e450", "e380", "e300", "e250", "e200", "e100", "e66", "e55", "e50", "e35"].indexOf(st.pgeo) >= 0) setPgeo(st.pgeo);
+  if (st.showSites === true) { showSites = true; sitesBtn.setAttribute("aria-pressed", "true"); }
+  if (ZONES.find(z => z.id === st.zone) && st.zone !== hmZone) { hmZone = st.zone; zoneSel.value = st.zone; drawHM(); }
+}
+try {
+  applyState(window.zcode && window.zcode.widgetState ? window.zcode.widgetState.modelContent : null);
+  window.addEventListener("zcode:set_globals", ev => {
+    const g = ev.detail && ev.detail.globals;
+    if (g && g.widgetState) applyState(g.widgetState.modelContent);
+  });
+} catch (e) { /* 忽略 */ }
+
+/* ---------- 启动 ---------- */
+const landFeatures = (CA_LAND || []).map(ring => ({ type: "Feature", properties: {}, geometry: { type: "Polygon", coordinates: [ring] } }));
+/* 海洋数据(TraCE-21K-II 海温距平)合并进快照温度场:陆地点用 PaleoClim,海洋点用 TraCE */
+const CA_OCEAN = window.CA_OCEAN_META && CA_OCEAN_BYTES ? window.CA_OCEAN_META : null;
+const ocNc = CA_OCEAN ? CA_OCEAN.meta.nlat * CA_OCEAN.meta.nlon : 0;
+const SG = CA_SNAPGRID ? {
+  nlat: CA_SNAPGRID.meta.lats.length,
+  nlon: CA_SNAPGRID.meta.lons.length,
+  periods: Object.fromEntries(Object.entries(CA_SNAPGRID.periods).map(([k, p]) => {
+    const landT = decodeFrame(p.temp.values);
+    let tempVals = landT;
+    if (CA_OCEAN && CA_OCEAN.meta.order.includes(k)) {
+      const oc = CA_OCEAN_BYTES.subarray(CA_OCEAN.meta.order.indexOf(k) * ocNc, (CA_OCEAN.meta.order.indexOf(k) + 1) * ocNc);
+      const merged = new Uint8Array(landT.length);
+      for (let j = 0; j < merged.length; j++) merged[j] = landT[j] !== 129 ? landT[j] : oc[j];
+      tempVals = merged;
+    }
+    const oceanSrc = (CA_OCEAN && CA_OCEAN.meta.keys[k] && CA_OCEAN.meta.keys[k].label) || "TraCE-21K-II";
+    return [
+      { mh: "holocene", lig: "lig", hs1: "hs1", ba: "ba", yds: "yds", eh: "eh", lh: "lh", mpwp: "pliocene" }[k] || k,
+      {
+        temp: { scale: p.temp.scale, values: tempVals, landTemp: landT, oceanSrc },
+        precip: { scale: p.precip.scale, values: decodeFrame(p.precip.values) }
+      }
+    ];
+  }))
+} : null;
+const SEASONS = G ? Object.fromEntries(["jan", "apr", "jul", "oct"].map((k, i) => [k, { scale: CA_GRID_META.seasonsScale[k], values: G.spatial.subarray((G.frames.length + i) * G.ncell, (G.frames.length + 1 + i) * G.ncell) }])) : null;
+const MONTH_LABEL = { jan: "1 月", apr: "4 月", jul: "7 月", oct: "10 月" };
+const PG = CA_PALEOGEO ? { epochs: CA_PALEOGEO.epochs } : null;
+syncPgeoVisibility();
+new ResizeObserver(() => drawMap()).observe(mapWrap);
+new ResizeObserver(() => drawChart()).observe(chartWrap);
+new ResizeObserver(() => drawChart2()).observe(chart2Wrap);
+new ResizeObserver(() => drawMini()).observe(miniWrap);
+new ResizeObserver(() => drawHM()).observe(hmWrap);
+drawMap();
+updateMap();
+drawChart();
+drawMini();
+drawHM();
+window.__CA_VER = "gif-export-4"; window.__CA = { setYear, setSnap, setSeason, setMetric, setPgeo, setEpoch, setMode, stopDeglac, years, human, buildGif, paintCells, gifFrame: (i, kind) => { gifEnsure(); gifSetF(i, kind); return gifGrab(); } };
+</script>

@@ -1,0 +1,998 @@
+=== PAGE 1 ===
+PALEOCEANOGRAPHY, VOL. 20, PA1003, doi:10.1029/2004PA001071, 2005
+Correction published 24 May 2005
+A Pliocene-Pleistocene stack of 57 globally distributed
+18
+benthic D O records
+Lorraine E. Lisiecki
+Department of Geological Sciences, Brown University, Providence, Rhode Island, USA
+Maureen E. Raymo
+Department of Earth Sciences, Boston University, Boston, Massachusetts, USA
+Received 8 July 2004; revised 9 November 2004; accepted 23 November 2004; published 18 January 2005.
+18
+[ 1 ] We present a 5.3-Myr stack (the ‘‘LR04’’ stack) of benthic d O records from 57 globally distributed sites
+18
+aligned by an automated graphic correlation algorithm. This is the first benthic d O stack composed of more
+than three records to extend beyond 850 ka, and we use its improved signal quality to identify 24 new marine
+isotope stages in the early Pliocene. We also present a new LR04 age model for the Pliocene-Pleistocene derived
+18
+from tuning the d O stack to a simple ice model based on 21 June insolation at 65 ° N. Stacked sedimentation
+rates provide additional age model constraints to prevent overtuning. Despite a conservative tuning strategy, the
+LR04 benthic stack exhibits significant coherency with insolation in the obliquity band throughout the entire
+5.3 Myr and in the precession band for more than half of the record. The LR04 stack contains significantly
+18
+more variance in benthic d O than previously published stacks of the late Pleistocene as the result of higher-
+resolution records, a better alignment technique, and a greater percentage of records from the Atlantic. Finally,
+18
+the relative phases of the stack’s 41- and 23-kyr components suggest that the precession component of d O
+18
+from 2.7–1.6 Ma is primarily a deep-water temperature signal and that the phase of d O precession response
+changed suddenly at 1.6 Ma.
+18
+Citation: Lisiecki, L. E., and M. E. Raymo (2005), A Pliocene-Pleistocene stack of 57 globally distributed benthic d O records,
+Paleoceanography , 20 , PA1003, doi:10.1029/2004PA001071.
+1. Introduction The stack’s resolution of orbital-scale (23-kyr) features in
+the Pleistocene is comparable to that of millennial-scale
+[ 2 ] Alley [2003] recently called for a paleoceano- 18
+(1.5-kyr) features in the GISP2 d O record [ Grootes et al. ,
+graphic ‘‘type section’’ to which all paleoceanographic
+1993], with 10–20 samples per cycle. The stack spans the
+measurements could be compared, in the same way that
+entire Pliocene-Pleistocene with error bars averaging only
+researchers have used data gathered by the Second
+0.1 % . We also use the LR04 stack to develop a conser-
+Greenland Ice Sheet Project (GISP2) and Greenland Ice 18
+vatively tuned d O timescale, which minimizes deviations
+Core Project (GRIP) in studies of the last glacial cycle.
+in globally averaged sedimentation rates. Although the
+A type section which provides a common timescale and
+LR04 stack contains only one paleoceanographic param-
+reference of comparison for all paleoceanographic
+eter, any paleoclimate proxy taken from a marine core
+records would improve communication within the commu- 18
+with reliable d O data can easily be aligned to the LR04
+nity and elucidate subtle differences among the ever-
+stack through the use of automated graphic correlation
+growing number of paleoceanographic records. Here we
+18 software [e.g., Lisiecki and Lisiecki , 2002]. The LR04 stack
+present a new 5.3-Myr benthic d O stack (the ‘‘LR04’’
+and supplemental results are archived at the National Geo-
+stack), which we propose would make an excellent paleo-
+physical Data Center (http://www.ngdc.noaa.gov/paleo/
+ceanographic type section for the Pliocene-Pleistocene.
+paleocean.html).
+[ 3 ] Alley [2003] describes the ideal type section as high in
+[ 4 ] In the following section we provide background infor-
+resolution, multiply replicated by different laboratories, 18
+mation on d O and previously published stacks. Section 3
+containing multiple paleoclimate proxies, and spanning as 18
+describes the d O data used in the LR04 stack. Section 4
+much time as possible. The LR04 stack contains over
+18 contains a detailed description of the stack’s construction
+38,000 individual d O measurements from 57 sites, sam-
+and demonstrates the effectiveness of our graphic correlation
+pled at many different laboratories. Because this stack
+and stacking techniques in reducing the noise level of
+incorporates information from so many sites, it has a 18
+18 d O-like signals. Section 5 describes the creation of the
+higher signal-to-noise ratio than any previous d O record
+orbitally tuned LR04 age model, which is additionally con-
+and more accurately reflects changes in global climate.
+strained by two measures of global sedimentation rate. In
+18
+section 6 we present specific d O estimates with error bars
+Copyright 2005 by the American Geophysical Union. and define 24 new marine isotope stages (MIS) in the early
+0883-8305/05/2004PA001071 Pliocene. We also compare the LR04 stack to four previously
+PA1003 1 of 17
+=== PAGE 2 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+18 al. [2002] construct an 860-kyr ‘‘minimally tuned’’ benthic
+Table 1. Notable d O Stacks
+stack by aligning the 41-kyr components of 13 benthic
+Component Approximate
+Stack d 18 O Records a Length records. However, they present a second, tropical stack
+b containing only six of these records because they find their
+SPECMAP 5 p. 750 kyr
+Pisias et al. [1984] 5 b. 300 kyr c alignment technique to be inadequate for cores with highly
+Prell et al. [1986] 11 p., 2 b. 750 kyr c variable sedimentation rates. Last, Huybers and Wunsch
+Williams et al. [1988] 3 p., 1 b. 1.9 Myr [2004] recently published a depth-derived age model for the
+Raymo et al. [1990] 3 b. 2.5 Myr last 780 kyr (hereinafter referred to as HW04), accompanied
+Bassinot et al. [1994] 2 p. 900 kyr
+d by the leading empirical orthogonal function (EOF1) of five
+S95 Composite 3 b. (in series) 6 Myr 18
+Karner et al. [2002] 6 – 13 b. 860 kyr planktonic and five benthic d O records. Their age model
+e
+HW04 5 p., 5 b. (EOF) 780 kyr assumes that the average sedimentation rate across 21 cores
+LR04 (this study) 57 b. 5.3 Myr was constant between 17 isotopic events, after applying a
+a
+Planktonic (p.) or benthic (b.). correction for the effects of down-core compaction. Many
+b
+From Imbrie et al. [1984]. other age models have been created by tuning data from
+c
+No timescale assigned to stack.
+d individual sites [e.g., Tiedemann et al. , 1994; Tiedemann
+From Shackleton [1995].
+e and Franz , 1997]; the proliferation of such age models can
+From Huybers and Wunsch [2004].
+greatly complicate the comparison of data from different
+sites.
+18
+published d O stacks. Finally, in section 7 we discuss the [ 7 ] The LR04 stack contains 57 benthic records aligned
+uncertainty in the LR04 age model and interpret changes in using a graphic correlation technique [ Lisiecki and Lisiecki ,
+18 18
+the phase of benthic d O relative to precession. 2002] and is the first benthic d O stack containing more
+than three records to extend beyond 850 ka. In section 6, we
+18 compare the LR04 stack with the S95 composite, the
+2. Stacks of D O
+18 SPECMAP stack, the minimally tuned tropical stack of
+[ 5 ] Time series of the d O of foraminiferal calcite tests
+Karner et al. [2002], and the depth-derived age model of
+provide an important record of climate change. Foraminif-
+18 18 HW04. We discuss several isotope stages for which the
+eral d O is a function of the temperature and d O of the 18
+18 S95 composite is not representative of global mean d O
+water in which it forms, and the d O of seawater is a
+as well as two likely errors in the S95 age model.
+function of global ice volume and water salinity. (The
+18
+scaling between d O and these two factors can vary with
+patterns of sea ice formation, evaporation, and precipita- 3. Data
+18 18
+tion.) Owing to the observed similarity of most marine d O [ 8 ] The stack presented in this paper contains benthic d O
+18
+records and the global nature of the ice volume signal, d O records from 57 globally distributed sites. These sites are
+measurements also serve as the primary means for placing well distributed in latitude, longitude, and depth in the
+marine climate records on a common timescale. Stacks, Atlantic and Pacific and include two sites in the Indian
+18 18
+which are averages of d O records from multiple sites, Ocean (Figure 1). Most of the d O measurements in these
+improve the signal-to-noise ratio of the climate signal and records are from Uvigerina peregrina or Cibicidoides wuel-
+make useful alignment targets and references for compari- lerstorfi , with appropriate species offset corrections
+18
+son. Benthic d O records should produce a better stack than [ Shackleton and Hall , 1984]. The included records vary
+planktonic records because the deep ocean is more uniform 18
+widely in resolution and time span. The only benthic d O
+in temperature and salinity than surface water. Less local records purposefully excluded from the LR04 stack are
+and regional climatic variability improves the accuracy of those with sample spacings greater than 12 kyr, a resolution
+18
+alignment and produces a better estimate of average d O too low for accurate alignment. Our stacking technique,
+change. While a stack alone cannot address the relative described below, is robust to the inclusion of records of
+contributions of ice volume and temperature to the benthic varying quality because sites with higher resolution are more
+18 18
+d O signal, a good stack does provide an accurate estimate heavily weighted in the averaging process. The aligned d O
+of how much total change must be explained. records used in the stack are shown in Figure 2. The stack
+18
+[ 6 ] Table 1 contains a summary of some notable d O contains 47 records back to 0.4 Ma,  25 records from 1–
+stacks. The most widely used stack is the one constructed by 3 Ma, at least 12 records back to 4.9 Ma, and 5 records
+SPECMAP [ Imbrie et al. , 1984] (hereinafter referred to as from 5–5.33 Ma. No one record represents more than 30%
+SPECMAP), which is composed of five planktonic records of the data in a 10-kyr interval except before 5 Ma, when
+and extends back to  750 kyr ago (ka). While studies Site 846 [ Shackleton et al. , 1995a] provides approximately
+support the basic structure of this stack and its timescale 40% of the data. In total, the LR04 stack incorporates
+back to  625 ka [e.g., Shackleton et al. , 1990; Pisias et al. , 18
+38,229 individual d O measurements.
+1990; Raymo , 1997; Huybers and Wunsch , 2004], many
+18
+longer and higher resolution d O records are now available.
+18 4. Stack Construction
+Another important d O reference signal is the 6-Myr
+18 4.1. Graphic Correlation
+composite benthic d O sequence of Shackleton [1995]
+(hereinafter referred to as S95), which was constructed by [ 9 ] Graphic correlation is the process of aligning paleo-
+18
+placing high-resolution d O records from three different climate signals based on the features within those signals
+sites (V19-30, ODP 677, and ODP 846) in series. Karner et [ Prell et al. , 1986], for example, by matching corresponding
+2 of 17
+=== PAGE 3 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+18
+Figure 1. Location of the cores used in this study. Benthic d O data are taken from Deep-Sea Drilling
+Project (DSDP) and Ocean Drilling Program (ODP) sites (crosses), GeoB sites (diamonds), and others
+(circles).
+18
+peaks. Graphic correlation inherently requires some judg- sequently, any specific forcing model for d O. However,
+ment to determine which features correspond to one another stacking with graphic correlation does involve two assump-
+18
+and to distinguish noise from isotopic features. Automated tions: that each site records the same global d O signal with
+correlation algorithms provide the most objective correla- little phase difference and that the alignment procedure is
+tion techniques because alignment criteria are explicit and not overly sensitive to noise. In support of the first assump-
+18
+applied consistently. However, each alignment must also be tion, each site does appear to record the same d O signal;
+evaluated by eye because stratigraphic disturbances result- the average correlation between the LR04 stack and indi-
+ing from hiatuses, coring gaps, and duplicated sections can vidual records (after alignment) is 0.88. Also, phase differ-
+18
+produce errors in the automated correlation. ences in d O between sites should be minimal because the
+18
+[ 10 ] We align 57 benthic d O records using an automated average mixing time of the deep ocean is only  1 kyr.
+graphic correlation program [ Lisiecki and Lisiecki , 2002], Glacial ventilation rates are uncertain, but benthic-plank-
+which considers all possible alignments to find the best tonic age differences at the last glacial maximum yield
+global fit and penalizes alignments based on extreme deep-water age estimates of 1.1 kyr in the deep Atlantic
+sedimentation rates and sudden sedimentation rate changes. [ Keigwin and Schlegel , 2002] and 2 kyr in the deep Pacific
+18
+Alignments are performed using normalized d O records to [ Broecker et al. , 2004]. Graphic correlation actually corrects
+maximize the algorithm’s accuracy. Each alignment is for any potential mixing lags between sites to produce an
+18
+evaluated by eye and adjusted, if necessary, by changing estimate of the d O signal as if it had been recorded with
+the sedimentation rate penalties or adding tie points until a the same phase everywhere.
+good alignment is achieved which agrees reasonably well [ 12 ] The assumption that alignments are insensitive to
+with previously published age estimates (e.g., those derived noise is a concern because sedimentation rates at individual
+from paleomagnetic reversals or biostratigraphic data). In sites are only loosely constrained in order to maximize the
+general, we keep sedimentation rate penalties small amplitude of isotopic features. Therefore we perform a
+because little is known about how linear sedimentation rates series of simple experiments to test the ability of our
+(LSR) vary with time. This allows the LSR at individual alignment technique to reduce noise without artificially
+sites to vary a great deal and preserves as much coherent increasing signal amplitude. In the experiments, we con-
+18
+d O variation as possible. With our alignments and age struct test stacks from twenty noisy copies of a single
+model, the average standard deviation ( s ) in a site’s LSR is isotope record. The noisy copies are created by the
+1.8 cm/kyr. As a percentage of each site’s mean LSR, s addition of white noise with standard deviations of 2 kyr
+18
+averages 41% and ranges from 24% at Site GeoB1041 to and 0.2 % to the ages and d O values of the initial signal.
+18
+164% at ODP Site 927 from 5.0–2.6 Ma. We also add white noise ( s = 0.15 % ) to the d O values
+[ 11 ] Graphic correlation allows the stack’s construction to of each alignment target before applying our graphic
+be largely independent of its assigned timescale and, con- correlation and stacking algorithms. Figure 3 shows test
+3 of 17
+=== PAGE 4 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+18
+Figure 2. Graphically aligned benthic d O data, plotted with their original variance but offset
+vertically. Data are from Sites 502 [ deMenocal et al. , 1992], 552 [ Shackleton and Hall , 1984], 607
+[ Ruddiman et al. , 1989; Raymo et al. , 1989; Raymo et al. , 1992; this study], 610 [ Raymo et al. , 1992],
+658 [ Tiedemann , 1991], 659 [ Tiedemann et al. , 1994], 662 (this study), 664 [ Raymo et al. , 1997], 665
+[ Curry and Miller , 1989], 677 [ Shackleton et al. , 1990], 704 [ Hodell and Venz , 1992], 722 [ Clemens et
+al. , 1996], 758 [ Chen et al. , 1995], 806 [ Berger et al. , 1993], 846 [ Mix et al. , 1995a; Shackleton et al. ,
+1995a], 849 [ Mix et al. , 1995b], 925 [ Bickert et al. , 1997; Billups et al. , 1998; Franz , 1999], 927 [ Bickert
+et al. , 1997; Franz , 1999], 928 [ Franz , 1999], 929 [ Bickert et al. , 1997; Billups et al. , 1998; Franz ,
+1999], 980 [ Oppo et al. , 1998; McManus et al. , 1999; Flower et al. , 2000], 981 [ Mc Intyre et al. , 1999;
+Raymo et al. , 2004], 982 [ Venz et al. , 1999; Venz and Hodell , 2002; this study], 983 [ Mc Intyre et al. ,
+1999; Raymo et al. , 2004], 984 [ Raymo et al. , 2004], 999 [ Haug and Tiedemann , 1998], 1012 and 1020
+[ Herbert et al. , 2001; Z. Liu, personal communication, 2002], 1085 (D. Andreasen, personal
+communication, 2002), 1087 [ Pierre et al. , 2001], 1088 [ Hodell et al. , 2003], 1089 [ Hodell et al. ,
+2001], 1090 [ Venz and Hodell , 2002], 1092 [ Andersson et al. , 2002], 1123 [ Hall et al. , 2001; Harris ,
+2002], 1143 [ Tian et al. , 2002], 1146 (S. Clemens, personal communication, 2002), 1148 [ Jian et
+al. , 2003], GeoB 1032, 1041, 1101 [ Bickert and Wefer , 1996], GeoB 1113 [ Sarnthein et al. , 1994], GeoB
+1117, 1211, 1214 [ Bickert and Wefer , 1996], GeoB 1312 [ Hale and Pflaumann , 1999], GeoB 1505 [ Zabel
+et al. , 1999], MD95-2042 [ Shackleton et al. , 2000], PC72 [ Murray et al. , 2000], RC13-110 [ Mix et al. ,
+1991; Imbrie et al. , 1992], RC13-229 [ Oppo et al. , 1990], V19-28 [ Ninkovitch and Shackleton , 1975],
+V19-30 [ Shackleton and Pisias , 1985], V21-146 [ Hovan et al. , 1991].
+4 of 17
+=== PAGE 5 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+18
+Figure 3. Test of alignment and stacking technique for (a) Pleistocene and (b) Pliocene d O. (top) One
+18
+of 20 artificial noisy d O records used to produce (middle) a test stack, which is compared to (bottom)
+18
+the initial d O signal. (See text for discussion.)
+stacks generated from initial signals of Pleistocene ( s = comparisons help prevent hiatuses, sediment disturbances,
+18
+0.43 % ) and Pliocene ( s = 0.21 % ) d O data. In 400 and splicing errors within an alignment target from affecting
+replications, the stacks’ error relative to the initial isotope the final stack. Where possible, we also avoid using the first
+signal (for either time period) has a standard deviation of and last 5% of each stack due to added uncertainty in the
+0.09 ± 0.01 % , less than the noise in the alignment target graphic correlation [ Lisiecki and Lisiecki , 2002]. After
+and half that of the noisy records used to construct the creating the transitional stack, we make a few adjustments
+stack. Experiments performed with red noise produce to its age model to eliminate large deviations in the sites’
+similar results. Stacking records of varying resolution sedimentation rates and perform a final set of alignments
+(while holding the total number of data points constant) using the transitional stack as the alignment target.
+18
+tends to reduce stack error by improving the alignment [ 15 ] The LR04 stack (Figure 4) is the average of all d O
+accuracy of high resolution records. In conclusion, the records aligned to the transitional stack. This final step
+extraordinary similarity between the test stacks and the improves alignment accuracy because the transitional stack
+18
+initial isotope signals demonstrates the ability of our resembles the average d O curve more closely than any
+alignment and stacking technique to increase the signal- individual site does. Also, because the transitional stack
+18
+to-noise ratio of Pleistocene and Pliocene d O records. spans the entire 5.3 Myr, most of our records could be
+aligned to it in one piece, reducing the potential for errors
+4.2. Stacking 18
+where the shorter stacks join together. The d O records
+[ 13 ] The alignment process for the stack’s construction is from eleven sites are aligned to the stack in multiple pieces
+iterative. Our initial alignment targets are high-resolution because they are greater than 3 Myr in length or contain
+18
+segments of seven d O records: GeoB1041 from 0– large gaps. In Figure 4 we show the final LR04 stack
+0.15 Ma, ODP Site 1012 from 0–0.6 Ma, ODP Site 927 assigned to the LR04 age model, described in section 5.
+from 0–1.4 Ma, ODP Site 677 from 0–2.0 Ma, ODP Site [ 16 ] Our stacking technique is similar to one used by
+849 from 1.7–3.6 Ma, ODP Site 846 from 2.7–5.3 Ma, Pisias et al. [1984]. The stack’s time domain is divided into
+18
+and ODP Site 999 from 3.3–5.3 Ma. Each d O record is small, equally spaced intervals (Table 2), and an average is
+first aligned to these targets in the depth domain to create taken of all d 18 O measurements lying within each time
+seven short stacks. In the intervals where these stacks interval. Therefore each point in the stack is the average of
+overlap, we observe that the features of the stacks are all of the data which fall in a particular time interval. Unlike
+largely independent of which site serves as the alignment the averaging of evenly interpolated records, this technique
+target. weights high-resolution records more heavily and prevents
+[ 14 ] The seven stacks are assigned timescales taken from interpolation across gaps or hiatuses from affecting the
+the S95 composite and spliced together to form a transi- stack. The final LR04 stack is composed of four sections
+tional stack spanning the entire 5.3-Myr interval. In con- of different resolution due to the decreasing number of
+structing the transitional stack, we select portions of the records available in the more distant past. Table 2 provides
+short stacks which are most representative of the component the interval size (equivalent to stack resolution) and data
+records and which best resolve substage features. These statistics for each section. For any given time interval, the
+5 of 17
+=== PAGE 6 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+18
+Figure 4. The LR04 benthic d O stack constructed by the graphic correlation of 57 globally distributed
+18
+benthic d O records. The stack is plotted using the LR04 age model described in section 5 and with new
+MIS labels for the early Pliocene (section 6.2). Note that the scale of the vertical axis changes across
+panels.
+concentration of data used in the LR04 stack is at least twice 0.15 % after 0.6 Ma), and we are currently developing a
+18 18
+as high as in any previous stack or individual d O record detailed description of regional d O variability.
+spanning that interval. The stack’s resolution is comparable
+to previous stacks but is less than half that of the highest-
+5. Age Model
+resolution records.
+[ 17 ] The LR04 stack is simply the average of the aligned [ 18 ] Because the LR04 stack is constructed by graphic
+18
+benthic d O records. We do not adjust the mean or variance correlation, its stratigraphic features are essentially inde-
+of the records, except to make species offset corrections. We pendent of any timescale. Below we describe the con-
+choose not to adjust the isotope curves based on their struction of an age model which takes advantage of the
+modern bottom water temperatures because the temperature high signal-to-noise ratio of the stack and analysis of the
+differences between sites may have changed dramatically sedimentation rates at 57 sites. However, almost any age
+over the last 5.3 Myr. We also do not weight the records model could be applied to the LR04 stack. This flexibility
+18
+based on their spatial distribution. The majority of records allows the stack to be adapted to alternate models of d O
+are from the Atlantic Ocean, and the number of sites in the response or to improvements in age estimates.
+stack varies with time, changing the relative weighting of [ 19 ] We construct the LR04 age model by aligning our
+18
+different regions. However, we observe that regional differ- benthic d O stack to a simple model of ice volume while
+18
+ences in benthic d O are typically less than 0.3 % (less than considering the average (stacked) sedimentation rate of
+6 of 17
+=== PAGE 7 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+Table 2. Interval Characteristics
+Interval Mean Number of Data Mean Standard Deviation Mean Standard Error
+Time, Ma Size, kyr Points per Interval per Interval, % per Interval, %
+0 – 0.6 1.0 30.6 0.22 0.05
+0.6 – 1.5 2.0 20.0 0.26 0.06
+1.5 – 3.0 2.5 16.5 0.26 0.06
+3.0 – 5.3 5.0 15.5 0.19 0.05
+the stack’s 57 sediment cores. This age model is more insolation curve for 65 ° N from the La93(1,1) orbital
+18
+reliable than one from a single d O record because solution, which uses modern values of dynamical ellipticity
+18
+individual d O records have more noise and fewer and tidal dissipation [ Laskar et al. , 1993]. We allow the
+constraints on linear sedimentation rates (LSR) than a nonlinearity b and mean time constant T m of the ice model
+stack. We seek to minimize changes in the stack’s to increase with time due to the long-term increase in global
+average LSR under the assumption that global sedimen- ice volume. From 5.3–3.0 Ma, b is 0.3 and T m is 5 kyr
+tation rates have been relatively stable. Constraining (M. Mudelsee, personal communication, 2004). Both
+average LSR does not prevent individual sites from increase linearly to 0.6 and 15 kyr, respectively, by 1.5 Ma
+exhibiting highly variable sedimentation rates. Age-versus- and remain at those values to the present. The Pleistocene
+depth plots and average sedimentation rates are often used to value of b is taken from Imbrie and Imbrie [1980] while the
+evaluate age models [e.g., Imbrie et al. , 1984; Shackleton time constant of 15 kyr is selected to maximize agreement
+et al. , 1990; Raymo , 1997] because timescale errors create with the independent age estimates used for the last 135 kyr
+LSR deviations at all sites while most sources of LSR of the stack.
+variability are local or regional. Unlike Huybers and [ 22 ] Ice sheet response time and the lag between insola-
+18
+Wunsch [2004], we do not assume that average sedimen- tive forcing and d O are poorly constrained before 0.8 Ma.
+tation rates are absolutely constant because the long-term We assume that small ice sheets respond more quickly than
+climatic changes of the Pliocene-Pleistocene have likely the massive ones of the late Pleistocene and choose early
+had some effect on sedimentation rates. Therefore our Pliocene values of b and T m to reflect the absence of large
+tuning goals are to prevent rapid fluctuations in stacked northern hemisphere ice sheets. However, a study of the lag
+18
+LSR and to minimize its variance. By allowing sedimen- between d O and other climate proxies at ODP Site 662
+tation rates to vary slowly with time, we also eliminate the suggests that T m may have been  15 kyr since 3 Ma
+need to correct for sediment compaction except at the very (P. deMenocal, manuscript in preparation, 2005). Using a
+top of the record. response time of 5 kyr, instead of 15 kyr, makes the early
+Pliocene portion of the LR04 age model  3 kyr older. At
+5.1. From 0 to 135 ka
+the other extreme, if T m does not reach 15 kyr until the late
+[ 20 ] While generally robust, our LSR tuning strategy is Pleistocene, our age estimates would be reduced by less
+not effective for the most recent portion of the stack, than 1 kyr from 3.0–0.8 Ma.
+where apparent sedimentation rates can be distorted by [ 23 ] The largest uncertainty in the Pliocene portion of the
+uncompacted sediments in the top few meters of a core LR04 age model probably comes from the orbital calcu-
+[e.g., Skinner and McCave , 2003; Huybers and Wunsch , lations themselves. Different values of tidal dissipation in
+2004]. Fortunately, reliable age estimates are available for the orbital solution can shift the age model by 5 kyr at 5 Ma
+this portion of the benthic d 18 O record. The top 22 kyr of
+[ Laskar et al. , 1993]. Additionally, changes in global ice
+14
+the stack are dated by correlation to the C-dated benthic volume could alter the Earth’s dynamical ellipticity to
+18
+d O record, NA87-22 [ Waelbroeck et al. , 2001]. From produce age model errors of up to 20 kyr by 5 Ma [ Laskar
+22 –120 ka the stack is aligned to the high-resolution et al. , 1993]. However, Lourens et al. [1996] do not find
+18
+benthic d O record of Site MD95-2042 [ Shackleton et evidence for tidal dissipation or dynamical ellipticity
+al. , 2000], which is dated by correlating millennial-scale changes in the Pliocene-Pleistocene climate record.
+18 18
+features in its planktonic d O to ice d O from the GRIP
+ice core [ Johnsen et al. , 1992]. Finally, the age of 5.3. Sedimentation Rate Constraints
+Termination II is taken from the U-Th dating of coral [ 24 ] To prevent tuning errors we monitor the implied
+terraces [ Bard et al. , 1990; Stein et al. , 1993]. average sedimentation rate of the stack throughout the
+tuning process. We construct two different estimates of
+5.2. Tuning Target global sedimentation rates: an LSR stack, which averages
+[ 21 ] Our tuning target is a simple nonlinear model of ice the sites’ sedimentation rates, and a ‘‘normalized’’ LSR
+volume, y , which follows the equation stack, which compensates for different mean sedimentation
+rates (MSR) across sites. The LSR of each site is calculated
+dy 1  b 18
+by placing its d O record on the stack’s timescale and
+¼ ð x  y Þ ð 1 Þ
+dt T m calculating its sedimentation rate. We calculate sedimenta-
+tion rates as a function of meters composite depth (mcd) or
+where the nonlinearity coefficient b is subtracted during ice revised mcd where possible (  75% of ODP records) and as
+growth and added during ice decay [ Imbrie and Imbrie , meters below seafloor (mbsf) otherwise. The first LSR stack
+1980]. The model’s forcing function, x , is the 21 June is an average of all site’s LSR estimates, interpolated to a
+7 of 17
+=== PAGE 8 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+18
+Figure 5. The tuning process. (a) The d O stack shown with 21 June insolation at 65 ° N, the ice-model
+tuning target, and an equally weighted average of ice and obliquity. (b) The normalized LSR stack for the
+same time period with circles denoting age control points.
+18
+resolution of 2 kyr. The second, normalized LSR stack is because obliquity induces the strongest d O response for
+constructed by dividing each site’s LSR by its MSR prior to most of the last 5.3 Myr. Our ice-model tuning target,
+18
+stacking. For the eleven sites with d O records aligned to which inherently accentuates the effects of obliquity rela-
+the stack in multiple segments, the LSR of each segment is tive to precession due to its long time constant, produces a
+18
+normalized separately. Normalization prevents sites with fairly good match to the d O stack. However, averaging
+high MSRs from being unduly weighted and reduces the normalized versions of the ice model and lagged orbital
+effect of records with different MSRs beginning and ending obliquity produces a curve which often has an even better
+18
+within the stack. For the idealized case in which each LSR correlation to d O (e.g., in Figure 5). At the few points
+is generated by an independent, stationary random process, where correlation between the stack and the ice model is
+the normalized LSR stack for the ‘‘true’’ age model would ambiguous within the constraints of average LSR, we
+converge to a constant value of unity. choose the correlation which is most consistent with
+obliquity forcing. Section 7.1 provides uncertainty esti-
+5.4. Tuning mates for the LR04 age model.
+[ 25 ] The LR04 stack is tuned to our simple ice model in a [ 27 ] Figure 6 shows the stacks of true and normalized
+two-step process by the addition of age control points with LSR produced by the final LR04 age model. Some features
+an average spacing of 20 kyr. The goal of our first tuning is of the two stacks differ slightly because they weight the
+18
+to find the correlation between d O and ice model minima LSR of each site differently. For example, the LSR stack is
+which produces the least variation in stacked LSR. Because more sensitive to variability at sites with high mean sedi-
+this initial age model is derived primarily from globally mentation rates while the normalized LSR stack is more
+averaged sedimentation rates with minimal orbital tuning, sensitive to sites with low sedimentation rates. The normal-
+we avoid assumptions about the age or length of each ized stack, in which each LSR record is divided by its mean
+glacial cycle. We also allow the instantaneous phase of sedimentation rate, has a standard deviation of 0.09 in the
+18
+d O to lag insolation by 0–120 ° . This age model generates final LR04 age model. The normalized LSR stack generally
+a normalized LSR stack with a standard deviation of only varies by less than 10% from 4.3 –0.1 Ma, demonstrating
+0.06. In our second tuning we loosen the LSR constraint in that little tuning is necessary to achieve a high coherence
+18
+order to keep the d O signal approximately in phase with with obliquity. Prior to 4.3 Ma normalized LSR must vary
+the obliquity component of the ice model. Figure 5 shows by up to  20% in order to achieve coherence with obliquity.
+the early Pleistocene portion of the stack and illustrates the These larger deviations may occur because fewer records
+balance achieved between strictly tuning the stack and contribute to the stack before 4 Ma, because the average
+minimizing the variance of normalized LSR. LSR of these sites is smaller, or because sedimentation rates
+[ 26 ] We emphasize obliquity in our tuning because its experienced greater variability in the early Pliocene. The
+effect on insolation is symmetric across hemispheres and age models of Shackleton et al. [1995b] (hereinafter referred
+8 of 17
+=== PAGE 9 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+Figure 6. Average sedimentation rate for all sites, smoothed with a 30-kyr box car filter. (a) LSR stack
+and (b) normalized LSR stack with horizontal dotted lines at 0.9, 1.0, and 1.1.
+to as SCHPS95) and Cande and Kent [1995] (hereinafter within the Pliocene and Pleistocene. The features of these
+referred to as CK95) also result in higher LSR variability stages are largely independent of the assigned age model
+before 4.3 Ma. because the stack is constructed by graphic correlation.
+[ 28 ] The coherence and phase of the stack relative to the Overall, the mean standard error of the stack is 0.06 % ,
+obliquity and precession components of 21 June insolation and only 2% of the data points have errors greater than
+are calculated using Blackman-Tukey cross-spectral analy- 0.1 % . This paper presents all isotopic error bars as plus or
+18
+sis [ Jenkins and Watts , 1968] with a moving window of minus two standard errors. The maximum d O value of the
+500 kyr and a 300-kyr lag (Figure 7). The stack is generally benthic stack is 5.08 ± 0.11 % at 433 and 630 ka (MIS 12
+incoherent with respect to the eccentricity component of and 16), and the minimum is 2.65 ± 0.15 % at 5.135 Ma
+insolation, but coherence with the obliquity component is at (MIS T7). The magnitudes and ages of the last seven glacial
+the 95% confidence level for most of its length and is terminations are provided in Table 3. We define termination
+18
+always above the 80% confidence level. At least one magnitude as the difference between the maximum d O
+precession frequency is coherent for all of the last 1.7 Myr value of the preceding glacial and the minimum of the
+and most of the interval from 4.1–2.8 Ma. following interglacial. Each termination is dated by the
+[ 29 ] Because we emphasize obliquity in our tuning pro- temporal midpoint between the start and end of rapid
+18
+cess, its phase relative to insolation is primarily determined change in d O. Terminations III and VI are shown to be
+by the lag generated by our ice model. The plot of obliquity significantly smaller than the others, in agreement with
+phase in Figure 7 clearly shows the increase in model Raymo [1997].
+response time from 3.0–1.5 Ma. The lag in obliquity is [ 31 ] Recent research has focused on MIS 11 as a possible
+relatively constant at 30 ° (3.4 kyr) before 3 Ma, then analog for the present interglacial [e.g., Loutre and Berger ,
+increases steadily, and finally levels off at 60 ° (6.8 kyr) in 2003; EPICA Community Members , 2004] because both
+the Pleistocene. At 4.4 Ma the obliquity phase shows a occur during times of low eccentricity. The LR04 age model
+small deviation, which may be related to the particularly establishes that MIS 11 spans two precession cycles, with
+18 18
+low 41-kyr variance of d O at that time. The lag relative to d O values below 3.6 % for 20 kyr, from 398 –418 ka. In
+precession is more variable. The average precession lag is comparison, stages 9 and 5 remained below 3.6 % for 13
+52 ° (3.3 kyr) from 4.1–2.7 Ma, decreases to 21 ° (1.3 kyr) and 12 kyr, respectively, and the Holocene interglacial has
+from 2.7–1.6 Ma, and then jumps to 75 ° (4.8 kyr) for the lasted 11 kyr so far. In the LR04 age model, the average
+rest of the Pleistocene. The average error in coherent phase LSR of 29 sites is the same from 398–418 ka as from 250–
+estimates is 8 ° for 41 kyr and 15 ° for 23 kyr. 650 ka; consequently, stage 11 is unlikely to be artificially
+stretched. However, the 21 June insolation minimum at
+2
+65 ° N during MIS 11 is only 489 W/m , much less pro-
+6. Results 2
+nounced than the present minimum of 474 W/m . In
+18
+6.1. The D O Values addition, current insolation values are not predicted to return
+[ 30 ] The LR04 benthic stack reconstructs the average to the high values of late MIS 11 for another 65 kyr. We
+18
+d O signal of each marine isotope stage and substage propose that this effectively precludes a ‘‘double precession
+9 of 17
+=== PAGE 10 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+Figure 7. Cross-spectral relationships between the LR04 benthic stack and 21 June insolation at 65 ° N.
+(a) Coherence with the 41-kyr (thick line), 23-kyr (squares), and 19-kyr (triangles) components of
+insolation. (b) Phase relative to insolation at 41, 23, and 19 kyr. Phases at 19 kyr are plotted only where
+coherent at the 80% confidence level.
+cycle’’ interglacial [e.g., Raymo , 1997] in the Holocene (e.g., Sites 607 and 846) although many are better resolved
+without human influence. by the stack. In the Pleistocene, the signal-to-noise ratio of
+d 18 O is sufficiently high that most isotopic stages and
+6.2. MIS Identification
+substages are accurately recorded in individual sediment
+[ 32 ] In Figure 4 we use the MIS taxonomy of SPECMAP, cores. One exception is the warm substage of MIS 28,
+Ruddiman et al. [1989], and Raymo et al. [1989] from the which is quite clear in the LR04 stack but absent in the S95
+present to MIS 104 in the Pliocene. Below MIS 104 we composite and somewhat distorted in DSDP Site 607. The
+adopt the stage identification scheme of Shackleton et al. lower signal-to-noise ratio of the Pliocene makes the defi-
+[1995a] (hereinafter referred to as SHP95). In this scheme nition of MIS stages from a single core more difficult. Some
+isotope events are identified based on the magnetic sub- of the smaller Pliocene stages from Sites 607 and 846
+chron within which they are found. For example, Co2 is the become better defined in the stack (e.g., MIS 77 and 83)
+uppermost glacial excursion within the Cochiti subchron. while others almost disappear because they are small or
+Shackleton et al. [1995a] developed this methodology to 18
+absent in most d O records. The stages which are unusually
+prevent uncertainty in stage identifications from accumulat- small or poorly defined in the LR04 stack are MIS 68, 69,
+ing down core. While they suggest that further subdivisions 79, 80, 94, 102, G5, G8, G9, K2, and KM6.
+of the stages be designated by lettered substages analogous [ 34 ] Below the Mammoth subchron, the LR04 stack
+to 5a–5e in the late Pleistocene, we feel that renumbering is reduces noise in some portions of the record to the extent
+less cumbersome and is justified by the large number of that new isotopic stages can be resolved. Therefore we
+records examined in this study. Therefore we propose introduce a new set of MIS names for these subchrons
+modifications to the early Pliocene MIS taxonomy as based on the identification of each stage in at least 80% of
+described below. Recognizing the potential for confusion
+when isotope stages are renamed, we do not remove any
+previously defined stages and only add a new one if it is Table 3. Recent Glacial Terminations
+18
+clearly identifiable in most d O records and has an ampli-
+Termination Magnitude, % Age, ka
+tude comparable to other nearby stages. Additionally, the
+flexibility of the SHP95 numbering scheme minimizes the I 1.78 ± 0.10 14
+II 1.86 ± 0.13 130
+number of renamed stages because new stages in one
+III 1.18 ± 0.16 243
+magnetic subchron will not alter MIS names in other IV 1.64 ± 0.13 337
+subchrons. V 1.97 ± 0.12 424
+[ 33 ] Above the Mammoth subchron, the stages in the VI 1.15 ± 0.14 533
+18 VII 1.57 ± 0.15 621
+LR04 stack are easily correlated to previous d O records
+10 of 17
+=== PAGE 11 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+Figure 8. New Pliocene marine isotope stages. The LR04 stack (top and repeated as shaded line) and
+seven of the highest-resolution records aligned to the stack. Site 846 is labeled with SHP95 stage
+identifications.
+the high-resolution records which span it. These new and reversal identification within sediment cores. Therefore
+stages, which fall between MG5 and ST4, are shown in we estimate the ages of magnetic reversals down to the
+Figure 8 along with the SHP95 stage identifications of Site Matuyama/Gauss boundary according to their average ages
+846 and six other high-resolution benthic records. Each in Sites 607, 659, 677, 982, 983, 1090, 1146, and 1148, with
+proposed change to the SHP95 stage names is described outliers more than 2% away from the mean removed. The
+below. First, SHP95 stages MG5 and MG6 at the bottom standard deviation in reversal ages from these sites ranges
+of the Mammoth-Gauss interval are subdivided into stages from 5 to 22 kyr. Because fewer records are available, below
+MG5–MG12, as shown in Figure 8. Next, SHP95 stage the Matuyama we also use reversal identifications from Leg
+Gi15 is subdivided into stages Gi15 –Gi19, causing SHP95 138, correlated to Site 846 [ Shackleton et al. , 1995b]. Ages
+stages Gi16 – Gi22 to be renamed Gi20 – Gi26. SHP95 for the Kaena and Mammoth subchrons are averages from
+stage N1 is split into stages N1 –N3, and SHP95 stages Sites 607 and 846 while the Gauss/Gilbert boundary and the
+N2 –N8 are renamed N4–N10. Finally, we insert stages top of the Cochiti subchron are dated from Sites 659 and
+Gi27 –Gi28, Co3 –Co4, CN3 –CN8, and ST3–ST4 at the 846. All other polarity reversals are based solely on Site 846.
+bottoms of their respective subchrons, where they have no Given the error involved in reversal identification, we
+effect on subsequent stage names. From the Thvera sub- observe that all four age models are quite similar.
+chron down, we again adopt the stage names of SHP95.
+6.4. Comparison to S95 Composite
+6.3. Paleomagnetic Polarity Reversals [ 36 ] With a few exceptions, the LR04 global Pliocene-
+[ 35 ] In Table 4 we compare the age estimates of paleo- Pleistocene stack is similar to the S95 composite, which
+magnetic polarity reversals from Shackleton et al. [1990] contains unstacked, high-resolution benthic records from
+(hereinafter referred to as SBP90), SCHPS95, CK95, sites V19-30, ODP 677, and ODP 846. One difference
+Lourens et al. [1996], and the LR04 age model. Errors in between the two records is that the S95 composite is
+these estimates can arise from both age model construction  0.14 % heavier than the LR04 stack after 1.8 Ma, where
+11 of 17
+=== PAGE 12 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+Table 4. Magnetic Polarity Reversal Ages, Ma indicate a stratigraphic disturbance in the ice core at the top
+of MIS 15.
+SBP90/ Lourens et LR04
+a [ 38 ] From 1.8–4.0 Ma the S95 composite is on average
+Reversal MIS SCHPS95 CK95 al. [1996] (This Study)
+7 kyr older than the LR04 age model, primarily due to the
+Brunhes/Matuyama 19 0.780 0.780 0.780
+different phase lag assumptions used. Before 4.5 Ma the S95
+Jaramillo (t) 28 0.990 0.990 0.991
+Jaramillo (b) 31 1.070 1.070 1.075 composite is  20 kyr younger than our age model (see
+Olduvai (t) 63 1.770 1.770 1.785 1.781 Table 4) due to the use of the Berger and Loutre [1991]
+Olduvai (b) 74 1.950 1.950 1.942 1.968 astronomical solution in the work of Shackleton et al.
+Matuyama/Gauss G2 2.600 2.581 2.582 2.608
+[1995b]. The LR04 age model agrees with the work of
+Kaena (t) G22 3.046 3.040 3.032 3.045
+Kaena (b) KM2 3.131 3.110 3.116 3.127 Lourens et al. [1996], which concludes that the S95 time-
+Mammoth (t) KM6 3.233 3.220 3.207 3.210 scale is one obliquity cycle too young prior to  4.6 Ma,
+Mammoth (b) MG1 3.331 3.330 3.330 3.319 based on the better fit of the geologic record to the Laskar et
+Gauss/Gilbert MG12 3.594 3.580 3.596 3.588
+al. [1993] orbital solution.
+Cochiti (t) Gi27 4.199 4.180 4.188 4.184
+Cochiti (b) Co4 4.316 4.290 4.300 4.306
+6.5. Comparison to Other Stacks
+Nunivak (t) N1 4.479 4.480 4.493 4.478
+Nunivak (b) N9 4.623 4.620 4.632 4.642 [ 39 ] The LR04 benthic stack is generally similar to
+Sidufjall (t) Si2 4.781 4.800 4.799 4.807 previously published stacks with respect to MIS features
+Sidufjall (b) Si6 4.878 4.890 4.896 4.898 and timescale but differs somewhat in its variance and
+Thvera (t) T1 4.977 4.980 4.998 4.989
+spectral density. Table 5 gives a summary of total and
+Thvera (b) TG2 5.232 5.230 5.236 5.254
+a orbital-band variances for the late Pleistocene from the five
+Here t, top; b, bottom. 18
+d O stacks discussed in this paper. We perform Blackman-
+Tukey spectral analysis for 0–780 ka with a lag of 400 kyr.
+the 677 and 846 records are joined. This suggests that sites (SPECMAP is analyzed over only the last 625 kyr with a
+18
+V19-30 and 677 have a small offset in d O relative to the 350-kyr lag.) The LR04 stack has more total variance than
+global mean. Additionally, the higher signal-to-noise ratio any of the other stacks but also contains proportionally more
+of the LR04 stack allows us to resolve new isotopic stages sites from the Atlantic, which may increase the amplitude of
+in the early Pliocene, as detailed above. Other discrepancies its deep-water temperature signal. When only deep Pacific
+between the two records are confined to the magnitudes of 2
+sites are stacked, the variance decreases to 0.16 % . This is
+specific isotopic stages. For example, the S95 composite comparable to the variance of the S95 composite, which
+underestimates the magnitude of Termination V by 0.6 % , represents one Pacific site, but still larger than the stacks of
+and the S95 composite records a pair of large positive SPECMAP and Karner et al. [2002], suggesting that their
+18
+excursions in d O at 3.35 Ma (MIS M2 and MG2) where
+the LR04 stack shows only one. Figure 9 demonstrates that
+ODP Site 846 is the only record in the stack to contain both
+large glacial excursions, suggesting a possible coring or
+splicing error. Also, the magnitudes of the heavy glacial
+stages KM2, Gi20, and Gi22 in the LR04 stack are  0.3 %
+smaller than at Site 846.
+[ 37 ] The age model of the S95 composite is based on the
+correlation of percent carbonate to orbital data. The portion
+from Site 677 is tuned to an ice model [ Shackleton et al. ,
+1990], and the portion from Site 846 is tuned directly to
+summer insolation with no phase lag [ Shackleton et al. ,
+1995b]. Although based on different tuning rationales, the
+LR04 and S95 age models differ by less than  10 kyr with
+only two exceptions. From 400 –590 ka the S95 composite
+is as much as 20 kyr younger than the LR04 and SPECMAP
+stacks (Figure 10). The EDC2 timescale for the ice core
+from Dome C, Antarctica [ EPICA Community Members ,
+2004], which is based on a parameterized ice-flow model,
+presents age estimates similar to the S95 composite for MIS
+13 and 14 but is nearly identical to the LR04 age model at
+MIS 11. On the basis of the average sedimentation rates of
+over 30 marine sediment records, we propose that the MIS
+13 and 14 age estimates of the S95 composite and EDC2 are
+in error. Either would require a short-term increase in global Figure 9. Marine isotope stages M2 and MG2. (top) The
+sedimentation rates of about 70%, a fluctuation which is LR04 stack shows a small MG2 glacial stage. Of the
+18
+three times larger than any other in the last 5.3 Myr (except (bottom) 19 d O records spanning stages M2 and MG2,
+for the effects of uncompacted sediments from 0–50 ka). only ODP Site 846 (thick line) shows a particularly heavy
+Because the EDC2 timescale is otherwise in close agree- glacial at MG2. All lower curves have been aligned
+ment with ours, the misalignment of stages 13 and 14 may vertically for illustrative purposes.
+12 of 17
+=== PAGE 13 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+Figure 10. (a) Late Pleistocene age models of the LR04 stack, the S95 composite, and the EDC
+Antarctic ice core (rescaled ice d D, EDC2 age model) [ EPICA Community Members , 2004]. Circles mark
+age control points used to parameterize the EDC2 ice-flow model. (b) The average normalized
+sedimentation rates (defined in section 5.3) produced by each age model.
+stacking techniques fail to preserve the full amplitude of late 860 ka. Before stacking they tune the obliquity component
+18
+Pleistocene d O change. of each record and apply a phase offset to produce a core-top
+[ 40 ] The MIS features of the LR04 and SPECMAP stacks age of 0 kyr. Unlike the development of our age model, their
+are quite similar back to 625 ka, but the planktonic tuning requires initial age estimates to calculate the 41-kyr
+SPECMAP stack has relatively more variance in the eccen- component of each record. This step produces alignment
+tricity and precession bands and less in obliquity, possibly errors which cause the authors to create a second stack that
+due to precessional responses in sea-surface conditions. excludes records with highly variable sedimentation rates.
+The variance of the SPECMAP stack is only 60% that of This second, tropical stack has consistently less amplitude
+the LR04 stack from 0–625 ka. The low resolution of than ours and a mean standard error of 0.09 % (compared to
+SPECMAP records and the smoothing performed on the 0.05 % for the LR04 stack over the same interval). The
+final stack probably played a large role in reducing reduced amplitude of their stack is probably due to the
+18
+SPECMAP variance. The SPECMAP and LR04 age models introduction of phase shifts between its component d O
+18
+typically differ by less than 6 kyr since 625 ka (Figure 11). records. Phase differences of up to 11 kyr between their d O
+The SPECMAP age model is distorted before 625 ka due to records can be expected to reduce their stack’s precession
+an error in the accepted age of the Brunhes/Matuyama component in particular. Indeed, the tropical stack has only
+reversal, later corrected by Shackleton et al. [1990]. 25% as much precessional variance as the LR04 stack
+[ 41 ] Karner et al. [2002] present a ‘‘minimally tuned’’ (Table 5). The Karner et al. [2002] and LR04 age models
+18
+stack of six tropical benthic d O records extending to generally differ by 3–13 kyr, converging only at 0 and
+18
+Table 5. Orbital Variance in d O, 0 – 780 ka
+LR04 a S95 SPECMAP b Tropical Stack c HW04 d
+Total Variance, % 2 0.20 0.15 0.12 0.13 –
+Eccentricity (88 – 120 kyr), % 45 37 48 54 52
+Obliquity (38 – 48 kyr), % 18 17 12 12 12
+Precession (17 – 25 kyr), % 6.7 9.2 13 2.6 4.7
+a This study.
+b From 0 to 625 ka.
+c From Karner et al. [2002].
+d From Huybers and Wunsch [2004] (EOF1, normalized).
+13 of 17
+=== PAGE 14 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+records and inherently has fewer tuning and alignment
+constraints.
+[ 44 ] In the more recent part of the age model, most of
+the uncertainty derives from our sedimentation rate con-
+straint and the assumed response times of the ice sheets.
+The LSR tuning technique may neglect some real but high-
+frequency changes in global LSR, such as those resulting
+from global climate reorganizations over glacial-intergla-
+cial cycles. However, such changes would produce age
+model errors of no more than several thousand years, and
+alignment to the tuning target prevents these errors from
+accumulating over multiple cycles. Deviations from the
+tuning target due to our sedimentation rate constraints are
+typically no more than 4 kyr. Uncertainty in ice sheet
+response time could produce errors of 1 kyr in the
+Pleistocene and 3.5 kyr in the Pliocene. Including all
+sources of error, we estimate the uncertainty in the LR04
+age model to be 40 kyr from 5.3–5 Ma, 30 kyr from
+5–4 Ma, 15 kyr from 4–3 Ma, 6 kyr from 3–1 Ma, and
+4 kyr from 1–0 Ma.
+Figure 11. Differences between the LR04 age model and
+18
+four other d O age models. Positive values indicate that 7.2. Precession Phase and Deep-Water Temperature
+isotopic features are older in the LR04 age model. [ 45 ] As explained in section 5.4, the time constant of
+our ice model is the primary factor controlling the stack’s
+860 ka. However, the lower precession power of the phase relative to obliquity. Because we emphasize obliq-
+tropical stack (Figure 12) is not caused by age model uity in our tuning procedure, the stack’s phase relative to
+differences because using the LR04 age model only precession is allowed to deviate from that of the ice
+increases the tropical stack’s precession power to 2.8% model. Indeed, Figure 7 shows that the stack’s lag in
+of total variance. precession actually decreases at 2.7 Ma while the ice-
+[ 42 ] The depth-derived age model of Huybers and sheet response time and obliquity lag begin to increase.
+Wunsch [2004] ranges from 5 kyr older to 8 kyr younger From 2.7–1.6 Ma the average precession lag is only 21 °
+than the LR04 age model and averages 6.5 kyr younger or 1.3 kyr, about 2 ± 1 kyr smaller than that of our ice
+from 150–500 ka. These age differences all fall within the model tuning target. This small lag suggests that a
+uncertainty estimates published for the HW04 age model.
+The leading EOF of their best benthic and planktonic
+records contains proportionally more variance than the
+LR04 stack in the 100-kyr band but less in the 41- and
+23-kyr bands. Huybers and Wunsch [2004] predict this drop
+off in orbital variance at higher frequencies due to the
+effects of jitter in their age model. The spectral power and
+substage features of their EOF are also affected by the use
+of only 17 age control points to align the records. Interest-
+ingly, even their benthic EOF with no orbital tuning has
+more variance in the precession band (3.6%) than the
+minimally tuned stack of Karner et al. [2002].
+7. Discussion
+7.1. Age Model Uncertainty
+[ 43 ] The greatest potential source of error in the LR04 age
+model is uncertainty in the orbital solution, which may be as
+high as 25 kyr in the early Pliocene. Relative to the orbital
+solution, our tuning errors should be no more than a few
+thousand years because we tune a low-noise signal and
+18
+avoid spikes in the stack’s average sedimentation rate. The Figure 12. The spectral density of benthic d O over the
+only portion of the timescale for which we consider tuning last 860 kyr in the LR04 stack (solid line) and the minimally
+errors greater than 10 kyr possible is prior to 4.3 Ma, where tuned tropical stack of Karner et al. [2002] (dashed line).
+the stack contains less 41-kyr variance and larger deviations Spectral analysis is performed using Blackman-Tukey
+in average LSR are required to achieve coherence with analysis with 500 lags on 860 values. (The peak at 29 kyr
+obliquity. Before 5 Ma the LR04 age model is also subject is commonly observed and is thought to be a nonlinear
+to increased uncertainty because the stack contains fewer climate response [e.g., Huybers and Wunsch , 2004].)
+14 of 17
+=== PAGE 15 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+significant portion of the precession component of late tidal dissipation in the orbital solution, producing an uncer-
+18
+Pliocene d O is a deep-water temperature signal which tainty of about 30 ° .
+leads ice volume. An increase in the magnitude of
+temperature response at 2.7 Ma would account for the
+8. Conclusions
+observed decline in precession lag during the onset of
+northern hemisphere glaciation. The temperature response [ 49 ] The global Pliocene-Pleistocene stack presented in
+18
+may have continued to increase from 2.7–1.6 Ma, com- this paper contains benthic d O data from 57 globally
+pensating for the gradually increasing lag of the ice distributed sites and has an average standard error of only
+model. At 1.6 Ma the precession lag suddenly jumps 0.06 % . The LR04 age model takes advantage of the stack’s
+by 45 ° relative to that of obliquity, putting it in close low noise content and conservatively tunes the stack within
+agreement with our ice model for the rest of the the constraints provided by global sedimentation rates. The
+Pleistocene. LR04 stack and the LR04 age model provide the paleoclimate
+[ 46 ] Phase measurements are fairly sensitive to age model community with two stratigraphic tools, which can be applied
+uncertainty, but this is not a likely explanation for this to a wide variety of Pliocene-Pleistocene studies. We hope
+sudden phase shift. First, the stack’s obliquity phase is that they will serve as a much-needed common timescale and
+approximately constant at 1.6 Ma. Changing the age model reference of comparison (correlation target) for the large
+to eliminate the jump in precession lag would therefore number of paleoceanographic records collected recently.
+produce a counterintuitive decline in obliquity lag. If the ice [ 50 ] The LR04 stack agrees well with previously pub-
+model’s mean time constant T m is held constant at 15 kyr lished stacks for the late Pleistocene but exhibits signifi-
+for the last 3 Myr, a 30 ° change in precession lag still cantly more variance as the result of higher-resolution
+occurs at 1.6 Ma. Finally, the use of an ice model forced by records, a better alignment technique, and a greater percent-
+insolation on a day other than 21 June shifts the precession age of records from the Atlantic. The LR04 stack is also the
+lag of the entire stack but does not affect the sudden change first stack to extend before 2.5 Ma and therefore offers an
+at 1.6 Ma. invaluable improvement in signal quality for the early to
+18 mid-Pliocene. We define 24 new isotopic stages from 5.0–
+[ 47 ] The observed increase in d O lag at 1.6 Ma could
+be due to a decline in precession-driven temperature 3.4 Ma and identify several likely errors in the S95
+change, an increase in the precession response of ice composite. The LR04 age model, designed to minimize
+volume, or an increase in the lag of temperature. We changes in global sedimentation rates, generally supports
+propose that either a climate feedback sensitive to preces- the SPECMAP timescale back to 625 ka and the S95 age
+sion enhanced ice sheet response or the deep-water tem- model, except from 0.6 –0.4 Ma and before 4.5 Ma. Finally,
+perature signal became phase-locked with ice volume due the LR04 stack’s phase relative to precession suggests the
+to the increased climatic influence of large northern presence of a large deep-water temperature signal from 2.7–
+hemisphere ice sheets. Additionally, a pronounced expan- 1.6 Ma and reveals a sudden change in the phase of
+sion of polar (cold water) fauna occurs in the North precession response at 1.6 Ma.
+Atlantic at about this time [ Raymo et al. , 1986; Mc Intyre
+et al. , 2001]. Notation
+[ 48 ] Finally, the stack’s coherence with precession from 2
+x 21 June insolation at 65 ° N, W/m ;
+4.1 –2.8 Ma provides clues to the climate’s response before
+y modeled ice volume;
+the growth of major northern hemisphere ice. The stack’s
+b nonlinearity coefficient of ice;
+phase relative to precession in this interval demonstrates
+T m mean time constant of ice, kyr;
+that northern hemisphere insolation was the major driver of
+18 s standard deviation.
+benthic d O change by at least 4.1 Ma, perhaps through
+northern deep-water formation or the growth of small
+[ 51 ] Acknowledgments. We thank all of the researchers who have
+northern glaciers. Precession response is not significantly made their data available; without their work, these results would not be
+18
+coherent prior to 4.1 Ma, presumably due to weaker d O possible. L. Lisiecki also thanks T. Herbert, W. Prell, and S. Clemens for their
+guidance throughout this project. We thank R. Tiedemann and L. Skinner for
+response, but our phase estimates are still indicative of
+their thoughtful reviews. N. Shackleton, W. Ruddiman, P. deMenocal, Z. Liu,
+northern hemisphere forcing. We also note that the stack’s K. Lawrence, L. Cleaveland, P. Huybers, and M. Mudelsee also contributed
+precession lag prior to 3.6 Ma is sensitive to the value of many helpful comments regarding this manuscript.
+References
+Alley, R. B. (2003), Raising paleoceanography, corals from Barbados: Sea level during the past Berger, W. H., T. Bickert, H. Schmidt, and
+Paleoceanography , 18 (4), 1085, doi:10.1029/ 130,000 years, Nature , 346 , 456 – 458. G. Wefer (1993), Quaternary oxygen iso-
+2003PA000942. Bassinot, F. C., L. D. Labeyrie, E. Vincent, tope record of pelagic foraminifers: Site
+Andersson, C., D. A. Warnke, J. E. T. Channell, X. Quidelleur, N. J. Shackleton, and Y. Lancelot 806, Ontong Java Plateau, Proc. Ocean
+J. Stoner, and E. Jansen (2002), The mid- (1994), The astronomical theory of climate Drill. Program Sci. Results , 130 , 381 –
+Pliocene (4.2 – 2.6 Ma) benthic stable isotope and the age of the Brunhes-Matuyama mag- 395.
+record of the Southern Ocean: ODP Sites netic reversal, Earth Planet. Sci. Lett. , 126 , Bickert, T., and G. Wefer (1996), Late Quatern-
+1092 and 704, Meteor Rise, Palaeogeogr. 91 – 108. ary deep water circulation in the South Atlan-
+Palaeoclimatol. Palaeoecol. , 182 , 165 – 181. Berger, W. H., and M. F. Loutre (1991), Insola- tic: Reconstruction from carbonate dissolution
+Bard, E., B. Hamelin, and R. G. Fairbanks (1990), tion values for the climate of the last 10 m. y., and benthic stable isotopes, in The South
+U-Th ages obtained by mass spectrometry in Quat. Sci. Rev. , 10 , 297 – 317. Atlantic: Present and Past Circulation , edited
+15 of 17
+=== PAGE 16 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+by G. Wefer et al., pp. 599 – 620, Springer, Atlantic Ocean thermohaline circulation, Nat- for the Earth from  20 Myr to +10 Myr,
+New York. ure , 393 , 673 – 676. Astron. d Astrophys. , 270 , 522 – 533.
+Bickert, T., W. B. Curry, and G. Wefer (1997), Herbert, T. D., J. D. Schuffert, D. Andreasen, Lisiecki, L. E., and P. A. Lisiecki (2002),
+Late Pliocene to Holocene (2.6 – 0 Ma) wes- L. Heusser, M. Lyle, A. Mix, A. C. Ravelo, Application of dynamic programming to
+tern equatorial Atlantic deep-water circulation: L. D. Stott, and J. C. Herguera (2001), the correlation of paleoclimate records, Paleo-
+Inferences from benthic stable isotopes, Proc. Collapse of the California current during ceanography , 17 (4), 1049, doi:10.1029/
+Ocean Drill. Program Sci. Results , 154 , 239 – glacial maxima linked to climate change 2001PA000733.
+254. on land, Science , 293 , 71 – 76. Lourens, L. J., A. Andtonarakou, F. J. Hilgen,
+Billups, K., A. C. Ravelo, and J. C. Zachos Hodell, D. A., and K. Venz (1992), Toward a A. A. M. Van Hoof, C. Vergnaud-Grazzini,
+(1998), Early Pliocene deep water circulation high-resolution stable isotopic record of the and W. J. Zachariasse (1996), Evaluation of
+in the western equatorial Atlantic: Implica- Southern Ocean during the Pliocene-Pleisto- the Plio-Pleistocene astronomical timescale,
+tions for high-latitude climate change, Paleo- cene (4.8 to 0.8 Ma), in The Antarctic Paleoceanogrphy , 11 , 391 – 413.
+ceanography , 13 , 84 – 95. Paleoenvironment: A Perspective on Global Loutre, M. F., and A. Berger (2003), Marine
+Broecker, W. S., E. Clark, I. Hajdas, and Change , Antarct. Res. Ser. , vol. 56, edited by isotope stage 11 as an analogue for the present
+G. Bonani (2004), Glacial ventilation rates for J. P. Kennett and D. A. Warnkepp, pp. 265 – interglacial, Global Planet. Change , 36 , 209 –
+the deep Pacific Ocean, Paleoceanography , 310, AGU, Washington, D. C. 217.
+19 , PA2002, doi:10.1029/2003PA000974. Hodell, D. A., C. D. Charles, and F. J. Sierro Mc Intyre, K., A. C. Ravelo, and M. L. Delaney
+Cande, S. C., and D. V. Kent (1995), Revised (2001), Late Pleistocene evolution of the (1999), North Atlantic Intermediate Waters in
+calibration of the geomagnetic polarity time- ocean’s carbonate system, Earth Planet. Sci. the late Pliocene to early Pleistocene, Paleo-
+scale for the Late Cretaceous and Cenozoic, Lett. , 192 , 109 – 124. ceanography , 14 , 324 – 335.
+J. Geophys. Res. , 100 (B4), 6093 – 6095. Hodell, D. A., C. D. Charles, J. H. Curtis, P. G. Mc Intyre, K., M. L. Delaney, and A. C. Ravelo
+Chen, J., J. Farrell, D. Murray, and W. Prell Mortyn, U. S. Ninnemann, and K. A. Venz (2001), Millenial-scale climate change and
+(1995), Timescale and paleoceanographic (2003), Data report: Oxygen isotope stratigra- oceanic processes in the late Pliocene and
+implications of a 3.6 m. y. oxygen isotope phy of ODP Leg 177 Sites 1088, 1089, 1090, early Pleistocene, Paleoceanography , 16 ,
+record from the northeast Indian Ocean 1093, and 1094, Proc. Ocean Drill. Program 535 – 543.
+(Ocean Drilling Program site 758), Paleo- Sci. Results , 177 , 1 – 26. (Available at http:// McManus, J. F., D. W. Oppo, and J. Cullen
+ceanography , 10 , 21 – 47. www-odp.tamu.edu/publications/177_SR/ (1999), A 0.5-million-year record of millen-
+Clemens, S. C., D. W. Murray, and W. L. Prell volume/chapters/SR177_09.pdf.) nial-scale climate variability in the North
+(1996), Nonstationary phase of the Plio- Hovan, S. A., D. K. Rea, and N. G. Pisias Atlantic, Science , 283 , 971 – 975.
+Pleistocene Asian monsoon, Science , 274 , (1991), Late Pleistocene continental climate Mix, A. C., N. G. Pisias, R. Zahn, W. Rugh,
+943 – 948. and oceanic variability recorded in northwest C. Lopez, and K. Nelson (1991), Carbon-13
+Curry, W. B., and K. G. Miller (1989), Oxygen Pacific sediments, Paleoceanography , 6 , in Pacific deep and intermediate waters, 0 –
+and carbon isotopic variation in Pliocene 349 – 370. 370 ka: Implications for ocean circulation
+benthic foraminifers in, Proc. Ocean Drill. Huybers, P., and C. Wunsch (2004), A depth- and Pleistocene carbon dioxide, Paleoceano-
+Program Sci. Results , 138 , 157 – 166. derived Pleistocene age model: Uncertainty graphy , 6 , 205 – 226.
+deMenocal, P. B., D. W. Oppo, R. G. Fairbanks, estimates, sedimentation variability, and non- Mix, A. C., J. Le, and N. J. Shackleton (1995a),
+and W. L. Prell (1992), Pleistocene d 13 C varia- linear climate change, Paleoceanography , 19 , Benthic foraminiferal stable isotope stratigra-
+bility of North Atlantic intermediate water, PA1028, doi:10.1029/2002PA000857. phy from Site 846: 0 – 1.8 Ma, Proc. Ocean
+Paleoceanography , 7 , 229 – 250. Imbrie, J., and J. Z. Imbrie (1980), Modeling the Drill. Program Sci. Results , 138 , 839 – 847.
+EPICA Community Members (2004), Eight gla- climatic response to orbital variations, Mix, A. C., N. G. Pisias, W. Rugh, J. Wilson,
+cial cycles from an Antarctic ice core, Nature , Science , 207 , 943 – 953. A. Morey, and T. K. Hagelberg (1995b),
+429 , 623 – 628. Imbrie, J., J. D. Hays, D. G. Martinson, Benthic foraminifer stable isotope record
+Flower, B. P., D. W. Oppo, J. F. McManus, K. A. A. McIntyre, A. C. Mix, J. J. Morley, N. G. from Site 849 (0 – 5 Ma): Local and global
+Venz, D. A. Hodell, and J. L. Cullen (2000), Pisias, W. L. Prell, and N. J. Shackleton climate changes, Proc. Ocean Drill. Program
+North Atlantic intermediate to deep water (1984), The orbital theory of Pleistocene Sci. Results , 138 , 371 – 412.
+circulation and chemical stratification during climate: Support from a revised chronology, Murray, R. W., C. Knowlton, M. Leinen, A. C.
+18
+the past 1 Myr, Paleoceanography , 15 , of the marine d O record, in Milankovitch Mix, and C. H. Polsky (2000), Export produc-
+388 – 403. and Climate, Part 1 , edited by A. Berger, tion and carbonate dissolution in the central
+Franz, S.-O. (1999), Plioza ¨ne Zeitreihen zur Re- pp. 269 – 305, Springer, New York. equatorial Pacific Ocean over the past 1 Ma,
+konstruktion der Tiefenwasserzirkulation und Imbrie, J., et al. (1992), On the structure and Paleoceanography , 15 , 570 – 592.
+der siliziklastischen Amazonasfracht im a ¨qua- origin of major glaciation cycles: 1. Linear Ninkovitch, D., and N. J. Shackleton (1975),
+torialen Westatlantik (Ceara Schwelle, ODP responses to Milankovitch forcing, Paleocea- Distribution, stratigraphic position and age of
+Leg 154), Rep. 84 , Geomar, Kiel, Germany. nography , 7 , 701 – 738. ash layer ‘‘L,’’ in the Panama Basin region,
+Grootes, P. M., M. Stuvier, J. W. C. White, S. J. Jenkins, G. M., and D. G. Watts (1968), Spectral Earth Planet. Sci. Lett. , 27 , 20 – 34.
+Johnsen, and J. Jouzel (1993), Comparison of Analysis and Its Applications , 525 pp., Hol- Oppo, D. W., R. G. Fairbanks, A. L. Gordon,
+oxygen isotope records from GISP2 and GRIP den-Day, Boca Raton, Fla. and N. J. Shackleton (1990), Late Pleistocene
+Greenland ice cores, Nature , 366 , 552 – 554. Jian, Z., Q. Zhao, X. Cheng, J. Wang, P. Wang, Southern Ocean 13 C variability, Paleoceano-
+Hale, W., and U. Pflaumann (1999), Sea-surface and X. Su (2003), Pliocene-Pleistocene stable graphy , 5 , 43 – 54.
+temperature estimations using a modern ana- isotope and paleoceanographic changes in Oppo, D. W., J. F. McManus, and J. L. Cullen
+log technique with foraminiferal assemblages the northern South China Sea, Palaeogeogr. (1998), Abrupt climate events 500,000 to
+from western Atlantic Quaternary sediments, Palaeoclimatol. Palaeoecol. , 193 , 425 – 442. 340,000 years ago: Evidence from subpolar
+in Use of Proxies in Paleoceanography— Johnsen, S. J., H. B. Clausen, W. Dansgaard, North Atlantic sediments, Science , 279 ,
+Examples From the South Atlantic , edited N. Fuhrer, N. S. Gundestrup, C. U. Hammer, 1335 – 1338.
+by G. Fischer and G. Wefer, pp. 69 – 90, P. Iverson, J. Jouzel, B. Stauffer, and J. P. Pierre, C., J. F. Saliege, M. J. Urrutiaguer, and
+Springer, New York. Steffensen (1992), Irregular glacial intersta- J. Giraudeau (2001), Stable isotope record of
+Hall, I. R., I. N. McCave, N. J. Shackleton, G. P. dials recorded in a new Greenland ice core, the last 500 k.y. at Site 1087 (Southern Cape
+Weedon, and S. E. Harris (2001), Intensified Nature , 364 , 218 – 220. Basin), Proc. Ocean Drill. Program Sci. Re-
+deep Pacific inflow and ventilation in Pleisto- Karner, D. B., J. Levine, B. P. Medeiros, and sults , 175 , 1 – 22. (Available at http://www-
+cene glacial times, Nature , 412 , 809 – 812. R. A. Muller (2002), Constructing a stacked odp.tamu.edu/publications/175_SR/chap_12/
+18
+Harris, S. E. (2002), Data report: Late Pliocene- benthic d O record, Paleoceanography , chap_12.htm.)
+Pleistocene carbon and oxygen stable isotopes 17 (3), 1030, doi:10.1029/2001PA000667. Pisias, N. G., D. G. Martinson, T. C. Moore Jr.,
+from benthic foraminifers at Ocean Drilling Keigwin, L. D., and M. A. Schlegel (2002), N. J. Shackleton, W. Prell, J. Hays, and
+Program Site 1123 in the southwest Pacific, Ocean ventilation and sedimentation since G. Boden (1984), High resolution strati-
+Proc. Ocean Drill. Program Sci. Results , the glacial maximum at 3 km in the western graphic correlation of benthic oxygen isotope
+181 , 1 – 20. (Available at http://www-odp. North Atlantic, Geochem. Geophys. Geosyst. , records spanning the last 300,000 years, Mar.
+tamu.edu/publications/181_SR/203/203.htm.) 3 (6), 1034, doi:10.1029/2001GC000283. Geol. , 56 , 119 – 136.
+Haug, G. H., and R. Tiedemann (1998), Effect of Laskar, J., F. Joutel, and F. Boudin (1993), Pisias, N. G., A. C. Mix, and R. Zahn (1990),
+the formation of the Isthmus of Panama on Orbital, precessional and insolation quantities Nonlinear response in the global climate sys-
+16 of 17
+=== PAGE 17 ===
+19449186, 2005, 1, Downloaded from https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2004PA001071 by Beijing Institution Of, Wiley Online Library on [03/11/2026]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+PA1003 LISIECKI AND RAYMO: PLIOCENE-PLEISTOCENE BENTHIC STACK PA1003
+tem: Evidence from benthic oxygen isotopic Shackleton, N. J. (1995), New data on the evolu- Pala ¨ o-Ozeanographie des angrenzenden
+record in core RC13-110, Paleoceanography , tion of Pliocene climate variability, in Paleocli- Atlantiks, Ber. Rep. 46 , 190 pp., Geol.-Pala ¨on-
+5 , 147 – 160. mate and Evolution, With Emphasis on Human tol. Inst. und Mus., Christian-Albrechts-Univ.,
+Prell, W. L., J. Imbrie, D. G. Martinson, J. J. Origins , edited by E. S. Vrba et al., pp. 242 – Kiel, Germany.
+Morley, N. G. Pisias, N. J. Shackleton, and 248, Yale Univ. Press, New Haven, Ct. Tiedemann, R., and S. O. Franz (1997), Deep-
+H. F. Streeter (1986), Graphic correlation of Shackleton, N. J., and M. A. Hall (1984), Oxy- water cicurlation, chemistry, and terrigenous
+oxygen isotope stratigraphy: Application to gen and carbon isotope stratigraphy of DSDP sediment supply in the equatorial Atlantic dur-
+the Late Quaternary, Paleoceanography , 1 , Hole 552A: Plio-Pleistocene glacial history, ing the Pliocene, 3.3 – 2.6 Ma and 5 – 4.5 Ma,
+137 – 162. Initial Rep. Deep Sea Drill. Project , 81 , Proc. Ocean Drill. Program Sci. Results , 154 ,
+Raymo, M. E. (1997), The timing of major 599 – 609. 299 – 318.
+climate terminations, Paleoceanography , 12 , Shackleton, N. J., and N. G. Pisias (1985), Tiedemann, R., M. Sarnthein, and N. J.
+577 – 585. Atmospheric carbon dioxide, orbital forcing, Shackleton (1994), Astronomic timescale
+18
+Raymo, M. E., W. F. Ruddiman, and B. M. and climate, in The Carbon Cycle and Atmo- for the Pliocene Atlantic d O and dust flux
+Clement (1986), Plio-Pleistocene paleoceanog- spheric CO 2 : Natural Variations Archean to records of Ocean Drilling Program site 659,
+raphy of the North Atlantic at Deep Sea Dril- Present , Geophys. Monogr. Ser. , vol. 32, edited Paleoceanography , 9 , 619 – 638.
+ling Project Site 609, Initial Rep. Deep Sea by E. Sundquist and W. S. Broecker, pp. 303 – Venz, K. A., and D. A. Hodell (2002), New
+Drill. Proj. , 94 , 895 – 901. 317, AGU, Washington, D. C. evidence for changes in Plio-Pleistocene deep
+Raymo, M. E., W. F. Ruddiman, J. Backman, Shackleton, N. J., A. Berger, and W. R. Peltier water circulation from Southern Ocean ODP
+B. M. Clement, and D. G. Martinson (1989), (1990), An alternative astronomical calibra- Leg 177 Site 1090, Palaeogeogr. Palaeocli-
+Late Pliocene variation in Northern Hemi- tion of the Lower Pleistocene timescale based matol. Palaeoecol. , 182 , 197 – 220.
+sphere ice sheets and North Atlantic Deep on ODP Site 677, Trans. R. Soc. Edinburgh Venz, K. A., D. A. Hodell, C. Stanton, and D. A.
+Water circulation, Paleoceanography , 4 , Earth Sci. , 81 , 251 – 261. Warnke (1999), A 1.0 Myr record of Glacial
+413 – 446. Shackleton, N. J., M. A. Hall, and D. Pate North Atlantic Intermediate Water variability
+Raymo, M. E., W. F. Ruddiman, N. J. Shackleton, (1995a), Pliocene stable isotope stratigraphy from ODP site 982 in the northeast Atlantic,
+and D. W. Oppo (1990), Evolution of Atlantic- of ODP Site 846, Proc. Ocean Drill. Program Paleoceanography , 14 , 42 – 52.
+13
+Pacific d C gradients over the last 2.5 m. y., Sci. Results , 138 , 337 – 356. Waelbroeck, C., J.-C. Duplessy, E. Michel,
+Earth Planet. Sci. Lett. , 97 , 353 – 368. Shackleton, N. J., S. Crowhurst, T. Hagelberg, L. Labeyrie, D. Paillard, and J. Duprat
+Raymo, M. E., D. Hodell, and E. Jansen N. G. Pisias, and D. A. Schneider (1995b), A (2001), The timing of the last deglaciation in
+(1992), Response of deep ocean circulation new late Neogene time scale: Application to North Atlantic climate records, Nature , 412 ,
+to initiation of Northern Hemisphere glaciation Leg 138 sites, Proc. Ocean Drill. Program 724 – 727.
+(3 – 2 MA), Paleoceanography , 7 , 645 – 672. Sci. Results , 138 , 73 – 101. Williams, D. F., R. C. Thunell, E. Tappa, D. Rio,
+Raymo, M. E., D. W. Oppo, and W. Curry Shackleton, N. J., M. A. Hall, and E. Vincent and I. Raffi (1988), Chronology of the Pleis-
+(1997), The mid-Pleistocene climate transi- (2000), Phase relationships between millen- tocene oxygen isotope record: 0 – 1.88 m. y.
+tion: A deep sea carbon isotopic perspective, nial-scale events 64,000 – 24,000 years ago, B. P., Palaeogeogr. Palaeoclimatol. Palaeoe-
+Paleoceanography , 12 , 546 – 559. Paleoceanography , 15 , 565 – 569. col. , 64 , 221 – 240.
+Raymo, M. E., D. W. Oppo, B. P. Flower, D. A. Skinner, L. C., and I. N. McCave (2003), Ana- Zabel, M., T. Bickert, L. Dittert, and R. R. Haese
+Hodell, J. F. McManus, K. A. Venz, K. F. lysis and modeling of gravity- and piston- (1999), The significance of the sedimentary
+Kleiven, and K. McIntyre (2004), Stability coring based on soil mechanics, Mar. Geol. , Al/Ti ratio as indicator for reconstructions of
+of North Atlantic water masses in face of pro- 199 , 181 – 204. the terrestrial input to the equatorial Atlantic,
+nounced climate variability during the Pleisto- Stein, M., G. J. Wasserburg, P. Aharon, J. H. Paleoceanography , 14 , 789 – 799.
+cene, Paleoceanography , 19 , PA2008, Chen, Z. R. Zhu, A. Bloom, and J. Chappell
+doi:10.1029/2003PA000921. (1993), TIMS U-series dating and stable iso-
+Ruddiman, W. F., M. E. Raymo, D. G. Martinson, topes of the last interglacial event in Papua
+B. M. Clement, and J. Backman (1989), Pleis- New Guinea, Geochim. Cosmochim. Acta ,
+tocene evolution of Northern Hemisphere cli- 57 , 2541 – 2554.                         
+mate, Paleoceanography , 4 , 353 – 412. Tian, J., P. Wang, X. Cheng, and Q. Ling (2002), L. E. Lisiecki, Department of Geological
+18
+Sarnthein, M., K. Winn, S. J. A. Jung, J. C. Astronomically tuned Plio-Pleistocene O Sciences, Brown University, Box 1846, Provi-
+Duplessy, L. D. Labeyrie, H. Erlenkeuser, record from South China Sea and Atlantic- dence, RI 02912, USA. (lorraine_lisiecki@
+and G. Ganssen (1994), Changes in east Pacific comparison, Earth Planet. Sci. Lett. , brown.edu)
+Atlantic deepwater circulation over the last 203 , 1015 – 1029. M. E. Raymo, Department of Earth Sciences,
+30,000 years: Eight time slice reconstructions, Tiedemann, R. (1991), Acht Millionen Jahre Boston University, 685 Commonwealth Avenue,
+Paleoceanography , 9 , 209 – 267. Klimageschichte von Nordwest Afrika und Boston, MA 02215, USA.
+17 of 17

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>LR04 论文 PDF 文本提取(pdf.js)</title>
+<style>
+  body { font-family: Consolas, monospace; margin: 1em; background: #111; color: #ddd; }
+  pre { white-space: pre-wrap; font-size: 11px; }
+  b { color: #7fc97f; }
+</style>
+</head>
+<body>
+<p>pdf.js 逐页提取文本层(按行重组),POST 保存为 lr04_text.txt。</p>
+<pre id="log">运行中……</pre>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+const log = m => { document.getElementById("log").textContent += "\n" + m; };
+(async () => {
+try {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const doc = await pdfjsLib.getDocument("/data/processed/lr04_paper.pdf").promise;
+  log("pages: " + doc.numPages);
+  let all = "";
+  for (let p = 1; p <= doc.numPages; p++) {
+    const page = await doc.getPage(p);
+    const tc = await page.getTextContent();
+    const items = tc.items.filter(it => it.str && it.str.trim()).map(it => ({
+      x: Math.round(it.transform[4]), y: Math.round(it.transform[5]), str: it.str.trim()
+    }));
+    // 按行聚类(y ±3),行内按 x 排序
+    items.sort((a, b) => b.y - a.y || a.x - b.x);
+    const lines = [];
+    let cur = { y: null, parts: [] };
+    for (const it of items) {
+      if (cur.y === null || Math.abs(it.y - cur.y) <= 3) { cur.parts.push(it); cur.y = cur.y === null ? it.y : cur.y; }
+      else { lines.push(cur); cur = { y: it.y, parts: [it] }; }
+    }
+    if (cur.y !== null) lines.push(cur);
+    let text = "=== PAGE " + p + " ===\n";
+    for (const ln of lines) {
+      ln.parts.sort((a, b) => a.x - b.x);
+      text += ln.parts.map(it => it.str).join(" ") + "\n";
+    }
+    all += text;
+    log("page " + p + ": " + items.length + " items, " + lines.length + " lines");
+  }
+  const resp = await fetch("/save?name=lr04_text.txt", { method: "POST", body: all, headers: { "Content-Type": "text/plain" } });
+  log("POST /save → " + resp.status + " " + (await resp.text()));
+  log("<b>完成。" + all.length + " 字符</b>");
+} catch (e) {
+  log("<b>ERROR: " + (e && e.stack ? e.stack : e) + "</b>");
+}
+})();
+</script>
+</body>
+</html>

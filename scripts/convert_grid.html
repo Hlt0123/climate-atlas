@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>GISTEMP NetCDF → 年均格点帧(浏览器端转换器)</title>
+<style>
+  body { font-family: Consolas, monospace; margin: 1em; background: #111; color: #ddd; }
+  pre { white-space: pre-wrap; }
+  b { color: #7fc97f; }
+</style>
+</head>
+<body>
+<p>零依赖转换器:纯 JS 解析 NetCDF3 classic → 月值聚合为年均 → 2° 格点聚合为 4° 格点 → int8 量化 → base64,POST 保存到 data/processed/gistemp_grid.json。</p>
+<pre id="log">运行中……</pre>
+<script>
+const log = m => { document.getElementById("log").textContent += "\n" + m; };
+const u32 = dv => p => { const v = dv.getUint32(p); return [v, p + 4]; };
+
+(async () => {
+try {
+  // ---------- 1. 取文件 ----------
+  log("fetch /data/raw/gistemp1200_GHCNv4_ERSSTv5.nc ...");
+  const buf = await (await fetch("/data/raw/gistemp1200_GHCNv4_ERSSTv5.nc")).arrayBuffer();
+  const dv = new DataView(buf);
+  log("bytes: " + buf.byteLength);
+
+  // ---------- 2. NetCDF3 classic 解析 ----------
+  let p = 0;
+  const magic = String.fromCharCode(dv.getUint8(0), dv.getUint8(1), dv.getUint8(2), dv.getUint8(3));
+  const isCdf2 = magic === "CDF\u0002";
+  if (magic !== "CDF\u0001" && !isCdf2) { log("<b>不是 NetCDF3 classic: " + JSON.stringify(magic) + " —— 停止</b>"); return; }
+  p = 4;
+  const numrecs = dv.getUint32(p); p += 4;
+  const typeSize = t => [0, 1, 1, 2, 4, 4, 8][t];
+  const readName = () => {
+    const n = dv.getUint32(p); p += 4;
+    let s = ""; for (let i = 0; i < n; i++) s += String.fromCharCode(dv.getUint8(p + i));
+    p += n + ((4 - (n % 4)) % 4); return s;
+  };
+  const readAtts = () => {
+    const tag = dv.getUint32(p); p += 4;
+    const n = dv.getUint32(p); p += 4;
+    if (tag === 0) return [];
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const nm = readName();
+      const t = dv.getUint32(p); p += 4;
+      const cnt = dv.getUint32(p); p += 4;
+      const sz = typeSize(t) * cnt;
+      let val;
+      if (t === 2) { let s = ""; for (let k = 0; k < cnt; k++) s += String.fromCharCode(dv.getUint8(p + k)); val = s; }
+      else if (t === 1) val = dv.getInt8(p);
+      else if (t === 3) val = dv.getInt16(p, false);
+      else if (t === 4) val = dv.getInt32(p, false);
+      else if (t === 5) val = dv.getFloat32(p, false);
+      else if (t === 6) val = dv.getFloat64(p, false);
+      p += sz + ((4 - (sz % 4)) % 4);
+      out.push({ name: nm, type: t, cnt, val });
+    }
+    return out;
+  };
+  const readDims = () => {
+    const tag = dv.getUint32(p); p += 4;
+    const n = dv.getUint32(p); p += 4;
+    if (tag === 0) return [];
+    const out = [];
+    for (let i = 0; i < n; i++) { const nm = readName(); const size = dv.getUint32(p); p += 4; out.push({ name: nm, size }); }
+    return out;
+  };
+  const dims = readDims();
+  const gatts = readAtts();
+  const vTag = dv.getUint32(p); p += 4;
+  const nv = dv.getUint32(p); p += 4;
+  const vars = [];
+  if (vTag === 11) {
+    for (let i = 0; i < nv; i++) {
+      const name = readName();
+      const nd = dv.getUint32(p); p += 4;
+      const dimids = []; for (let k = 0; k < nd; k++) { dimids.push(dv.getUint32(p)); p += 4; }
+      const atts = readAtts();
+      const type = dv.getUint32(p); p += 4;
+      const vsize = dv.getUint32(p); p += 4;
+      let begin;
+      if (isCdf2) { const hi = dv.getUint32(p); p += 4; begin = hi * 4294967296 + dv.getUint32(p); p += 4; }
+      else { begin = dv.getUint32(p); p += 4; }
+      vars.push({ name, dimids, atts, type, vsize, begin });
+    }
+  }
+  log("dims: " + dims.map(d => d.name + "=" + d.size).join(", "));
+  log("vars: " + vars.map(v => v.name + "[dims " + v.dimids.join(",") + " t" + v.type + " vsize " + v.vsize + " @ " + v.begin + "]").join("; "));
+  log("numrecs: " + numrecs);
+
+  const byName = Object.fromEntries(vars.map(v => [v.name, v]));
+
+  const latVar = byName.lat, lonVar = byName.lon, tVar = byName.time, taVar = byName.tempanomaly;
+  if (!latVar || !lonVar || !tVar || !taVar) { log("<b>缺少 lat/lon/time/tempanomaly 变量 —— 停止</b>"); return; }
+  const nlat = dims[latVar.dimids[0]].size, nlon = dims[lonVar.dimids[0]].size;
+  log("grid: " + nlat + " x " + nlon);
+
+  const coordRead = (v, i) => {
+    const off = v.begin + i * typeSize(v.type);
+    return v.type === 5 ? dv.getFloat32(off, false) : v.type === 6 ? dv.getFloat64(off, false) : v.type === 3 ? dv.getInt16(off, false) : v.type === 4 ? dv.getInt32(off, false) : NaN;
+  };
+  const latArr = [], lonArr = [];
+  for (let i = 0; i < nlat; i++) latArr.push(coordRead(latVar, i));
+  for (let i = 0; i < nlon; i++) lonArr.push(coordRead(lonVar, i));
+  log("lat " + latArr[0] + " → " + latArr[nlat - 1] + ", lon " + lonArr[0] + " → " + lonArr[nlon - 1]);
+
+  // tempanomaly 解码属性(int16 场景:raw × scale_factor + add_offset,_FillValue 为缺测)
+  const att = (v, nm) => { const a = v.atts.find(x => x.name === nm); return a ? a.val : undefined; };
+  const taType = taVar.type, taSize = typeSize(taType);
+  const taScale = att(taVar, "scale_factor") != null ? att(taVar, "scale_factor") : 1;
+  const taOffset = att(taVar, "add_offset") != null ? att(taVar, "add_offset") : 0;
+  const taFill = att(taVar, "_FillValue");
+  log("tempanomaly: type " + taType + " scale " + taScale + " offset " + taOffset + " fill " + taFill + " attrs: " + taVar.atts.map(a => a.name + "=" + a.val).join(", "));
+  const readRaw = (off, t) => t === 5 ? dv.getFloat32(off, false) : t === 6 ? dv.getFloat64(off, false) : t === 3 ? dv.getInt16(off, false) : t === 4 ? dv.getInt32(off, false) : t === 1 ? dv.getInt8(off) : NaN;
+  const nrec = dims[taVar.dimids[0]].size;
+  log("records: " + nrec);
+  const tScale = att(tVar, "scale_factor") != null ? att(tVar, "scale_factor") : 1;
+  const tOffset = att(tVar, "add_offset") != null ? att(tVar, "add_offset") : 0;
+  const tOf = r => readRaw(tVar.begin + r * typeSize(tVar.type), tVar.type) * tScale + tOffset;
+  // 解析 time units(如 "days since 1800-01-01 00:00:00"),换算为日历年
+  const tUnits = att(tVar, "units") || "days since 1800-01-01";
+  const um = tUnits.match(/^([A-Za-z]+)\s+since\s+(.+)$/);
+  const unitMs = { second: 1e3, seconds: 1e3, minute: 6e4, minutes: 6e4, hour: 36e5, hours: 36e5, day: 864e5, days: 864e5, month: 2629746e3, months: 2629746e3, year: 31556952e3, years: 31556952e3 }[(um ? um[1].toLowerCase() : "days")] || 864e5;
+  let baseMs = Date.parse(um ? um[2].trim().replace(" ", "T") : "1800-01-01T00:00:00");
+  if (isNaN(baseMs)) baseMs = Date.parse("1800-01-01T00:00:00Z");
+  const yearOf = r => new Date(baseMs + tOf(r) * unitMs).getUTCFullYear();
+  log("time units: " + tUnits + " → 首条 " + new Date(baseMs + tOf(0) * unitMs).toISOString() + ",末条 " + new Date(baseMs + tOf(nrec - 1) * unitMs).toISOString());
+  const cellBase = r => taVar.begin + r * nlat * nlon * taSize;
+  const cellRaw = (base, c) => readRaw(base + c * taSize, taType);
+
+  // ---------- 3. 月值 → 年均,聚合为 4°,量化 int8 ----------
+  const BLOCK = 2;                       // 2×2 个 2° 格 → 4° 格;改 3 → 6°(更小)
+  const nlatG = Math.floor(nlat / BLOCK), nlonG = Math.floor(nlon / BLOCK);
+  const ncellG = nlatG * nlonG;
+  const sums = new Float64Array(nlat * nlon);
+  const cnts = new Float32Array(nlat * nlon);
+  // 季节帧:2000–2025 年 1/4/7/10 月的平均距平(展示季节性北极放大)
+  const SEASON_MONTHS = [0, 3, 6, 9];
+  const SEASON_KEYS = ["jan", "apr", "jul", "oct"];
+  const sSums = SEASON_MONTHS.map(() => new Float64Array(nlat * nlon));
+  const sCnts = SEASON_MONTHS.map(() => new Float32Array(nlat * nlon));
+  const years = [], frames = [];
+  let curYear = null, monthCount = 0;
+  const b64 = i8 => {
+    const u = new Uint8Array(i8.buffer, i8.byteOffset, i8.length);
+    let s = "", CH = 8192;
+    for (let i = 0; i < u.length; i += CH) s += String.fromCharCode.apply(null, u.subarray(i, Math.min(u.length, i + CH)));
+    return btoa(s);
+  };
+  const dateOf = r => new Date(baseMs + tOf(r) * unitMs);
+  const agg4 = (S, C, scale) => {
+    const f = new Int8Array(ncellG);
+    for (let gy = 0; gy < nlatG; gy++) {
+      for (let gx = 0; gx < nlonG; gx++) {
+        let s = 0, c = 0;
+        for (let dy = 0; dy < BLOCK; dy++) for (let dx = 0; dx < BLOCK; dx++) {
+          const cell = (gy * BLOCK + dy) * nlon + (gx * BLOCK + dx);
+          if (C[cell] > 0) { s += S[cell] / C[cell]; c++; }
+        }
+        const idx = gy * nlonG + gx;
+        f[idx] = c === 0 ? -127 : Math.max(-126, Math.min(126, Math.round((s / c) / scale)));
+      }
+    }
+    return b64(new Uint8Array(f.buffer, f.byteOffset, f.length));
+  };
+  const finishYear = () => {
+    years.push(curYear); frames.push(agg4(sums, cnts, 0.1));
+  };
+
+  // ---------- 纬度带 × 月 × 年矩阵(8 带 × 12 月 × 146 年,供热力图)----------
+  const ZB = [[90, 64], [64, 44], [44, 24], [24, 0], [0, -24], [-24, -44], [-44, -64], [-64, -90]];
+  const ZKEYS = ["a90n", "a64n", "a44n", "a24n", "a24s", "a44s", "a64s", "a90s"];
+  const nY = 146;
+  const zmS = Array.from({ length: 8 }, () => Array.from({ length: 12 }, () => new Float64Array(nY)));
+  const zmC = Array.from({ length: 8 }, () => Array.from({ length: 12 }, () => new Float32Array(nY)));
+  const rowZone = [];
+  for (let row = 0; row < nlat; row++) {
+    const lat = -89 + row * 2;
+    let zi = -1;
+    for (let i = 0; i < ZB.length; i++) { if (lat >= ZB[i][1] && lat <= ZB[i][0]) { zi = i; break; } }
+    rowZone.push(zi);
+  }
+
+  for (let r = 0; r < nrec; r++) {
+    const d = dateOf(r);
+    const y = d.getUTCFullYear();
+    if (y !== curYear) {
+      if (curYear !== null && monthCount === 12) finishYear();
+      sums.fill(0); cnts.fill(0);
+      curYear = y; monthCount = 0;
+    }
+    monthCount++;
+    const base = cellBase(r);
+    const mo = d.getUTCMonth();
+    const yi = y - 1880;
+    const mi = (y >= 2000 && y <= 2025) ? SEASON_MONTHS.indexOf(mo) : -1;
+    const zAvg = new Float64Array(8), zCnt = new Float32Array(8);
+    for (let c = 0; c < nlat * nlon; c++) {
+      const raw = cellRaw(base, c);
+      if (raw === taFill) continue;
+      const v = raw * taScale + taOffset;
+      if (v === v && v < 1e30) {
+        sums[c] += v; cnts[c] += 1;
+        if (mi >= 0) { sSums[mi][c] += v; sCnts[mi][c] += 1; }
+        const zi = rowZone[Math.floor(c / nlon)];
+        if (zi >= 0) { zAvg[zi] += v; zCnt[zi] += 1; }
+      }
+    }
+    if (yi >= 0 && yi < nY) {
+      for (let zi = 0; zi < 8; zi++) {
+        if (zCnt[zi] > 0) { zmS[zi][mo][yi] += zAvg[zi] / zCnt[zi]; zmC[zi][mo][yi] += 1; }
+      }
+    }
+    if (r % 300 === 0) log("  record " + r + "/" + numrecs + " (" + y + ")");
+  }
+  if (monthCount === 12) finishYear(); else log("末年不完整(" + monthCount + " 个月),丢弃: " + curYear);
+
+  log("years: " + years[0] + " → " + years[years.length - 1] + " (" + years.length + " 帧, " + nlatG + "×" + nlonG + ")");
+
+  // ---------- 4. 保存 ----------
+  const aggLat = [], aggLon = [];
+  for (let gy = 0; gy < nlatG; gy++) aggLat.push(Math.round(((latArr[gy * BLOCK] + latArr[Math.min(nlat - 1, gy * BLOCK + BLOCK - 1)]) / 2) * 10) / 10);
+  for (let gx = 0; gx < nlonG; gx++) aggLon.push(Math.round(((lonArr[gx * BLOCK] + lonArr[Math.min(nlon - 1, gx * BLOCK + BLOCK - 1)]) / 2) * 10) / 10);
+  const seasons = {};
+  SEASON_KEYS.forEach((k, i) => seasons[k] = { scale: 0.25, values: agg4(sSums[i], sCnts[i], 0.25) });
+  // 纬度带月值矩阵:每带 12×146 int8(×10),按月优先布局
+  const zones = ZKEYS.map((k, zi) => {
+    const f = new Int8Array(12 * nY);
+    for (let m = 0; m < 12; m++) {
+      for (let yi = 0; yi < nY; yi++) {
+        const idx = m * nY + yi;
+        const v = (zmC[zi][m][yi] > 0) ? zmS[zi][m][yi] / zmC[zi][m][yi] : NaN;
+        f[idx] = (v === v) ? Math.max(-126, Math.min(126, Math.round(v * 10))) : -127;
+      }
+    }
+    return { id: k, values: b64(new Uint8Array(f.buffer, f.byteOffset, f.length)) };
+  });
+  const payload = JSON.stringify({ meta: { lats: aggLat, lons: aggLon, years, scale: 0.1, nodata: -127, source: "NASA GISTEMP v4 gistemp1200_GHCNv4_ERSSTv5 (annual means)" }, seasons, zones, frames });
+  const resp = await fetch("/save?name=gistemp_grid.json", { method: "POST", body: payload });
+  log("POST /save → " + resp.status + " " + (await resp.text()));
+  log("<b>完成。payload " + payload.length + " bytes</b>");
+} catch (e) {
+  log("<b>ERROR: " + (e && e.stack ? e.stack : e) + "</b>");
+}
+})();
+document.getElementById("log").textContent = "准备就绪";
+</script>
+</body>
+</html>
