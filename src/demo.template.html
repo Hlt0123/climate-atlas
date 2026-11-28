@@ -1248,7 +1248,7 @@ function playDeglac() {
   deglacBtn.textContent = "⏸ 停止";
   const step = () => {
     if (i < DEGLAC.length) { setSnap(DEGLAC[i]); i++; }
-    else { stopDeglac(); setMode("human"); setSeason("annual"); setYear(lastYear); saveState(); }
+    else { stopDeglac(); setChapter(1); setSeason("annual"); setYear(lastYear); saveState(); } /* 收尾帧 = 2025 观测,显式交接给人类史章 */
   };
   step();
   animTimer = setInterval(step, 850);
