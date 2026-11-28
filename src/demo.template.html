@@ -41,6 +41,7 @@
     background: none; color: var(--muted-foreground); font-size: 13px; cursor: pointer;
   }
   #climate-atlas .nav-link.active { background: var(--muted); color: var(--foreground); border-color: var(--border); }
+  #climate-atlas .ca-ch[aria-selected="true"] { background: var(--muted); color: var(--foreground); border-color: var(--border); }
   #climate-atlas .form-range { -webkit-appearance: none; appearance: none; flex: 1; min-width: 120px; height: 6px; border-radius: 3px; background: var(--border); outline: none; cursor: pointer; }
   #climate-atlas .form-range::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--primary); cursor: pointer; }
   #climate-atlas .form-range:disabled { opacity: .4; cursor: default; }
@@ -91,31 +92,64 @@
   #climate-atlas #ca-readout { margin: .5em 2px .2em; }
   #climate-atlas #ca-year { flex: 1; min-width: 120px; }
   #climate-atlas .ca-sep { color: var(--muted-foreground); margin: 0 2px; }
+  /* ---------- 章节化重构 ---------- */
+  #climate-atlas .ca-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: .5em; }
+  #climate-atlas .ca-head h1 { margin: 0; font-size: 1.35em; }
+  #climate-atlas .ca-head .ca-tag { margin: 0; }
+  #climate-atlas #ca-chapters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 .6em; }
+  #climate-atlas .ca-ch .ca-ch-q { display: block; font-size: 10.5px; color: var(--muted-foreground); margin-top: 1px; }
+  #climate-atlas .ca-ch[aria-selected="true"] .ca-ch-q { color: inherit; opacity: .75; }
+  #climate-atlas .ca-ch { padding: 4px 14px; }
+  /* 地图内常驻 caption:读数 + 色标 */
+  #climate-atlas #ca-caption {
+    position: absolute; left: 6px; right: 6px; bottom: 6px; z-index: 4;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px;
+    padding: 5px 12px; border-radius: 8px; font-size: 12px;
+    background: light-dark(rgba(255,255,255,.86), rgba(13,18,32,.82));
+    border: 1px solid var(--border); backdrop-filter: blur(3px);
+    pointer-events: none;
+  }
+  #climate-atlas #ca-caption #ca-readout { margin: 0; font-size: 12px; }
+  #climate-atlas #ca-caption #ca-colorbar { margin: 0; flex: 0 1 300px; min-width: 200px; }
+  #climate-atlas #ca-caption .ca-chip { padding: 0 8px; font-size: 11px; }
+  /* 章节内容区 */
+  #climate-atlas .ca-chapter > .ca-ch-q { margin: .1em 0 .7em; font-size: 14px; color: var(--foreground); }
+  #climate-atlas .ca-chapter .ca-ch-q b { color: var(--primary); }
+  #climate-atlas .ca-hero { display: flex; flex-wrap: wrap; gap: 18px 40px; align-items: flex-start; padding: 14px 4px 4px; }
+  #climate-atlas .ca-hero-num { min-width: 170px; }
+  #climate-atlas .ca-hero-num .num { font-size: 3.2em; font-weight: 650; line-height: 1; letter-spacing: -.02em; }
+  #climate-atlas .ca-hero-num .unit { font-size: 1.4em; margin-left: 2px; color: var(--muted-foreground); }
+  #climate-atlas .ca-hero-num .cap { display: block; margin-top: 6px; font-size: 12px; color: var(--muted-foreground); }
+  #climate-atlas .ca-hero-copy { flex: 1; min-width: 260px; max-width: 560px; font-size: 14px; line-height: 1.75; }
+  #climate-atlas .ca-hero-copy b { color: var(--primary); }
+  #climate-atlas .ca-hero-foot { flex-basis: 100%; }
+  #climate-atlas .ca-ch-nav { display: flex; gap: 8px; margin-top: 1.2em; }
 </style>
 
 <div id="climate-atlas">
-  <h1>全球气候变迁图鉴</h1>
-  <p class="text-muted" style="margin:.2em 0 1em">从寒武纪的生命大爆发,到 2025 年的今天——两套时间尺度,一张地图看尽 5.4 亿年。</p>
-  <div class="ca-facts" aria-hidden="true">
-    <span>146 年仪器观测</span>
-    <span>80 万年冰芯</span>
-    <span>6500 万年深时</span>
-    <span>5.4 亿年古地理</span>
-    <span>8 期古气候快照</span>
+  <div class="ca-head">
+    <h1>全球气候变迁图鉴</h1>
+    <p class="ca-tag text-muted">从寒武纪的生命大爆发,到 2025 年的今天——两套时间尺度,一张地图看尽 5.4 亿年。</p>
   </div>
 
-  <div class="nav nav-pills" role="tablist" aria-label="时间尺度" style="margin:0 0 .6em">
-    <button class="nav-link active" id="ca-tab-human" role="tab" aria-controls="ca-panel-human" aria-selected="true" type="button">人类史 1880–2025</button>
-    <button class="nav-link" id="ca-tab-geo" role="tab" aria-controls="ca-panel-geo" aria-selected="false" type="button">地质史 530 万年</button>
+  <nav id="ca-chapters" role="tablist" aria-label="章节">
+    <button class="nav-link ca-ch" id="ca-ch-0" role="tab" data-ch="0" aria-selected="false" type="button">序 · 两个尺度</button>
+    <button class="nav-link ca-ch" id="ca-ch-1" role="tab" data-ch="1" aria-selected="true" type="button">人类史 1880–2025</button>
+    <button class="nav-link ca-ch" id="ca-ch-2" role="tab" data-ch="2" aria-selected="false" type="button">冰期与消冰</button>
+    <button class="nav-link ca-ch" id="ca-ch-3" role="tab" data-ch="3" aria-selected="false" type="button">更暖的过去</button>
+    <button class="nav-link ca-ch" id="ca-ch-4" role="tab" data-ch="4" aria-selected="false" type="button">深时曲线</button>
+  </nav>
+
+  <div id="ca-map-wrap"><canvas id="ca-map-base"></canvas><canvas id="ca-map-cells"></canvas><canvas id="ca-map" role="img" aria-label="世界地图:温度距平着色,鼠标悬停查看格点数值"></canvas><div id="ca-cellhl"></div>
+    <div id="ca-caption">
+      <p id="ca-readout" class="tabular-nums" aria-live="polite"></p>
+      <div id="ca-colorbar" aria-hidden="true"><span id="ca-cb-min" class="tabular-nums"></span><span id="ca-cb-grad"></span><span id="ca-cb-max" class="tabular-nums"></span></div>
+    </div>
   </div>
 
 
-  <div id="ca-map-wrap"><canvas id="ca-map-base"></canvas><canvas id="ca-map-cells"></canvas><canvas id="ca-map" role="img" aria-label="世界地图:温度距平着色,鼠标悬停查看格点数值"></canvas><div id="ca-cellhl"></div></div>
-  <div id="ca-colorbar" aria-hidden="true"><span id="ca-cb-min" class="tabular-nums"></span><span id="ca-cb-grad"></span><span id="ca-cb-max" class="tabular-nums"></span></div>
-  <p id="ca-readout" class="tabular-nums" aria-live="polite"></p>
-
-
-  <div id="ca-panel-human" role="tabpanel" aria-labelledby="ca-tab-human">
+  <div id="ca-panel-human" role="tabpanel" aria-labelledby="ca-ch-1" class="ca-chapter">
+    <p class="ca-ch-q"><b>热了多少?</b>哪里在变热——拖动年份或播放 146 年逐帧变化,悬停地图任意格点读数;键盘 ←/→ 翻年,空格播放。</p>
     <div class="viz-row" role="group" aria-label="时段">
       <span class="ca-grouplab">时段</span>
       <button type="button" class="btn ca-season" data-season="annual" aria-pressed="true">年均</button>
@@ -139,24 +173,13 @@
       <select class="form-select form-select-sm" id="ca-zone-sel" style="width:auto" aria-label="选择纬度带"></select>
     </div>
     <div id="ca-hm-wrap"><canvas id="ca-hm" class="cursor-interaction" role="img" aria-label="纬度带月值距平热力图,横轴 1880 至 2025 年,纵轴 12 个月,点击跳转年份"></canvas><div id="ca-hm-hl"></div></div>
+    <div class="ca-ch-nav"><button type="button" class="btn" id="ca-next-1">下一章:冰期与消冰 →</button></div>
   </div>
 
-  <div id="ca-panel-geo" role="tabpanel" aria-labelledby="ca-tab-geo" hidden>
-    <div class="viz-row" id="ca-pgeo-row" role="group" aria-label="地图图层" style="margin-top:.4em">
-      <span class="ca-grouplab">图层</span>
-      <button type="button" class="btn ca-metric" data-metric="temp" aria-pressed="true">温度距平</button>
-      <button type="button" class="btn ca-metric" data-metric="precip" aria-pressed="false">降水距平</button>
-      <span class="ca-sep">·</span>
-      <button type="button" class="btn" id="ca-sites" aria-pressed="false">📍 采样位置(冰芯)</button>
-    </div>
-    <div class="viz-row" id="ca-pgeo-row2" role="group" aria-label="古地理时代" style="margin-top:.4em">
-      <span class="ca-grouplab">古地理时代</span>
-      <select class="form-select form-select-sm" id="ca-pgeo-sel" aria-label="选择古地理时代"></select>
-    </div>
-    <div class="viz-row" role="group" aria-label="地质快照">
+  <section id="ca-ch-2-body" class="ca-chapter" role="tabpanel" aria-labelledby="ca-ch-2" hidden>
+    <p class="ca-ch-q"><b>最后一个冰期的地球什么样?</b>它是如何一步步解冻的——六个重建快照按时间排开,或播放完整消冰序列。</p>
+    <div class="viz-row" role="group" aria-label="冰期快照">
       <span class="ca-grouplab">快照</span>
-      <button type="button" class="btn ca-snap" data-snap="pliocene" aria-pressed="false" data-tooltip="来源:陆地 PaleoClim mPWP(PRISM4 降尺度)· 海洋 plioDA 数据同化(Tierney et al. 2025)">中上新世 · 300 万年前</button>
-      <button type="button" class="btn ca-snap" data-snap="lig" aria-pressed="false" data-tooltip="来源:陆地 PaleoClim LIG(PMIP3 lig127k 降尺度)· 海洋 PMIP4 CESM2 lig127k 距平(piControl 基准)">末次间冰期 · 12.5 万年前</button>
       <button type="button" class="btn ca-snap" data-snap="hs1" aria-pressed="true" data-tooltip="来源:PaleoClim HS-1(基于 TraCE-21ka 瞬变模拟降尺度)">HS-1 冷期 · 1.7 万年前</button>
       <button type="button" class="btn ca-snap" data-snap="ba" aria-pressed="false" data-tooltip="来源:PaleoClim BA(基于 TraCE-21ka 瞬变模拟降尺度)">BA 暖期 · 1.4 万年前</button>
       <button type="button" class="btn ca-snap" data-snap="yds" aria-pressed="false" data-tooltip="来源:PaleoClim YDS(基于 TraCE-21ka 瞬变模拟降尺度)">新仙女木 · 1.2 万年前</button>
@@ -170,14 +193,39 @@
       <button type="button" class="btn" id="ca-gif-deglac" title="录制消冰序列(含 2025 收尾帧),导出为 GIF 文件(纯浏览器端编码)">🎬 GIF</button>
       <span class="text-small text-muted">HS-1 → BA → 新仙女木 → 全新世早期 → 中期 → 前工业晚期 → 2025 观测</span>
     </div>
+    <div class="ca-ch-nav"><button type="button" class="btn" id="ca-next-2">下一章:更暖的过去 →</button></div>
+  </section>
 
+  <section id="ca-ch-3-body" class="ca-chapter" role="tabpanel" aria-labelledby="ca-ch-3" hidden>
+    <p class="ca-ch-q"><b>比今天更暖的过去是什么样?</b>上一个间冰期(12.5 万年前)与中上新世(300 万年前)——两个比现代温暖的世界;再转动板块,看 5.4 亿年的海陆变迁。</p>
+    <div class="viz-row" role="group" aria-label="暖期快照">
+      <span class="ca-grouplab">快照</span>
+      <button type="button" class="btn ca-snap" data-snap="lig" aria-pressed="false" data-tooltip="来源:陆地 PaleoClim LIG(PMIP3 lig127k 降尺度)· 海洋 PMIP4 CESM2 lig127k 距平(piControl 基准)">末次间冰期 · 12.5 万年前</button>
+      <button type="button" class="btn ca-snap" data-snap="pliocene" aria-pressed="false" data-tooltip="来源:陆地 PaleoClim mPWP(PRISM4 降尺度)· 海洋 plioDA 数据同化(Tierney et al. 2025)">中上新世 · 300 万年前</button>
+    </div>
+    <div class="viz-row" id="ca-pgeo-row2" role="group" aria-label="古地理时代" style="margin-top:.4em">
+      <span class="ca-grouplab">古地理时代</span>
+      <select class="form-select form-select-sm" id="ca-pgeo-sel" aria-label="选择古地理时代"></select>
+      <span class="text-small text-muted" id="ca-pgeo-hint" hidden>6500 万年视图下可选:陆地位置随板块运动变化</span>
+    </div>
+    <div class="ca-ch-nav"><button type="button" class="btn" id="ca-next-3">下一章:深时曲线 →</button></div>
+  </section>
+
+  <section id="ca-ch-4-body" class="ca-chapter" role="tabpanel" aria-labelledby="ca-ch-4" hidden>
+    <p class="ca-ch-q"><b>更深的时间怎么走?</b>80 万年冰芯里的冰期旋回与 CO₂,6500 万年的深时降温,以及记录这一切的钻孔位置。</p>
+    <div class="viz-row" id="ca-pgeo-row" role="group" aria-label="地图图层">
+      <span class="ca-grouplab">地图图层</span>
+      <button type="button" class="btn ca-metric" data-metric="temp" aria-pressed="true">温度距平</button>
+      <button type="button" class="btn ca-metric" data-metric="precip" aria-pressed="false">降水距平</button>
+      <span class="ca-sep">·</span>
+      <button type="button" class="btn" id="ca-sites" aria-pressed="false">📍 采样位置(冰芯)</button>
+    </div>
     <div class="ca-grouplab" style="margin-top:1.1em">80 万年 · EPICA 冰芯:温度距平 ΔT(相对「距今」)与 CO₂</div>
     <div id="ca-chart-wrap"><svg id="ca-chart" role="img" aria-label="80 万年冰芯温度距平与二氧化碳浓度曲线"></svg></div>
     <div class="viz-row" style="margin:.2em 0">
       <button type="button" class="ca-series cursor-interaction" data-series="temp" aria-pressed="true"><span class="ca-swatch" style="background:var(--viz-series-1)"></span>温度距平 ΔT</button>
       <button type="button" class="ca-series cursor-interaction" data-series="co2" aria-pressed="true"><span class="ca-swatch" style="background:var(--viz-series-2)"></span>CO₂ 浓度</button>
     </div>
-
     <div class="viz-row" role="group" aria-label="深时范围" style="margin-top:.9em">
       <span class="ca-grouplab">深时范围</span>
       <button type="button" class="btn ca-epoch" data-epoch="lr04" aria-pressed="true">530 万年</button>
@@ -185,7 +233,16 @@
     </div>
     <p class="text-small text-muted" id="ca-chart2-cap" style="margin:.3em 0 .2em">0–530 万年 · LR04 深海岩芯 δ18O(‰,57 个岩芯堆叠):越高 = 冰量越大 · 越冷,一个锯齿 ≈ 一次冰期旋回</p>
     <div id="ca-chart2-wrap"><svg id="ca-chart2" role="img" aria-label="530 万年深海氧同位素曲线"></svg></div>
-  </div>
+  </section>
+
+  <section id="ca-ch-0-body" class="ca-chapter" hidden>
+    <div class="ca-hero">
+      <div class="ca-hero-num"><span class="num" id="ca-hero-cur">—</span><span class="unit">°C</span><span class="cap" id="ca-hero-cur-cap">最新一年 · 相对 1951–1980 基准</span></div>
+      <div class="ca-hero-num"><span class="num" id="ca-hero-nat">—</span><span class="unit">°C</span><span class="cap">80 万年冰芯记录的自然变率幅度<br>EPICA Dome C</span></div>
+      <div class="ca-hero-copy">地球自己用冰期旋回,把温度调上又调下 <b id="ca-hero-cycle">—</b> 万年——幅度如右。而人类用 <b>一个半世纪</b>,就爬出了这条 80 万年的走廊。<b>下面四章</b>:先看人类史这 146 年,再回到最后一个冰期看它如何解冻,然后去比今天更暖的过去,最后把镜头拉到 5400 万年。</div>
+      <div class="ca-hero-foot"><button type="button" class="btn btn-primary" id="ca-start">开始探索:人类史 →</button></div>
+    </div>
+  </section>
 
   <hr style="margin:1.2em 0 .6em">
   <div class="ca-grouplab">数据与方法</div>
@@ -325,7 +382,7 @@ const pgeoSel = document.getElementById("ca-pgeo-sel");
   o.value = v; o.textContent = t;
   pgeoSel.appendChild(o);
 });
-const snapRow = document.querySelector('[aria-label="地质快照"]');
+const snapRow = document.querySelector('[aria-label="冰期快照"]');
 const seqRow = document.querySelector('[aria-label="消冰序列"]');
 const layerBtns = [...document.querySelectorAll("#ca-pgeo-row .btn")];
 function syncPgeoVisibility() {
@@ -1461,23 +1518,59 @@ document.querySelectorAll(".ca-series").forEach(btn => {
   });
 });
 
-const tabHuman = document.getElementById("ca-tab-human");
-const tabGeo = document.getElementById("ca-tab-geo");
+/* ---------- 章节状态机:五个章节,每章回答一个访客问题;地图常驻,章节只换下方内容 ---------- */
+const CHAPTER_BODIES = ["ca-ch-0-body", "ca-panel-human", "ca-ch-2-body", "ca-ch-3-body", "ca-ch-4-body"];
+const tabHuman = document.getElementById("ca-ch-1");
+const tabGeo = document.getElementById("ca-ch-2");
+let chapter = 0; /* 首访默认:序章 */
+function showChapterBody(n) {
+  CHAPTER_BODIES.forEach((id, i) => { const el = document.getElementById(id); if (el) el.hidden = i !== n; });
+  document.querySelectorAll("#ca-chapters .ca-ch").forEach(b => b.setAttribute("aria-selected", +b.dataset.ch === n ? "true" : "false"));
+}
+function setChapter(n, opts) {
+  opts = opts || {};
+  n = Math.max(0, Math.min(4, n));
+  chapter = n;
+  stopPlay(); stopDeglac();
+  if (n === 0) { if (mode !== "human") setMode("human"); setSeason("annual"); setYear(lastYear); }
+  else if (n === 1) { if (mode !== "human") setMode("human"); if (humanSeason !== "annual") setSeason("annual"); }
+  else if (n === 2) { if (mode !== "geo") setMode("geo"); if (snapMetric !== "temp") setMetric("temp"); if (geoSnap === "pliocene" || geoSnap === "lig") setSnap("hs1"); setPgeo("off"); }
+  else if (n === 3) {
+    if (mode !== "geo") setMode("geo");
+    if (snapMetric !== "temp") setMetric("temp");
+    if (geoSnap !== "pliocene" && geoSnap !== "lig") setSnap("pliocene");
+    setPgeo("off");
+    if (deepEpoch !== "zachos") setEpoch("zachos", { noAutoPgeo: true }); /* 古地理下拉只在 6500 万年视图生效 */
+  }
+  else if (n === 4) { if (mode !== "geo") setMode("geo"); }
+  showChapterBody(n);
+  if (!opts.noHash && location.hash.slice(1) !== "c" + n) { try { history.replaceState(null, "", "#c" + n); } catch (e) { /* 忽略 */ } }
+  saveState();
+}
+function syncChapters() {
+  /* 旧入口(applyState/程序化 setMode)直接改模式时,把章节拉回匹配的默认章 */
+  const ok = mode === "human" ? (chapter === 0 || chapter === 1) : (chapter >= 2 && chapter <= 4);
+  if (!ok) chapter = mode === "human" ? 1 : 2;
+  showChapterBody(chapter);
+}
 function setMode(m) {
   mode = m;
-  tabHuman.setAttribute("aria-selected", m === "human" ? "true" : "false");
-  tabGeo.setAttribute("aria-selected", m === "geo" ? "true" : "false");
-  tabHuman.classList.toggle("active", m === "human");
-  tabGeo.classList.toggle("active", m === "geo");
-  document.getElementById("ca-panel-human").hidden = m !== "human";
-  document.getElementById("ca-panel-geo").hidden = m !== "geo";
   if (m === "geo") { stopPlay(); drawChart(); drawChart2(); } /* 同步绘制:读取 clientWidth 强制布局;后台节流时 rAF/RO 不触发 */
   syncPgeoVisibility();
   updateMap();
   paintTop();
+  syncChapters();
 }
-tabHuman.addEventListener("click", () => { stopDeglac(); if (mode !== "human") { setMode("human"); saveState(); } });
-tabGeo.addEventListener("click", () => { stopDeglac(); if (mode !== "geo") { setMode("geo"); saveState(); } });
+document.querySelectorAll("#ca-chapters .ca-ch").forEach(b => b.addEventListener("click", () => setChapter(+b.dataset.ch)));
+document.addEventListener("keydown", e => {
+  if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA")) return;
+  if (e.key >= "0" && e.key <= "4") { setChapter(+e.key); return; }
+  if (chapter === 1) {
+    if (e.key === "ArrowLeft") { setYear(year - 1); e.preventDefault(); }
+    else if (e.key === "ArrowRight") { setYear(year + 1); e.preventDefault(); }
+    else if (e.key === " " && !playBtn.disabled) { playBtn.click(); e.preventDefault(); }
+  }
+});
 
 function saveState() {
   try {
@@ -1489,8 +1582,9 @@ function saveState() {
 }
 function applyState(st) {
   if (!st || typeof st !== "object") return;
-  if (st.tab === "geo" && mode !== "geo") setMode("geo");
-  if (st.tab === "human" && mode !== "human") setMode("human");
+  /* 先落章节,再覆盖细粒度状态(章节入口会重置 snap/metric/epoch) */
+  if (st.tab === "human") setChapter(1, { noHash: true });
+  else if (st.tab === "geo") setChapter(st.snap === "lig" || st.snap === "pliocene" || st.pgeo !== "off" ? 3 : 2, { noHash: true });
   if (years.includes(st.year)) setYear(st.year);
   if (SNAP[st.snap]) setSnap(st.snap);
   if (EPOCHS[st.epoch]) setEpoch(st.epoch, { noAutoPgeo: true });
@@ -1549,5 +1643,29 @@ updateMap();
 drawChart();
 drawMini();
 drawHM();
-window.__CA_VER = "gif-export-4"; window.__CA = { setYear, setSnap, setSeason, setMetric, setPgeo, setEpoch, setMode, stopDeglac, years, human, buildGif, paintCells, gifFrame: (i, kind) => { gifEnsure(); gifSetF(i, kind); return gifGrab(); } };
+
+/* ---------- 章节路由 + 序章大数字(全部由数据动态计算,不硬编码) ---------- */
+document.getElementById("ca-start").addEventListener("click", () => setChapter(1));
+document.getElementById("ca-next-1").addEventListener("click", () => setChapter(2));
+document.getElementById("ca-next-2").addEventListener("click", () => setChapter(3));
+document.getElementById("ca-next-3").addEventListener("click", () => setChapter(4));
+(function fillHero() {
+  try {
+    const cur = human.glob[yIdx.get(lastYear)];
+    document.getElementById("ca-hero-cur").textContent = (cur >= 0 ? "+" : "") + cur.toFixed(2);
+    let lo = Infinity, hi = -Infinity;
+    for (const v of ice.dt_c) { if (v === v) { if (v < lo) lo = v; if (v > hi) hi = v; } }
+    if (lo < hi) document.getElementById("ca-hero-nat").textContent = "±" + ((hi - lo) / 2).toFixed(1);
+    document.getElementById("ca-hero-cycle").textContent = "≈10"; /* 与第 4 章曲线注记一致:一个锯齿 ≈ 一次冰期旋回 */
+    document.getElementById("ca-hero-cur-cap").textContent = lastYear + " 年 · 相对 1951–1980 基准";
+  } catch (e) { /* 数据缺失时 hero 保留占位 */ }
+})();
+const hCh = /^c([0-4])$/.exec(location.hash.slice(1));
+if (hCh) setChapter(+hCh[1], { noHash: true });
+else showChapterBody(chapter);
+window.addEventListener("hashchange", () => {
+  const m = /^c([0-4])$/.exec(location.hash.slice(1));
+  if (m && +m[1] !== chapter) setChapter(+m[1]);
+});
+window.__CA_VER = "chapter-1"; window.__CA = { setYear, setSnap, setSeason, setMetric, setPgeo, setEpoch, setMode, setChapter, stopDeglac, years, human, buildGif, paintCells, gifFrame: (i, kind) => { gifEnsure(); gifSetF(i, kind); return gifGrab(); } };
 </script>
