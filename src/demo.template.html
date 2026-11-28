@@ -96,7 +96,12 @@
   #climate-atlas .ca-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: .5em; }
   #climate-atlas .ca-head h1 { margin: 0; font-size: 1.35em; }
   #climate-atlas .ca-head .ca-tag { margin: 0; }
-  #climate-atlas #ca-chapters { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 .6em; }
+  #climate-atlas #ca-chapters {
+    display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 .6em;
+    position: sticky; top: 0; z-index: 6;
+    background: light-dark(rgba(247,248,250,.95), rgba(13,18,32,.93));
+    padding: 8px 6px 4px; border-radius: 10px;
+  }
   #climate-atlas .ca-ch .ca-ch-q { display: block; font-size: 10.5px; color: var(--muted-foreground); margin-top: 1px; }
   #climate-atlas .ca-ch[aria-selected="true"] .ca-ch-q { color: inherit; opacity: .75; }
   #climate-atlas .ca-ch { padding: 4px 14px; }
