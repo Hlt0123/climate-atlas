@@ -1224,6 +1224,8 @@ function setPgeo(p) {
   if (p !== "off" && !PG) return;
   pgeo = p;
   pgeoSel.value = p;
+  /* 快照 chip 与地图模式保持一致:古地理视图下无激活快照,退出时恢复当前 geoSnap 的选中态 */
+  document.querySelectorAll(".ca-snap").forEach(b => b.setAttribute("aria-pressed", p === "off" && b.dataset.snap === geoSnap ? "true" : "false"));
   syncPgeoVisibility();
   updateMap();
   paintTop(); scheduleCells();
@@ -1524,6 +1526,13 @@ const tabHuman = document.getElementById("ca-ch-1");
 const tabGeo = document.getElementById("ca-ch-2");
 let chapter = 0; /* 首访默认:序章 */
 let heroSaved = null; /* 序章临时呈现「最新一年·年均」,进章前保存用户视图,返回人类史时恢复 */
+const chMem = {}; /* 每章视图记忆:离开章时保存,重进章时恢复(首访用章节预设)——统一防「切章覆盖用户选择」 */
+const isIceSnap = s => ["hs1", "ba", "yds", "eh", "holocene", "lh"].includes(s);
+function saveChapterView(c) {
+  if (c === 2) chMem[2] = { snap: geoSnap };
+  else if (c === 3) chMem[3] = { era: pgeo !== "off" ? pgeo : null, snap: geoSnap };
+  else if (c === 4) chMem[4] = { epoch: deepEpoch };
+}
 function showChapterBody(n) {
   CHAPTER_BODIES.forEach((id, i) => { const el = document.getElementById(id); if (el) el.hidden = i !== n; });
   document.querySelectorAll("#ca-chapters .ca-ch").forEach(b => b.setAttribute("aria-selected", +b.dataset.ch === n ? "true" : "false"));
@@ -1531,8 +1540,10 @@ function showChapterBody(n) {
 function setChapter(n, opts) {
   opts = opts || {};
   n = Math.max(0, Math.min(4, n));
+  const prev = chapter;
   chapter = n;
   stopPlay(); stopDeglac();
+  if (prev !== n) saveChapterView(prev);
   if (n === 0) {
     if (heroSaved === null) heroSaved = { year, season: humanSeason };
     if (mode !== "human") setMode("human");
@@ -1543,15 +1554,32 @@ function setChapter(n, opts) {
     if (mode !== "human") setMode("human");
     if (heroSaved) { setSeason(heroSaved.season); setYear(heroSaved.year); heroSaved = null; }
   }
-  else if (n === 2) { if (mode !== "geo") setMode("geo"); if (snapMetric !== "temp") setMetric("temp"); if (geoSnap === "pliocene" || geoSnap === "lig") setSnap("hs1"); setPgeo("off"); }
+  else if (n === 2) {
+    if (mode !== "geo") setMode("geo");
+    const mem = chMem[2];
+    if (mem && isIceSnap(mem.snap)) setSnap(mem.snap);
+    else if (!isIceSnap(geoSnap)) setSnap("hs1");
+    setPgeo("off");
+  }
   else if (n === 3) {
     if (mode !== "geo") setMode("geo");
-    if (snapMetric !== "temp") setMetric("temp");
-    if (geoSnap !== "pliocene" && geoSnap !== "lig") setSnap("pliocene");
-    setPgeo("off");
-    if (deepEpoch !== "zachos") setEpoch("zachos", { noAutoPgeo: true }); /* 古地理下拉只在 6500 万年视图生效 */
+    const mem = chMem[3];
+    if (mem && mem.era) {
+      if (deepEpoch !== "zachos") setEpoch("zachos", { noAutoPgeo: true }); /* 古地理视图只在 6500 万年生效 */
+      if (mem.snap === "lig" || mem.snap === "pliocene") setSnap(mem.snap); /* era 关闭后回落到的快照视图 */
+      setPgeo(mem.era);
+    } else {
+      if (mem && (mem.snap === "lig" || mem.snap === "pliocene")) setSnap(mem.snap);
+      else if (geoSnap !== "lig" && geoSnap !== "pliocene") setSnap("pliocene");
+      setPgeo("off");
+      if (deepEpoch !== "zachos") setEpoch("zachos", { noAutoPgeo: true });
+    }
   }
-  else if (n === 4) { if (mode !== "geo") setMode("geo"); }
+  else if (n === 4) {
+    if (mode !== "geo") setMode("geo");
+    setPgeo("off");
+    if (chMem[4] && EPOCHS[chMem[4].epoch] && deepEpoch !== chMem[4].epoch) setEpoch(chMem[4].epoch, { noAutoPgeo: true });
+  }
   showChapterBody(n);
   if (!opts.noHash && location.hash.slice(1) !== "c" + n) { try { history.replaceState(null, "", "#c" + n); } catch (e) { /* 忽略 */ } }
   saveState();
@@ -1676,5 +1704,5 @@ window.addEventListener("hashchange", () => {
   const m = /^c([0-4])$/.exec(location.hash.slice(1));
   if (m && +m[1] !== chapter) setChapter(+m[1]);
 });
-window.__CA_VER = "chapter-1"; window.__CA = { setYear, setSnap, setSeason, setMetric, setPgeo, setEpoch, setMode, setChapter, stopDeglac, years, human, buildGif, paintCells, gifFrame: (i, kind) => { gifEnsure(); gifSetF(i, kind); return gifGrab(); } };
+window.__CA_VER = "chapter-2"; window.__CA = { setYear, setSnap, setSeason, setMetric, setPgeo, setEpoch, setMode, setChapter, stopDeglac, years, human, buildGif, paintCells, chMem, gifFrame: (i, kind) => { gifEnsure(); gifSetF(i, kind); return gifGrab(); } };
 </script>
